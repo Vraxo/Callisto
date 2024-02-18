@@ -1,0 +1,15 @@
+* set dyanmic size and position using parents instead of making new classes
+* singletons / persistant nodes?
+* inherit size?
+* windows as nodes ?
+
+
+
+//
+
+dont create phone number button if none exist
+refactor contact displayer and loader
+all number buttons copy the first number
+blinker for textboxes
+better textboxes (delete, move, cursor?)
+more precise scrollers (contactviewpage, contactsloader)
