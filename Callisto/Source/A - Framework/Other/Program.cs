@@ -1,5 +1,5 @@
-﻿using Callisto;
-using SFML.Window;
+﻿using SFML.Window;
+using Callisto.ContactsListNode;
 
 namespace Nodex;
 
@@ -12,20 +12,10 @@ class Program
 
     // Public
 
+    [STAThread]
     public static void Main()
     {
-        MainWindow = new
-        (
-            new(360, 640),
-            "Callisto",
-            Styles.Default,
-            new ContextSettings(0, 0, 16)
-        );
-
-        Windows.Add(MainWindow);
-        MainWindow.RootNode = new ContactsLoader();
-
-        MainWindow.Start();
+        CreateMainWindow();
 
         while (true)
         {
@@ -45,5 +35,23 @@ class Program
     {
         Windows.Remove(window);
         window.Close();
+    }
+
+    // Private
+
+    private static void CreateMainWindow()
+    {
+        MainWindow = new
+        (
+            new(360, 640),
+            "Callisto",
+            Styles.Default,
+            new ContextSettings(0, 0, 16)
+        );
+
+        Windows.Add(MainWindow);
+        MainWindow.RootNode = new ContactsList();
+
+        MainWindow.Start();
     }
 }

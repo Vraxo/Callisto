@@ -1,12 +1,18 @@
 ﻿using Nodex;
 using SFML.Window;
+using Callisto.ContactsListNode;
 using Callisto.NotificationDialogNode;
 using Window = Nodex.Window;
+using Callisto.ContactInfoViewerNode;
 
 namespace Callisto.ContactEditorNode.ButtonsNode;
 
 class OkButton : Button
 {
+    // Fields
+
+    public int ContactIndex = -1;
+
     // Public
 
     public override void Start()
@@ -14,7 +20,7 @@ class OkButton : Button
         base.Start();
 
         Text          = "OK";
-        ActionOnClick = ConfirmContact;
+        actionOnClick = ConfirmContact;
         Origin        = Size / 2;
         TextOrigin    = Size / 2;
     }
@@ -24,7 +30,7 @@ class OkButton : Button
         base.Update();
 
         float x = Window.Size.X / 2F;
-        float y = GetParent<Buttons>().GetParent<ContactEditor>().GetChild<Fields>().NumberFields.Count * 50 + Window.Size.Y * 0.8F;
+        float y = GetRootNode<ContactEditor>().GetChild<Fields>().NumberFields.Count * 50 + Window.Size.Y * 0.8F;
 
         Position = new(x, y);
     }
@@ -33,9 +39,9 @@ class OkButton : Button
 
     private void ConfirmContact()
     {
-        Contact newContact = GetParent<Buttons>().GetParent<ContactEditor>().GetChild<Fields>().GetContact();
+        Contact newContact = GetRootNode<ContactEditor>().GetChild<Fields>().GetContact();
 
-        if (GetParent<Buttons>().Index == -1)
+        if (GetParent<Buttons>().ContactIndex == -1)
         {
             CreateNewContact(newContact);
         }
@@ -47,14 +53,18 @@ class OkButton : Button
 
     private void CreateNewContact(Contact newContact)
     {
-        Console.WriteLine(newContact.FirstName);
-
         if (newContact.FirstName != "")
         {
             if (!ContactsContainer.Instance.ContactExists(newContact))
             {
                 ContactsContainer.Instance.Add(newContact);
-                ChangeScene(new ContactsLoader());
+
+                ContactIndex = ContactsContainer.Instance.Contacts.IndexOf(newContact);
+
+                ChangeScene(new ContactInfoViewer()
+                {
+                    ContactIndex = ContactIndex
+                });
             }
             else
             {
@@ -71,10 +81,14 @@ class OkButton : Button
     {
         if (newContact.FirstName != "")
         {
-            ContactsContainer.Instance.Contacts[GetParent<Buttons>().Index] = newContact;
+            ContactsContainer.Instance.Contacts[ContactIndex] = newContact;
             ContactsContainer.Instance.Save();
             ContactsContainer.Instance.Load();
-            ChangeScene(new ContactsLoader());
+
+            ChangeScene(new ContactInfoViewer()
+            {
+                ContactIndex = ContactIndex
+            });
         }
         else
         {

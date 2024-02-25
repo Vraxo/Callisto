@@ -1,5 +1,6 @@
 ﻿using Nodex;
 using SFML.Graphics;
+using Callisto.ContactsListNode;
 
 namespace Callisto.ContactEditorNode.ButtonsNode;
 
@@ -13,7 +14,7 @@ class CancelButton : Button
 
         Text = "Cancel";
         TextColor = Color.Red;
-        ActionOnClick = CancelEdit;
+        actionOnClick = CancelEdit;
     }
 
     public override void Update()
@@ -27,6 +28,6 @@ class CancelButton : Button
 
     private void CancelEdit()
     {
-        ChangeScene(new ContactsLoader());
+        ChangeScene(new ContactsList());
     }
 }

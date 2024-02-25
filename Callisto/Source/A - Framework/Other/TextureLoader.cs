@@ -6,7 +6,7 @@ class TextureLoader
 {
     // Fields
 
-    public Texture Person;
+    public Dictionary<string, Texture> Textures = [];
 
     // Singleton
 
@@ -23,6 +23,6 @@ class TextureLoader
 
     private TextureLoader()
     {
-        Person = new("Resources/Person.jpg");
+        Textures.Add("Avatar", new("Resources/Avatar.jpg"));
     }
 }

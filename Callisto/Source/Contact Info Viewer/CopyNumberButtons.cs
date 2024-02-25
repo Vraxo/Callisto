@@ -2,7 +2,7 @@
 
 namespace Callisto.ContactInfoViewerNode;
 
-class NumberButtons : Node
+class CopyNumberButtons : Node
 {
     // Fields
 
@@ -12,14 +12,16 @@ class NumberButtons : Node
 
     public override void Start()
     {
-        Console.WriteLine(ContactIndex);
-
         Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
+
+        Console.WriteLine(contact.PhoneNumbers.Count);
 
         for (int i = 0; i < contact.PhoneNumbers.Count; i++)
         {
-            Button numberButton = new NumberButton()
+            Button numberButton = new CopyNumberButton()
             {
+                ContactIndex = ContactIndex,
+                NumberIndex = i,
                 Text = contact.PhoneNumbers[i],
             };
 

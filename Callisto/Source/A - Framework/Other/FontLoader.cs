@@ -1,12 +1,10 @@
-﻿using SFML.Graphics;
-
-namespace Nodex;
+﻿namespace Nodex;
 
 class FontLoader
 {
     // Fields
 
-    public Font RobotoMono;
+    public Dictionary<string, Font> Fonts = [];
 
     // Singleton
 
@@ -23,6 +21,6 @@ class FontLoader
 
     private FontLoader()
     {
-        RobotoMono = new("Resources/RobotoMono.ttf");
+        Fonts.Add("RobotoMono", new("Resources/RobotoMono.ttf"));
     }
 }

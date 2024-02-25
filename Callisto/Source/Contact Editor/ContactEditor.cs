@@ -1,5 +1,7 @@
-﻿using Callisto.ContactEditorNode.ButtonsNode;
-using Nodex;
+﻿using Nodex;
+using Callisto.AvatarDisplayerNode;
+using Callisto.ContactsListNode;
+using Callisto.ContactEditorNode.ButtonsNode;
 
 namespace Callisto.ContactEditorNode;
 
@@ -15,19 +17,28 @@ class ContactEditor : Node
     {
         Buttons buttons = new()
         {
-            Index = ContactIndex
+            ContactIndex = ContactIndex
         };
 
         AddChild(buttons);
 
-        AddChild(new Fields());
-        AddChild(new AvatarDisplayer());
+        AddChild(new Fields()
+        {
+            ContactIndex = ContactIndex
+        });
+
+        AddChild(new AvatarDisplayer()
+        {
+            ContactIndex = ContactIndex,
+            IsClickable  = true
+        });
+
         AddChild(new Scroller());
     }
 
     public void DeleteContact()
     {
         ContactsContainer.Instance.Delete(ContactIndex);
-        ChangeScene(new ContactsLoader());
+        ChangeScene(new ContactsList());
     }
 }

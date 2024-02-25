@@ -23,7 +23,7 @@ class ConfirmButton : Button
         Size          = new(100, 20);
         FontSize      = 12;
         TextColor     = Color.Green;
-        ActionOnClick = Confirm;
+        actionOnClick = Confirm;
     }
 
     // Callback

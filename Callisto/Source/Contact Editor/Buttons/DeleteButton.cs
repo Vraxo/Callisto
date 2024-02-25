@@ -16,7 +16,7 @@ class DeleteButton : Button
 
         Text = "Delete";
         TextColor = Color.Red;
-        ActionOnClick = GetConfirmationForContactDeletion;
+        actionOnClick = GetConfirmationForContactDeletion;
     }
 
     public override void Update()

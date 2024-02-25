@@ -18,6 +18,6 @@ class OkButton : Button
         Size          = new(100, 20);
         FontSize      = 12;
         TextColor     = Color.Green;
-        ActionOnClick = Parent.Destroy;
+        actionOnClick = Parent.Destroy;
     }
 }

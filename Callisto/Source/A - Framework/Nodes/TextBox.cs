@@ -1,8 +1,6 @@
 ﻿using SFML.System;
 using SFML.Window;
 using SFML.Graphics;
-using Font = SFML.Graphics.Font;
-using Callisto;
 
 namespace Nodex;
 
@@ -12,28 +10,28 @@ class TextBox : Node
 
     #region [ - - - FIELDS - - - ]
 
-    public Vector2f Size = new(300, 25);
+    public Vector2f Size   = new(300, 25);
     public Vector2f Origin = new(0, 0);
 
     public string Text = "";
-    public int MaximumCharacters = int.MaxValue;
+    public int    MaximumCharacters = int.MaxValue;
 
     public uint FontSize = 16;
-    public Font Font = FontLoader.Instance.RobotoMono;
+    public Font Font     = FontLoader.Instance.Fonts["RobotoMono"];
 
     public int OutlineThickness = -1;
 
-    public Color SelectedOutlineColor = new(32, 32, 255);
+    public Color SelectedOutlineColor   = new(32, 32, 255);
     public Color DeselectedOutlineColor = new(0, 0, 0, 0);
-    public Color FillColor = new(16, 16, 16);
-    public Color IdleFillColor = new(16, 16, 16);
-    public Color HoverFillColor = new(16, 16, 16);
-    public Color ActiveFillColor = new(32, 32, 32);
+    public Color FillColor              = new(16, 16, 16);
+    public Color IdleFillColor          = new(16, 16, 16);
+    public Color HoverFillColor         = new(16, 16, 16);
+    public Color ActiveFillColor        = new(32, 32, 32);
 
-    private bool isSelected = false;
-    private int cursor = 0;
-    private float padding = 8;
-    private const int Backspace = 8;
+    private bool      isSelected = false;
+    private int       cursor     = 0;
+    private float     padding    = 8;
+    private const int Backspace  = 8;
 
     #endregion
 
@@ -41,20 +39,23 @@ class TextBox : Node
 
     public override void Start()
     {
+        Window.KeyPressed         += OnKeyPressed;
+        Window.TextEntered        += OnTextEntered;
         Window.MouseButtonPressed += OnMouseClicked;
-        Window.TextEntered += OnTextEntered;
-        Window.KeyPressed += OnKeyPressed;
     }
 
     public override void Update()
     {
         base.Update();
+
         DrawShape();
         DrawText();
     }
 
     public override void Destroy()
     {
+        Window.KeyPressed         -= OnKeyPressed;
+        Window.TextEntered        -= OnTextEntered;
         Window.MouseButtonPressed -= OnMouseClicked;
     }
 
@@ -62,17 +63,15 @@ class TextBox : Node
 
     private void DrawShape()
     {
-        RectangleShape r = new()
+        Window.Draw(new RectangleShape()
         {
-            Position = GlobalPosition,
-            Size = Size,
+            Position         = GlobalPosition,
+            Size             = Size,
+            Origin           = Origin,
             OutlineThickness = OutlineThickness,
-            OutlineColor = isSelected ? SelectedOutlineColor : DeselectedOutlineColor,
-            FillColor = FillColor,
-            Origin = Origin
-        };
-
-        r.Draw(Window, RenderStates.Default);
+            OutlineColor     = isSelected ? SelectedOutlineColor : DeselectedOutlineColor,
+            FillColor        = FillColor,
+        });
     }
 
     private void DrawText()
@@ -131,7 +130,7 @@ class TextBox : Node
                 if (Text.Length < MaximumCharacters)
                 {
                     Text = Text.Insert(cursor, e.Unicode);
-                    cursor++;
+                    cursor ++;
                 }
                 break;
 
@@ -139,7 +138,7 @@ class TextBox : Node
                 if (Text.Length > 0)
                 {
                     Text = Text[..^1];
-                    cursor--;
+                    cursor --;
                 }
                 break;
         }
@@ -152,14 +151,14 @@ class TextBox : Node
             case Keyboard.Key.Right:
                 if (cursor < Text.Length)
                 {
-                    cursor++;
+                    cursor ++;
                 }
                 break;
 
             case Keyboard.Key.Left:
                 if (cursor > 0)
                 {
-                    cursor--;
+                    cursor --;
                 }
                 break;
 

@@ -16,7 +16,7 @@ class EditButton : Button
         base.Start();
 
         Text          = "Edit";
-        ActionOnClick = GoToContactEditor;
+        actionOnClick = GoToContactEditor;
     }
 
     public override void Update()

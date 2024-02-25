@@ -1,4 +1,5 @@
 ﻿using Nodex;
+using Callisto.AvatarDisplayerNode;
 
 namespace Callisto.ContactInfoViewerNode;
 
@@ -12,7 +13,10 @@ class ContactInfoViewer : Node
 
     public override void Start()
     {
-        AddChild(new AvatarDisplayer());
+        AddChild(new AvatarDisplayer()
+        {
+            ContactIndex = ContactIndex
+        });
 
         AddChild(new ReturnButton());
 
@@ -26,7 +30,7 @@ class ContactInfoViewer : Node
             ContactIndex = ContactIndex
         });
 
-        AddChild(new NumberButtons()
+        AddChild(new CopyNumberButtons()
         {
             ContactIndex = ContactIndex
         });

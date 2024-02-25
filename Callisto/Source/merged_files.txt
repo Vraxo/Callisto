@@ -1,0 +1,2622 @@
+// File: script.py
+
+import os
+
+def merge_files(directory):
+    # Get list of all files in the directory and its subdirectories
+    file_list = []
+    for root, _, files in os.walk(directory):
+        for file in files:
+            file_list.append(os.path.join(root, file))
+
+    # Create a new text file to store merged contents
+    with open('merged_files.txt', 'w') as merged_file:
+        for file_path in file_list:
+            with open(file_path, 'r') as current_file:
+                # Write filename as a comment
+                merged_file.write(f'// File: {os.path.basename(file_path)}\n\n')
+                # Write file contents
+                merged_file.write(current_file.read())
+                # Add padding between files
+                merged_file.write('\n\n' + '-'*40 + '\n\n')
+
+if __name__ == "__main__":
+    # Get the current directory
+    current_directory = os.getcwd()
+    merge_files(current_directory)
+    print("Files merged successfully.")
+
+
+----------------------------------------
+
+// File: Usings.cs
+
+﻿global using Button = Nodex.Button;
+global using TextBox = Nodex.TextBox;
+global using Font = SFML.Graphics.Font;
+global using KeyEventArgs = SFML.Window.KeyEventArgs;
+global using Label = Nodex.Label;
+global using Clipboard = SFML.Window.Clipboard;
+global using Color = SFML.Graphics.Color;
+
+----------------------------------------
+
+// File: Button.cs
+
+﻿using SFML.System;
+using SFML.Window;
+using SFML.Graphics;
+
+namespace Nodex;
+
+class Button : Node
+{
+    // Fields
+
+    #region [ - - - FIELDS - - - ]
+
+    // Numbers
+
+    public Vector2f Size          = new(100, 25);
+    public Vector2f Origin        = new(0, 0);
+    public Vector2f TextOrigin    = new(0, 0);
+    public float OutlineThickness = 0;
+
+    // Text
+
+    public string Text   = "";
+    public uint FontSize = 16;
+    public Font Font     = FontLoader.Instance.RobotoMono;
+
+    // Colors
+
+    public Color TextColor       = Color.White;
+    public Color OutlineColor    = Color.Black;
+    public Color FillColor       = new(64, 64, 64);
+    public Color HoverFillColor  = new(96, 96, 96);
+    public Color IdleFillColor   = new(64, 64, 64);
+    public Color ActiveFillColor = new(48, 48, 48);
+
+    // Etc
+
+    public Action actionOnClick;
+    private bool isSelected = false;
+
+    #endregion
+
+    // Public
+
+    public override void Start()
+    {
+        ConnectToEvents();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        DrawShape();
+        DrawText();
+    }
+
+    public override void Destroy()
+    {
+        DisconnectFromEvents();
+    }
+
+    public override void Activate()
+    {
+        base.Activate();
+
+        Start();
+    }
+
+    public override void Deactivate()
+    {
+        base.Deactivate();
+
+        Destroy();
+    }
+
+    // Private
+
+    private void DrawShape()
+    {
+        RectangleShape r = new()
+        {
+            Position = GlobalPosition,
+            Size = Size,
+            OutlineThickness = OutlineThickness,
+            OutlineColor = OutlineColor,
+            FillColor = FillColor,
+            Origin = Origin
+        };
+
+        r.Draw(Window, RenderStates.Default);
+    }
+
+    private void DrawText()
+    {
+        Text t = new()
+        {
+            DisplayedString = Text,
+            FillColor = TextColor,
+            Position = GlobalPosition,
+            Font = Font,
+            CharacterSize = FontSize
+        };
+
+        int x = (int)(GlobalPosition.X - Origin.X + Size.X / 2 - t.GetLocalBounds().Width / 2);
+        int y = (int)(GlobalPosition.Y - Origin.Y + Size.Y / 2 - t.GetLocalBounds().Height / 1.25);
+
+        t.Position = new(x, y);
+
+        t.Draw(Window, RenderStates.Default);
+    }
+
+    private bool IsMouseOver(Vector2f mousePosition)
+    {
+        mousePosition = Window.MapPixelToCoords((Vector2i)mousePosition);
+
+        bool matchX1 = mousePosition.X > GlobalPosition.X - Origin.X;
+        bool matchX2 = mousePosition.X < GlobalPosition.X + Size.X - Origin.X;
+
+        bool matchY1 = mousePosition.Y > GlobalPosition.Y - Origin.Y;
+        bool matchY2 = mousePosition.Y < GlobalPosition.Y + Size.Y - Origin.Y;
+
+        return matchX1 && matchX2 && matchY1 && matchY2;
+    }
+
+    // Connection to events
+
+    private void ConnectToEvents()
+    {
+        Window.MouseMoved          += OnMouseMoved;
+        Window.MouseButtonPressed  += OnMouseClicked;
+        Window.MouseButtonReleased += OnMouseReleased;
+    }
+
+    private void DisconnectFromEvents()
+    {
+        Window.MouseMoved -= OnMouseMoved;
+        Window.MouseButtonPressed -= OnMouseClicked;
+        Window.MouseButtonReleased -= OnMouseReleased;
+    }
+
+    // Events
+
+    private void OnMouseMoved(object? sender, MouseMoveEventArgs e)
+    {
+        if (IsMouseOver(new(e.X, e.Y)))
+        {
+            FillColor = isSelected ? ActiveFillColor : HoverFillColor;
+        }
+        else
+        {
+            FillColor = IdleFillColor;
+        }
+    }
+
+    private void OnMouseClicked(object? sender, MouseButtonEventArgs e)
+    {
+        if (IsMouseOver(new(e.X, e.Y)))
+        {
+            isSelected = true;
+            FillColor = ActiveFillColor;
+        }
+    }
+
+    private void OnMouseReleased(object? sender, MouseButtonEventArgs e)
+    {
+        if (IsMouseOver(new(e.X, e.Y)))
+        {
+            if (isSelected)
+            {
+                actionOnClick();
+            }
+        }
+
+        isSelected = false;
+        FillColor = IdleFillColor;
+    }
+}
+
+----------------------------------------
+
+// File: CircleButton.cs
+
+﻿using SFML.System;
+using SFML.Window;
+using SFML.Graphics;
+
+namespace Nodex;
+
+class CircleButton : Node
+{
+    // Fields
+
+    public float Radius;
+    public Vector2f Origin;
+    public bool IsVisible;
+
+    protected Action actionOnClick;
+    private bool isSelected = false;
+
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Window.MouseMoved          += OnMouseMoved;
+        Window.MouseButtonPressed  += OnMouseClicked;
+        Window.MouseButtonReleased += OnMouseReleased;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        DrawDebugCircle();
+    }
+
+    public override void Destroy()
+    {
+        base.Destroy();
+
+        Window.MouseMoved          -= OnMouseMoved;
+        Window.MouseButtonPressed  -= OnMouseClicked;
+        Window.MouseButtonReleased -= OnMouseClicked;
+    }
+
+    // Private
+
+    private void DrawDebugCircle()
+    {
+        if (IsVisible)
+        {
+            CircleShape c = new()
+            {
+                Position         = Position,
+                Radius           = Radius,
+                Origin           = Origin,
+                OutlineColor     = Color.Blue,
+                FillColor        = Color.Transparent,
+                OutlineThickness = 1,
+            };
+
+            Window.Draw(c);
+        }
+    }
+
+    private bool IsInRange(Vector2f position)
+    {
+        bool isInRange = GetDistance(GlobalPosition, position) < Radius;
+        return isInRange;
+    }
+
+    private float GetDistance(Vector2f point1, Vector2f point2)
+    {
+        float xDistance = MathF.Pow(point2.X - point1.X, 2);
+        float yDistance = MathF.Pow(point2.Y - point1.Y, 2);
+
+        float distance = MathF.Sqrt(xDistance + yDistance);
+
+        return distance;
+    }
+
+    // Events
+
+    private void OnMouseClicked(object? sender, MouseButtonEventArgs e)
+    {
+        if (IsInRange(new(e.X, e.Y)))
+        {
+            isSelected = true;
+        }
+    }
+
+    private void OnMouseMoved(object? sender, MouseMoveEventArgs e)
+    {
+        if (IsInRange(new(e.X, e.Y)))
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+
+    private void OnMouseReleased(object? sender, MouseButtonEventArgs e)
+    {
+        if (IsInRange(new(e.X, e.Y)))
+        {
+            if (isSelected)
+            {
+                actionOnClick();
+            }
+        }
+
+        isSelected = false;
+    }
+}
+
+----------------------------------------
+
+// File: CircleSprite.cs
+
+﻿using SFML.System;
+using SFML.Graphics;
+
+namespace Nodex;
+
+class CircleSprite : Node
+{
+    // Fields
+
+    public float Radius;
+    public Vector2f Origin;
+    public Texture Texture;
+
+    // Public
+
+    public override void Update()
+    {
+        base.Update();
+
+        CircleShape c = new()
+        {
+            Position = Position,
+            Radius = Radius,
+            Origin = Origin,
+            Texture = Texture
+        };
+
+        c.Draw(Window, RenderStates.Default);
+    }
+}
+
+----------------------------------------
+
+// File: Label.cs
+
+﻿using SFML.System;
+using SFML.Graphics;
+
+namespace Nodex;
+
+class Label : Node
+{
+    // Fields
+
+    public string Text = "";
+    public uint FontSize = 16;
+    public Font Font = FontLoader.Instance.RobotoMono;
+    public Vector2f Origin = new(0, 0);
+    public Text RenderedText;
+
+    // Public
+
+    public override void Update()
+    {
+        base.Update();
+        DrawText();
+    }
+
+    // Private
+
+    private void DrawText()
+    {
+        RenderedText = new()
+        {
+            Font = Font,
+            DisplayedString = Text,
+            Position = GlobalPosition,
+            CharacterSize = FontSize,
+            Origin = Origin
+        };
+
+        RenderedText.Draw(Window, RenderStates.Default);
+    }
+}
+
+----------------------------------------
+
+// File: Node.cs
+
+﻿using SFML.System;
+
+namespace Nodex;
+
+class Node
+{
+    // Fields
+
+    public string Name = "";
+    public List<Node> Children = [];
+    public Node Parent;
+    public Window Window;
+    public Vector2f Position = new(0, 0);
+    public bool InheritsPosition = true;
+    public bool IsActive { get; private set; } = true;
+
+    // Properties
+
+    private Vector2f globalPosition = new(0, 0);
+
+    public Vector2f GlobalPosition
+    {
+        get
+        {
+            if (Parent != null)
+            {
+                if (InheritsPosition)
+                {
+                    return Parent.GlobalPosition + Position;
+                }
+
+                return globalPosition;
+            }
+            else
+            {
+                return Position;
+            }
+        }
+
+        set
+        {
+            globalPosition = value;
+        }
+    }
+
+    // Constructor
+
+    public Node()
+    {
+
+    }
+
+    // Public
+
+    public virtual void Update()
+    {
+        if (!IsActive) return;
+
+        for (int i = 0; i < Children.Count; i++)
+        {
+            Children[i].Update();
+        }
+    }
+
+    public virtual void Start() { }
+
+    public virtual void Destroy()
+    {
+        for (int i = 0; i < Children.Count; i++)
+        {
+            Children[i].Destroy();
+        }
+    }
+
+    public virtual void Activate()
+    {
+        IsActive = true;
+
+        foreach (Node child in Children)
+        {
+            child.Activate();
+        }
+    }
+
+    public virtual void Deactivate()
+    {
+        IsActive = false;
+
+        foreach (Node child in Children)
+        {
+            child.Deactivate();
+        }
+    }
+
+    // Get special nodes
+
+    public T GetParent<T>() where T : Node
+    {
+        if (Parent != null)
+        {
+            return (T)Parent;
+        }
+
+        return (T)this;
+    }
+
+    public Node GetRootNode()
+    {
+        return Window.RootNode;
+    }
+
+    public T? GetRootNode<T>() where T : Node
+    {
+        return (T)Window.RootNode;
+    }
+
+    // Get child
+
+    public T GetChild<T>(string name) where T : Node
+    {
+        foreach (Node child in Children)
+        {
+            if (child.Name == name)
+            {
+                return (T)child;
+            }
+        }
+
+        throw new Exception($"Could not find child of type '{typeof(T)}' named '{name}'.");
+    }
+
+    public T GetChild<T>() where T : Node
+    {
+        foreach (Node child in Children)
+        {
+            if (child.GetType() == typeof(T))
+            {
+                return (T)child;
+            }
+        }
+
+        throw new Exception($"Could not find child of type '{typeof(T)}'.");
+    }
+
+    // Add child
+
+    public void AddChild(Node node, string name)
+    {
+        node.Name = name;
+        node.Window = Window;
+        node.Parent = this;
+        node.Window = Window;
+        node.Start();
+        Children.Add(node);
+    }
+
+    public void AddChild(Node node)
+    {
+        node.Name = node.GetType().Name;
+        node.Window = Window;
+        node.Parent = this;
+        node.Window = Window;
+        node.Start();
+        Children.Add(node);
+    }
+
+    // Change scene
+
+    //public void ChangeScene(Node node, string name)
+    //{
+    //    for (int i = 0; i < Children.Count; i ++)
+    //    {
+    //        Children[i].Destroy();
+    //    }
+    //
+    //    Children.Clear();
+    //    AddChild(node, name);
+    //}
+
+    //public void ChangeScene(Node node)
+    //{
+    //    for (int i = 0; i < Children.Count; i++)
+    //    {
+    //        Children[i].Destroy();
+    //    }
+    //
+    //    Children.Clear();
+    //    AddChild(node, node.GetType().Name);
+    //}
+
+    public void ChangeScene(Node node)
+    {
+        Window.RootNode.Destroy();
+        Window.RootNode = node;
+        node.Name = node.GetType().Name;
+        node.Window = Window;
+        node.Start();
+    }
+}
+
+----------------------------------------
+
+// File: Scroller.cs
+
+﻿using Callisto;
+using SFML.Window;
+
+namespace Nodex;
+
+class Scroller : Node
+{
+    // Fields
+
+    public int Factor = 50;
+    public bool CanGoUp = false;
+    public bool CanGoDown = false;
+
+    // Public
+
+    public override void Start()
+    {
+        Window.MouseWheelScrolled += OnMouseWheelScrolled;
+    }
+
+    public override void Destroy()
+    {
+        base.Destroy();
+
+        Window.MouseWheelScrolled -= OnMouseWheelScrolled;
+    }
+
+    // Events
+
+    private void OnMouseWheelScrolled(object? sender, MouseWheelScrollEventArgs e)
+    {
+        if (e.Wheel == Mouse.Wheel.VerticalWheel)
+        {
+            if (e.Delta > 0 && CanGoUp)
+            {
+                Window.GetView().Move(new(0, -Factor));
+            }
+            else if (e.Delta < 0 && CanGoDown)
+            {
+                Window.GetView().Move(new(0, Factor));
+            }
+
+            Window.SetView(Window.GetView());
+        }
+    }
+}
+
+----------------------------------------
+
+// File: Sprite.cs
+
+﻿using SFML.System;
+using SFML.Graphics;
+
+namespace Nodex;
+
+class Sprite : Node
+{
+    // Fields
+
+    public Vector2f Size;
+    public Vector2f Origin;
+    public Texture Texture;
+
+    // Public
+
+    public override void Update()
+    {
+        base.Update();
+
+        RectangleShape r = new()
+        {
+            Position = Position,
+            Size     = Size,
+            Origin   = Origin,
+            Texture  = Texture
+        };
+
+        r.Draw(Window, RenderStates.Default);
+    }
+}
+
+----------------------------------------
+
+// File: TextBox.cs
+
+﻿using SFML.System;
+using SFML.Window;
+using SFML.Graphics;
+
+namespace Nodex;
+
+class TextBox : Node
+{
+    // Fields
+
+    #region [ - - - FIELDS - - - ]
+
+    public Vector2f Size = new(300, 25);
+    public Vector2f Origin = new(0, 0);
+
+    public string Text = "";
+    public int MaximumCharacters = int.MaxValue;
+
+    public uint FontSize = 16;
+    public Font Font = FontLoader.Instance.RobotoMono;
+
+    public int OutlineThickness = -1;
+
+    public Color SelectedOutlineColor = new(32, 32, 255);
+    public Color DeselectedOutlineColor = new(0, 0, 0, 0);
+    public Color FillColor = new(16, 16, 16);
+    public Color IdleFillColor = new(16, 16, 16);
+    public Color HoverFillColor = new(16, 16, 16);
+    public Color ActiveFillColor = new(32, 32, 32);
+
+    private bool isSelected = false;
+    private int cursor = 0;
+    private float padding = 8;
+    private const int Backspace = 8;
+
+    #endregion
+
+    // Public
+
+    public override void Start()
+    {
+        Window.MouseButtonPressed += OnMouseClicked;
+        Window.TextEntered += OnTextEntered;
+        Window.KeyPressed += OnKeyPressed;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        DrawShape();
+        DrawText();
+    }
+
+    public override void Destroy()
+    {
+        Window.MouseButtonPressed -= OnMouseClicked;
+    }
+
+    // Private
+
+    private void DrawShape()
+    {
+        RectangleShape r = new()
+        {
+            Position = GlobalPosition,
+            Size = Size,
+            OutlineThickness = OutlineThickness,
+            OutlineColor = isSelected ? SelectedOutlineColor : DeselectedOutlineColor,
+            FillColor = FillColor,
+            Origin = Origin
+        };
+
+        r.Draw(Window, RenderStates.Default);
+    }
+
+    private void DrawText()
+    {
+        Text t = new()
+        {
+            DisplayedString = Text,
+            Position = GlobalPosition,
+            Font = Font,
+            CharacterSize = FontSize
+        };
+
+        float x = (int)(GlobalPosition.X + padding - Origin.X);
+        float y = (int)(GlobalPosition.Y + Size.Y / 10 - Origin.Y);
+
+        t.Position = new(x, y);
+
+        t.Draw(Window, RenderStates.Default);
+    }
+
+    private bool IsMouseOver(Vector2f mousePosition)
+    {
+        mousePosition = Window.MapPixelToCoords((Vector2i)mousePosition);
+
+        bool matchX1 = mousePosition.X > GlobalPosition.X;
+        bool matchX2 = mousePosition.X < GlobalPosition.X + Size.X;
+
+        bool matchY1 = mousePosition.Y > GlobalPosition.Y;
+        bool matchY2 = mousePosition.Y < GlobalPosition.Y + Size.Y;
+
+        return matchX1 && matchX2 && matchY1 && matchY2;
+    }
+
+    // Events
+
+    private void OnMouseClicked(object? sender, MouseButtonEventArgs e)
+    {
+        if (IsMouseOver(new(e.X, e.Y)))
+        {
+            isSelected = true;
+            cursor = Text.Length;
+        }
+        else
+        {
+            isSelected = false;
+        }
+    }
+
+    private void OnTextEntered(object? sender, TextEventArgs e)
+    {
+        if (!isSelected) return;
+
+        switch (e.Unicode[0])
+        {
+            default:
+                if (Text.Length < MaximumCharacters)
+                {
+                    Text = Text.Insert(cursor, e.Unicode);
+                    cursor++;
+                }
+                break;
+
+            case (char)Backspace:
+                if (Text.Length > 0)
+                {
+                    Text = Text[..^1];
+                    cursor--;
+                }
+                break;
+        }
+    }
+
+    private void OnKeyPressed(object? sender, KeyEventArgs e)
+    {
+        switch (e.Code)
+        {
+            case Keyboard.Key.Right:
+                if (cursor < Text.Length)
+                {
+                    cursor++;
+                }
+                break;
+
+            case Keyboard.Key.Left:
+                if (cursor > 0)
+                {
+                    cursor--;
+                }
+                break;
+
+            case Keyboard.Key.Enter:
+                isSelected = false;
+                break;
+        }
+    }
+}
+
+----------------------------------------
+
+// File: FontLoader.cs
+
+﻿using SFML.Graphics;
+
+namespace Nodex;
+
+class FontLoader
+{
+    // Fields
+
+    public Font RobotoMono;
+
+    // Singleton
+
+    private static FontLoader? instance;
+
+    public static FontLoader Instance
+    {
+        get
+        {
+            instance ??= new();
+            return instance;
+        }
+    }
+
+    private FontLoader()
+    {
+        RobotoMono = new("Resources/RobotoMono.ttf");
+    }
+}
+
+----------------------------------------
+
+// File: Program.cs
+
+﻿using SFML.Window;
+using Callisto.ContactsListNode;
+
+namespace Nodex;
+
+class Program
+{
+    // Fields
+
+    public static Window MainWindow { get; set; }
+    public static List<Window> Windows = [];
+
+    // Public
+
+    [STAThread]
+    public static void Main()
+    {
+        CreateMainWindow();
+
+        while (true)
+        {
+            for (int i = 0; i < Windows.Count; i++)
+            {
+                Windows[i].Update();
+            }
+        }
+    }
+
+    public static void AddWindow(Window window)
+    {
+        Windows.Add(window);
+    }
+
+    public static void RemoveWindow(Window window)
+    {
+        Windows.Remove(window);
+        window.Close();
+    }
+
+    // Private
+
+    private static void CreateMainWindow()
+    {
+        MainWindow = new
+        (
+            new(360, 640),
+            "Callisto",
+            Styles.Default,
+            new ContextSettings(0, 0, 16)
+        );
+
+        Windows.Add(MainWindow);
+        MainWindow.RootNode = new ContactsList();
+
+        MainWindow.Start();
+    }
+}
+
+----------------------------------------
+
+// File: TextureLoader.cs
+
+﻿using SFML.Graphics;
+
+namespace Nodex;
+
+class TextureLoader
+{
+    // Fields
+
+    public Texture Person;
+
+    // Singleton
+
+    private static TextureLoader? instance;
+
+    public static TextureLoader Instance
+    {
+        get
+        {
+            instance ??= new();
+            return instance;
+        }
+    }
+
+    private TextureLoader()
+    {
+        Person = new("Resources/Person.jpg");
+    }
+}
+
+----------------------------------------
+
+// File: Window.cs
+
+﻿using SFML.Window;
+using SFML.Graphics;
+
+namespace Nodex;
+
+class Window : RenderWindow
+{
+    // Fields
+
+    public Node RootNode;
+    public Color ClearColor = new(32, 32, 32);
+
+    // Constructor
+
+    public Window(VideoMode mode, string title, Styles styles, ContextSettings settings) :
+           base(mode, title, styles, settings)
+    {
+        Resized += OnResized;
+        Closed += OnClosed;
+    }
+
+    // Public
+
+    public void Start()
+    {
+        RootNode.Window = this;
+        RootNode.Start();
+    }
+
+    public void Update()
+    {
+        DispatchEvents();
+        Clear(ClearColor);
+        RootNode.Update();
+        Display();
+    }
+
+    // Events
+
+    private void OnClosed(object? sender, EventArgs e)
+    {
+        RootNode.Destroy();
+        Close();
+    }
+
+    private void OnResized(object? sender, SizeEventArgs e)
+    {
+        float x = Size.X < 360 ? 360 : Size.X;
+        float y = Size.Y < 640 ? 640 : Size.Y;
+
+        Size = new((uint)x, (uint)y);
+
+        FloatRect visibleArea = new(0, 0, Size.X, Size.Y);
+        SetView(new(visibleArea));
+    }
+}
+
+----------------------------------------
+
+// File: ContactEditor.cs
+
+﻿using Nodex;
+using Callisto.AvatarDisplayerNode;
+using Callisto.ContactsListNode;
+using Callisto.ContactEditorNode.ButtonsNode;
+
+namespace Callisto.ContactEditorNode;
+
+class ContactEditor : Node
+{
+    // Fields
+
+    public int ContactIndex = -1;
+
+    // Public
+
+    public override void Start()
+    {
+        Buttons buttons = new()
+        {
+            Index = ContactIndex
+        };
+
+        AddChild(buttons);
+
+        AddChild(new Fields()
+        {
+            ContactIndex = ContactIndex
+        });
+
+        AddChild(new AvatarDisplayer()
+        {
+            IsClickable = true
+        });
+
+        AddChild(new Scroller());
+    }
+
+    public void DeleteContact()
+    {
+        ContactsContainer.Instance.Delete(ContactIndex);
+        ChangeScene(new ContactsList());
+    }
+}
+
+----------------------------------------
+
+// File: ContactInfoField.cs
+
+﻿using Nodex;
+
+namespace Callisto.ContactEditorNode;
+
+class ContactInfoField : Node
+{
+    // Fields
+
+    public string LabelText;
+
+    // Public
+
+    public override void Start()
+    {
+        Label label = new()
+        {
+            Text = LabelText,
+            Position = new(0, 0)
+        };
+
+        AddChild(label);
+
+        TextBox textBox = new()
+        {
+            Position = new(0, 25)
+        };
+
+        AddChild(textBox);
+    }
+}
+
+----------------------------------------
+
+// File: Fields.cs
+
+﻿using Callisto.AvatarDisplayerNode;
+using Nodex;
+
+namespace Callisto.ContactEditorNode;
+
+class Fields : Node
+{
+    public int ContactIndex = -1;
+
+    public List<ContactInfoField> NumberFields = [];
+
+    private AvatarDisplayer avatarDisplayer;
+
+    private readonly int maximumCharacters = 29;
+
+    private List<ContactInfoField> fields = [];
+
+    private ContactInfoField firstNameField;
+    private ContactInfoField lastNameField;
+
+    private TextBox firstNameTextBox;
+    private TextBox lastNameTextBox;
+    private List<TextBox> numberTextBoxes = [];
+
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        CreateAvatarDisplayer();
+        CreateNameFields();
+        CreateNumberFields();
+        LoadContactInfoIntoFields();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        
+        UpdateFields();
+        HandleExtraNumberFields();
+    }
+
+    public Contact GetContact()
+    {
+        string firstName = firstNameTextBox.Text;
+        string lastName = lastNameTextBox.Text;
+        List<string> phoneNumbers = GetPhoneNumbers();
+        string photoPath = avatarDisplayer.PhotoPath;
+
+
+        Contact newContact = new()
+        {
+            FirstName    = firstName,
+            LastName     = lastName,
+            PhoneNumbers = phoneNumbers,
+            PhotoPath    = photoPath,
+        };
+
+        return newContact;
+    }
+
+    // Create nodes
+
+    private void CreateAvatarDisplayer()
+    {
+        avatarDisplayer = new()
+        {
+            PhotoPath = ContactIndex == -1 ?
+                        "" :
+                        ContactsContainer.Instance.Contacts[ContactIndex].PhotoPath
+        };
+    }
+
+    private void CreateNameFields()
+    {
+        firstNameField = CreateField("First Name");
+        firstNameTextBox = firstNameField.GetChild<TextBox>();
+
+        lastNameField = CreateField("Last Name");
+        lastNameTextBox = lastNameField.GetChild<TextBox>();
+    }
+
+    private void CreateNumberFields()
+    {
+        if (ContactIndex != -1)
+        {
+            CreateExistingNumberFields();
+        }
+        else
+        {
+            CreateNewNumberField();
+        }
+    }
+
+    private void CreateExistingNumberFields()
+    {
+        int phoneNumbersCount = ContactsContainer.Instance.Contacts[ContactIndex].PhoneNumbers.Count;
+
+        for (int i = 0; i < phoneNumbersCount + 1; i ++)
+        {
+            ContactInfoField numberField = CreateField($"Phone Number {i + 1}");
+            NumberFields.Add(numberField);
+            numberTextBoxes.Add(numberField.GetChild<TextBox>());
+        }
+    }
+
+    private void CreateNewNumberField()
+    {
+        ContactInfoField numberField = CreateField($"Phone Number 1");
+        NumberFields.Add(numberField);
+        numberTextBoxes.Add(numberField.GetChild<TextBox>());
+    }
+
+    private ContactInfoField CreateField(string labelText)
+    {
+        ContactInfoField field = new()
+        {
+            LabelText = labelText
+        };
+
+        AddChild(field, labelText.Replace(" ", ""));
+        fields.Add(field);
+        field.GetChild<TextBox>().MaximumCharacters = maximumCharacters;
+
+        return field;
+    }
+
+    // Private
+
+    private void UpdateFields()
+    {
+        float fieldX = (Window.Size.X / 2) - (firstNameTextBox.Size.X / 2);
+
+        for (int i = 0; i < fields.Count; i++)
+        {
+            fields[i].Position = new(fieldX, Window.Size.Y * (0.4F + (i * 0.1F)));
+        }
+    }
+
+    private void LoadContactInfoIntoFields()
+    {
+        var index = GetParent<ContactEditor>().ContactIndex;
+
+        if (index != -1)
+        {
+            Contact contact = ContactsContainer.Instance.Contacts[index];
+
+            firstNameTextBox.Text = contact.FirstName;
+            lastNameTextBox.Text = contact.LastName;
+
+            for (int i = 0; i < contact.PhoneNumbers.Count; i++)
+            {
+                numberTextBoxes[i].Text = contact.PhoneNumbers[i];
+            }
+        }
+    }
+
+    private List<string> GetPhoneNumbers()
+    {
+        List<string> phoneNumbers = numberTextBoxes
+            .Select(textBox => textBox.Text.Trim())
+            .Where(text => !string.IsNullOrWhiteSpace(text))
+            .ToList();
+
+        return phoneNumbers;
+    }
+
+    // Extra number fields
+
+    private void HandleExtraNumberFields()
+    {
+        DeleteExtraNumberFields();
+        CreateExtraNumberFields();
+    }
+
+    private void DeleteExtraNumberFields()
+    {
+        for (int i = numberTextBoxes.Count - 1; i > 0; i --)
+        {
+            if (numberTextBoxes[i].Text.Length == 0)
+            {
+                if (numberTextBoxes[i - 1].Text.Length == 0)
+                {
+                    RemoveFieldAndTextBoxAt(i);
+                }
+            }
+        }
+    }
+
+    private void RemoveFieldAndTextBoxAt(int index)
+    {
+        Children.Remove(NumberFields[index]);
+        fields.Remove(NumberFields[index]);
+        NumberFields.RemoveAt(index);
+        numberTextBoxes.RemoveAt(index);
+    }
+
+    private void CreateExtraNumberFields()
+    {
+        if (!string.IsNullOrWhiteSpace(numberTextBoxes.Last().Text))
+        {
+            ContactInfoField numberField = CreateField($"Phone Number {NumberFields.Count + 1}");
+            NumberFields.Add(numberField);
+            numberTextBoxes.Add(numberField.GetChild<TextBox>());
+        }
+    }
+}
+
+----------------------------------------
+
+// File: Scroller.cs
+
+﻿namespace Callisto.ContactEditorNode;
+
+class Scroller : Nodex.Scroller
+{
+    // Fields
+
+    private ContactEditor parent;
+
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        parent = GetParent<ContactEditor>();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        float viewHeight = Window.GetView().Center.Y - Window.GetView().Size.Y / 2;
+        CanGoUp = viewHeight > 0;
+
+        float contactsListHeight = 300 + parent.GetChild<Fields>().NumberFields.Count * 50;
+        CanGoDown = viewHeight < contactsListHeight;
+    }
+}
+
+----------------------------------------
+
+// File: Buttons.cs
+
+﻿using Nodex;
+
+namespace Callisto.ContactEditorNode.ButtonsNode;
+
+class Buttons : Node
+{
+    // Fields
+
+    public int Index = -1;
+
+    private Button okButton;
+    private Button deleteButton;
+    private Button cancelButton;
+
+    // Public
+
+    public override void Start()
+    {
+        CreateOkButton();
+        CreateDeleteButton();
+        CreateCancelButton();
+    }
+
+    // Create nodes
+
+    private void CreateOkButton()
+    {
+        okButton = new OkButton();
+        AddChild(okButton);
+    }
+
+    private void CreateDeleteButton()
+    {
+        if (Index == -1) return;
+
+        deleteButton = new DeleteButton();
+        AddChild(deleteButton, "DeleteButton");
+    }
+
+    private void CreateCancelButton()
+    {
+        if (Index != -1) return;
+
+        cancelButton = new CancelButton();
+        AddChild(cancelButton, "CancelButton");
+    }
+}
+
+----------------------------------------
+
+// File: CancelButton.cs
+
+﻿using Nodex;
+using SFML.Graphics;
+using Callisto.ContactsListNode;
+
+namespace Callisto.ContactEditorNode.ButtonsNode;
+
+class CancelButton : Button
+{
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Text = "Cancel";
+        TextColor = Color.Red;
+        actionOnClick = CancelEdit;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        Position.X = Window.Size.X - Size.X;
+    }
+
+    // Callback
+
+    private void CancelEdit()
+    {
+        ChangeScene(new ContactsList());
+    }
+}
+
+----------------------------------------
+
+// File: DeleteButton.cs
+
+﻿using Callisto.DeletionDialogNode;
+using Nodex;
+using SFML.Graphics;
+using SFML.Window;
+using Window = Nodex.Window;
+
+namespace Callisto.ContactEditorNode.ButtonsNode;
+
+class DeleteButton : Button
+{
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Text = "Delete";
+        TextColor = Color.Red;
+        actionOnClick = GetConfirmationForContactDeletion;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        Position.X = Window.Size.X - Size.X;
+    }
+
+    // Callback
+
+    private void GetConfirmationForContactDeletion()
+    {
+        Window window = new
+        (
+            new(360, 120),
+            "Confirm contact deletion",
+            Styles.Close,
+            new ContextSettings(0, 0, 16)
+        )
+        {
+            RootNode = new DeletionDialog()
+        };
+
+        window.Start();
+        Program.AddWindow(window);
+    }
+}
+
+----------------------------------------
+
+// File: OkButton.cs
+
+﻿using Nodex;
+using SFML.Window;
+using Callisto.ContactsListNode;
+using Callisto.NotificationDialogNode;
+using Window = Nodex.Window;
+
+namespace Callisto.ContactEditorNode.ButtonsNode;
+
+class OkButton : Button
+{
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Text          = "OK";
+        actionOnClick = ConfirmContact;
+        Origin        = Size / 2;
+        TextOrigin    = Size / 2;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        float x = Window.Size.X / 2F;
+        float y = GetRootNode<ContactEditor>().GetChild<Fields>().NumberFields.Count * 50 + Window.Size.Y * 0.8F;
+
+        Position = new(x, y);
+    }
+
+    // Callback
+
+    private void ConfirmContact()
+    {
+        Contact newContact = GetRootNode<ContactEditor>().GetChild<Fields>().GetContact();
+
+        if (GetParent<Buttons>().Index == -1)
+        {
+            CreateNewContact(newContact);
+        }
+        else
+        {
+            EditExistingContact(newContact);
+        }
+    }
+
+    private void CreateNewContact(Contact newContact)
+    {
+        if (newContact.FirstName != "")
+        {
+            if (!ContactsContainer.Instance.ContactExists(newContact))
+            {
+                ContactsContainer.Instance.Add(newContact);
+                ChangeScene(new ContactsList());
+            }
+            else
+            {
+                CreateNotificationDialog("A contact with the same name already\nexists.");
+            }
+        }
+        else
+        {
+            CreateNotificationDialog("The first name cannot be empty.");
+        }
+    }
+
+    private void EditExistingContact(Contact newContact)
+    {
+        if (newContact.FirstName != "")
+        {
+            ContactsContainer.Instance.Contacts[GetParent<Buttons>().Index] = newContact;
+            ContactsContainer.Instance.Save();
+            ContactsContainer.Instance.Load();
+            ChangeScene(new ContactsList());
+        }
+        else
+        {
+            CreateNotificationDialog("The first name cannot be empty.");
+        }
+    }
+
+    private void CreateNotificationDialog(string message)
+    {
+        NotificationDialog notificationDialog = new()
+        {
+            Message = message
+        };
+
+        Window window = new
+        (
+            new(360, 120),
+            "Invalid first name",
+            Styles.Close,
+            new ContextSettings(0, 0, 16)
+        )
+        {
+            RootNode = notificationDialog
+        };
+
+        window.Start();
+        Program.AddWindow(window);
+    }
+}
+
+----------------------------------------
+
+// File: ContactInfoViewer.cs
+
+﻿using Nodex;
+using Callisto.AvatarDisplayerNode;
+
+namespace Callisto.ContactInfoViewerNode;
+
+class ContactInfoViewer : Node
+{
+    // Fields
+
+    public int ContactIndex = -1;
+
+    // Public
+
+    public override void Start()
+    {
+        AddChild(new AvatarDisplayer()
+        {
+            ContactIndex = ContactIndex
+        });
+
+        AddChild(new ReturnButton());
+
+        AddChild(new EditButton()
+        {
+            ContactIndex = ContactIndex
+        });
+
+        AddChild(new NameLabel()
+        {
+            ContactIndex = ContactIndex
+        });
+
+        AddChild(new CopyNumberButtons()
+        {
+            ContactIndex = ContactIndex
+        });
+
+        AddChild(new Scroller()
+        {
+            ContactIndex = ContactIndex
+        });
+    }
+}
+
+----------------------------------------
+
+// File: CopyNumberButton.cs
+
+﻿using Nodex;
+using SFML.Window;
+
+namespace Callisto.ContactInfoViewerNode;
+
+class CopyNumberButton : Button
+{
+    // Fields
+
+    public int ContactIndex = -1;
+    public int NumberIndex = 0;
+
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Position         = new(0, Window.Size.Y * 0.55F);
+        Size             = new(270, 50);
+        OutlineThickness = 0;
+        FontSize         = 24;
+        actionOnClick    = CopyPhoneNumber;
+    }
+
+    // Callback
+
+    private void CopyPhoneNumber()
+    {
+        Clipboard.Contents = ContactsContainer.Instance.Contacts[ContactIndex].PhoneNumbers[NumberIndex];
+    }
+}
+
+----------------------------------------
+
+// File: CopyNumberButtons.cs
+
+﻿using Nodex;
+
+namespace Callisto.ContactInfoViewerNode;
+
+class CopyNumberButtons : Node
+{
+    // Fields
+
+    public int ContactIndex = -1;
+
+    // Public
+
+    public override void Start()
+    {
+        Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
+
+        Console.WriteLine(contact.PhoneNumbers.Count);
+
+        for (int i = 0; i < contact.PhoneNumbers.Count; i++)
+        {
+            Button numberButton = new CopyNumberButton()
+            {
+                ContactIndex = ContactIndex,
+                NumberIndex = i,
+                Text = contact.PhoneNumbers[i],
+            };
+
+            AddChild(numberButton);
+
+            numberButton.Origin = numberButton.Size / 2;
+            numberButton.TextOrigin = numberButton.Origin;
+        }
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        for (int i = 0; i < Children.Count; i++)
+        {
+            Children[i].Position.X = (Window.Size.X / 2);
+            Children[i].Position.Y = (Window.Size.Y * 0.55F) + (50 * i);
+        }
+    }
+}
+
+----------------------------------------
+
+// File: EditButton.cs
+
+﻿using Callisto.ContactEditorNode;
+using Nodex;
+
+namespace Callisto.ContactInfoViewerNode;
+
+class EditButton : Button
+{
+    // Field
+
+    public int ContactIndex = -1;
+
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Text          = "Edit";
+        actionOnClick = GoToContactEditor;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        Position.X = Window.Size.X - Size.X;
+    }
+
+    // Callback
+
+    private void GoToContactEditor()
+    {
+        ChangeScene(new ContactEditor()
+        {
+            ContactIndex = ContactIndex
+        });
+    }
+}
+
+----------------------------------------
+
+// File: NameLabel.cs
+
+﻿using Nodex;
+
+namespace Callisto.ContactInfoViewerNode;
+
+class NameLabel : Label
+{
+    // Fields
+
+    public int ContactIndex = -1;
+
+    // Public
+
+    public override void Start()
+    {
+        Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
+        string fullName = contact.GetFullName();
+
+        Text     = fullName;
+        FontSize = 32;
+        Position = new(0, 200);
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        float windowCenter = Window.Size.X / 2;
+        float halfNameLength = RenderedText.GetLocalBounds().Width / 2;
+
+        Position.X = windowCenter - halfNameLength;
+        Position.Y = 0.4F * Window.Size.Y;
+    }
+}
+
+----------------------------------------
+
+// File: ReturnButton.cs
+
+﻿using Nodex;
+using Callisto.ContactsListNode;
+
+namespace Callisto.ContactInfoViewerNode;
+
+class ReturnButton : Button
+{
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Text          = "<-";
+        actionOnClick = GoToContactsList;
+    }
+
+    // Callback
+
+    private void GoToContactsList()
+    {
+        ChangeScene(new ContactsList());
+    }
+}
+
+----------------------------------------
+
+// File: Scroller.cs
+
+﻿namespace Callisto.ContactInfoViewerNode;
+
+class Scroller : Nodex.Scroller
+{
+    // Fields
+
+    public int ContactIndex = -1;
+
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        float viewHeight = Window.GetView().Center.Y - Window.GetView().Size.Y / 2;
+        CanGoUp = viewHeight > 0;
+
+        float contactsListHeight = ContactsContainer.Instance.Contacts[ContactIndex].PhoneNumbers.Count * 50;
+        CanGoDown = viewHeight < contactsListHeight;
+    }
+}
+
+----------------------------------------
+
+// File: AddNewContactButton.cs
+
+﻿using Nodex;
+using Callisto.ContactEditorNode;
+
+namespace Callisto.ContactsListNode;
+
+class AddNewContactButton : Button
+{
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Text          = "Add New Contact";
+        Size          = new(100, 35);
+        actionOnClick = GoToContactEditor;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        Size.X = Window.Size.X;
+    }
+
+    // Private
+
+    private void GoToContactEditor()
+    {
+        ChangeScene(new ContactEditor());
+    }
+}
+
+----------------------------------------
+
+// File: Button.cs
+
+﻿using SFML.Graphics;
+using Callisto.ContactInfoViewerNode;
+
+namespace Callisto.ContactDisplayerNode;
+
+class Button : Nodex.Button
+{
+    // Fields
+
+    public int ContactIndex = -1;
+
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Size          = new(250, 50);
+        OutlineColor  = Color.Transparent;
+        actionOnClick = GoToContactViewPage;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        Size.X = Window.Size.X;
+    }
+
+    // Callback
+
+    private void GoToContactViewPage()
+    {
+        ChangeScene(new ContactInfoViewer()
+        {
+            ContactIndex = ContactIndex
+        });
+    }
+}
+
+----------------------------------------
+
+// File: ContactDisplayer.cs
+
+﻿using Nodex;
+
+namespace Callisto.ContactDisplayerNode;
+
+class ContactDisplayer : Node
+{
+    // Fields
+
+    public int ContactIndex = 0;
+
+    // Public
+
+    public override void Start()
+    {
+        AddChild(new Button()
+        {
+            ContactIndex = ContactIndex
+        });
+
+        AddChild(new Label()
+        {
+            ContactIndex = ContactIndex
+        });
+    }
+}
+
+----------------------------------------
+
+// File: ContactsList.cs
+
+﻿using Nodex;
+using Callisto.ContactDisplayerNode;
+
+namespace Callisto.ContactsListNode;
+
+class ContactsList : Node
+{
+    // Public
+
+    public override void Start()
+    {
+        CreateContactDisplayers();
+        AddChild(new Scroller());
+        AddChild(new AddNewContactButton());
+    }
+
+    // Create nodes
+
+    private void CreateContactDisplayers()
+    {
+        ContactsContainer.Instance.Load();
+
+        List<Contact> contacts = ContactsContainer.Instance.Contacts;
+
+        for (int i = 0; i < contacts.Count; i++)
+        {
+            AddChild(new ContactDisplayer()
+            {
+                ContactIndex = i,
+                Position = new(0, 35 + 50 * i)
+            }, $"ContactDisplayer{i + 1}");
+        }
+    }
+}
+
+----------------------------------------
+
+// File: Label.cs
+
+﻿namespace Callisto.ContactDisplayerNode;
+
+class Label : Nodex.Label
+{
+    // Fields
+
+    public int ContactIndex = -1;
+
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Text     = ContactsContainer.Instance.Contacts[ContactIndex].GetFullName();
+        Position = new(10, 12);
+    }
+}
+
+----------------------------------------
+
+// File: Scroller.cs
+
+﻿namespace Callisto.ContactsListNode;
+
+class Scroller : Nodex.Scroller
+{
+    // Public
+
+    public override void Update()
+    {
+        base.Update();
+
+        float viewHeight = Window.GetView().Center.Y - Window.GetView().Size.Y / 2;
+        CanGoUp = viewHeight > 0;
+        
+        float contactsListHeight = (ContactsContainer.Instance.Contacts.Count - 10) * 50;
+        CanGoDown = viewHeight < contactsListHeight;
+    }
+}
+
+----------------------------------------
+
+// File: CancelButton.cs
+
+﻿using Nodex;
+using SFML.Graphics;
+
+namespace Callisto.DeletionDialogNode;
+
+class CancelButton : Button
+{
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Text          = "Cancel";
+        Size          = new(100, 20);
+        Position      = new(Window.Size.X - Size.X - 25, 75);
+        FontSize      = 12;
+        TextColor     = Color.Red;
+        actionOnClick = Parent.Destroy;
+    }
+}
+
+----------------------------------------
+
+// File: ConfirmButton.cs
+
+﻿using SFML.Graphics;
+using Callisto.ContactEditorNode;
+using Nodex;
+
+namespace Callisto.DeletionDialogNode;
+
+class ConfirmButton : Button
+{
+    // Fields
+
+    private ContactEditor contactEditor;
+
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        contactEditor = Program.MainWindow.RootNode.GetRootNode<ContactEditor>();
+
+        Text          = "Confirm";
+        Position      = new(25, 75);
+        Size          = new(100, 20);
+        FontSize      = 12;
+        TextColor     = Color.Green;
+        actionOnClick = Confirm;
+    }
+
+    // Callback
+
+    private void Confirm()
+    {
+        Parent.Destroy();
+        contactEditor.DeleteContact();
+    }
+}
+
+----------------------------------------
+
+// File: DeletionDialog.cs
+
+﻿using Nodex;
+
+namespace Callisto.DeletionDialogNode;
+
+class DeletionDialog : Node
+{
+    // Fields
+    
+    private Nodex.Label label;
+    private Button confirmButton;
+    private Button cancelButton;
+
+    // Public
+
+    public override void Start()
+    {
+        Program.MainWindow.RootNode.Deactivate();
+        
+        CreateLabel();
+        CreateConfirmButton();
+        CreateCancelButton();
+    }
+
+    public override void Destroy()
+    {
+        base.Destroy();
+
+        Program.MainWindow.RootNode.Activate();
+        Program.RemoveWindow(Window);
+    }
+
+    // Create nodes
+
+    private void CreateLabel()
+    {
+        label = new Label();
+        AddChild(label);
+    }
+
+    private void CreateConfirmButton()
+    {
+        confirmButton = new ConfirmButton();
+        AddChild(confirmButton);
+    }
+
+    private void CreateCancelButton()
+    {
+        cancelButton = new CancelButton();
+        AddChild(cancelButton);
+    }
+}
+
+----------------------------------------
+
+// File: Label.cs
+
+﻿using SFML.System;
+
+namespace Callisto.DeletionDialogNode;
+
+class Label : Nodex.Label
+{
+    // Fields
+
+    private readonly Vector2f position = new(25, 15);
+    private readonly string message = "Are you sure you want to delete\nthis contact?";
+    private readonly uint fontSize = 14;
+
+    // Public
+
+    public override void Start()
+    {
+        Position = position;
+        Text     = message;
+        FontSize = fontSize;
+    }
+}
+
+----------------------------------------
+
+// File: Label.cs
+
+﻿namespace Callisto.NotificationDialogNode;
+
+class Label : Nodex.Label
+{
+    // Fields
+
+    public string Message = "";
+
+    // Public
+
+    public override void Start()
+    {
+        Position = new(25, 15);
+        Text     = Message;
+        FontSize = 14;
+    }
+}
+
+----------------------------------------
+
+// File: NotificationDialog.cs
+
+﻿using Nodex;
+
+namespace Callisto.NotificationDialogNode;
+
+class NotificationDialog : Node
+{
+    // Fields
+
+    public string Message = "";
+
+    public override void Start()
+    {
+        base.Start();
+
+        Program.MainWindow.RootNode.Deactivate();
+
+        AddChild(new Label()
+        {
+            Message = Message
+        });
+
+        AddChild(new OkButton());
+    }
+
+    public override void Destroy()
+    {
+        base.Destroy();
+
+        Program.MainWindow.RootNode.Activate();
+        Program.RemoveWindow(Window);
+    }
+}
+
+----------------------------------------
+
+// File: OkButton.cs
+
+﻿using Nodex;
+using SFML.Graphics;
+
+namespace Callisto.NotificationDialogNode;
+
+class OkButton : Button
+{
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        //contactEditor = Program.MainWindow.RootNode.GetRootNode<ContactEditor>();
+
+        Text          = "OK";
+        Position      = new(25, 75);
+        Size          = new(100, 20);
+        FontSize      = 12;
+        TextColor     = Color.Green;
+        actionOnClick = Parent.Destroy;
+    }
+}
+
+----------------------------------------
+
+// File: Contact.cs
+
+﻿namespace Callisto;
+
+class Contact
+{
+    // Properties
+
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public List<string> PhoneNumbers { get; set; }
+    public string PhotoPath { get; set; }
+
+    // Public
+
+    public string GetFullName()
+    {
+        return FirstName + " " + LastName;
+    }
+}
+
+----------------------------------------
+
+// File: ContactsContainer.cs
+
+﻿using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
+
+namespace Callisto;
+
+class ContactsContainer
+{
+    // Fields
+
+    public List<Contact> Contacts = [];
+
+    // Singleton
+
+    private static ContactsContainer instance;
+
+    public static ContactsContainer Instance
+    {
+        get
+        {
+            instance ??= new();
+            return instance;
+        }
+    }
+
+    private ContactsContainer() { }
+
+    // Public
+
+    public void Add(Contact contact)
+    {
+        Contacts.Add(contact);
+        Save();
+    }
+
+    public void Delete(int index)
+    {
+        Contacts.RemoveAt(index);
+        Save();
+        Load();
+    }
+
+    public void Load()
+    {
+        var filePath = "Resources/Contacts.yaml";
+
+        if (File.Exists(filePath))
+        {
+            var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(PascalCaseNamingConvention.Instance) // Use CamelCaseNamingConvention
+                .Build();
+
+            using var reader = new StreamReader(filePath);
+            var yamlContacts = deserializer.Deserialize<List<Contact>>(reader);
+            Contacts = yamlContacts ?? [];
+        }
+    }
+
+    public void Save()
+    {
+        Contacts = Contacts.OrderBy(o => o.FirstName).ToList();
+
+        var filePath = "Resources/Contacts.yaml";
+
+        var serializer = new SerializerBuilder()
+            .WithNamingConvention(PascalCaseNamingConvention.Instance) // Use CamelCaseNamingConvention
+            .Build();
+
+        var yaml = serializer.Serialize(Contacts);
+
+        File.WriteAllText(filePath, yaml);
+    }
+
+    public bool ContactExists(Contact newContact)
+    {
+        foreach (Contact contact in Contacts)
+        {
+            bool sameFirstName = contact.FirstName == newContact.FirstName;
+            bool sameLastname = contact.LastName == newContact.LastName;
+
+            if (sameFirstName && sameLastname)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+----------------------------------------
+
+// File: AvatarDisplayer.cs
+
+﻿using Nodex;
+
+namespace Callisto.AvatarDisplayerNode;
+
+class AvatarDisplayer : Node
+{
+    // Fields
+
+    public int ContactIndex = -1;
+    public bool IsClickable = false;
+    public string PhotoPath = "";
+
+    // Public
+
+    public override void Start()
+    {
+        PhotoPath = ContactIndex == -1 ?
+                    "" :
+                    ContactsContainer.Instance.Contacts[ContactIndex].PhotoPath;
+
+        AddChild(new CircleSprite()
+        {
+            Texture = PhotoPath == "" ?
+                      TextureLoader.Instance.Person :
+                      new(PhotoPath)
+        });
+
+        if (IsClickable)
+        {
+            AddChild(new CircleButton());
+        }
+    }
+}
+
+----------------------------------------
+
+// File: CircleButton.cs
+
+﻿namespace Callisto.AvatarDisplayerNode;
+
+class CircleButton : Nodex.CircleButton
+{
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Radius        = 100;
+        Origin        = new(Radius, Radius);
+        actionOnClick = OpenPhotoSelectionDialog;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        Position = new(Window.Size.X / 2, Window.Size.Y * 0.2F);
+    }
+
+    // Callbacks
+
+    private void OpenPhotoSelectionDialog()
+    {
+        OpenFileDialog openFileDialog = new();
+        openFileDialog.ShowDialog();
+
+        string photoPath = openFileDialog.FileName;
+
+        if (photoPath != null)
+        {
+            string extension = Path.GetExtension(photoPath);
+
+            if (extension == ".png" || extension == ".jpg")
+            {
+                GetParent<AvatarDisplayer>().GetChild<CircleSprite>().Texture = new(photoPath);
+                GetParent<AvatarDisplayer>().PhotoPath = photoPath;
+                Console.WriteLine(photoPath);
+            }
+        }
+    }
+}
+
+----------------------------------------
+
+// File: CircleSprite.cs
+
+﻿using Nodex;
+
+namespace Callisto.AvatarDisplayerNode;
+
+class CircleSprite : Nodex.CircleSprite
+{
+    // Public
+
+    public override void Start()
+    {
+        Radius  = 100;
+        Origin  = new(100, 100);
+        Texture = TextureLoader.Instance.Person;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        Position = new(Window.Size.X / 2, Window.Size.Y * 0.2F);
+    }
+}
+
+----------------------------------------
+
+// File: Sprite.cs
+
+﻿using Nodex;
+
+namespace Callisto.AvatarDisplayerNode;
+
+class Sprite : CircleSprite
+{
+    // Public
+
+    public override void Start()
+    {
+        Radius  = 100;
+        Origin  = new(100, 100);
+        Texture = TextureLoader.Instance.Person;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        Position = new(Window.Size.X / 2, Window.Size.Y * 0.2F);
+    }
+}
+
+----------------------------------------
+

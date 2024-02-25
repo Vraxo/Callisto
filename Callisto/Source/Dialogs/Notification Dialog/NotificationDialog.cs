@@ -14,12 +14,11 @@ class NotificationDialog : Node
 
         Program.MainWindow.RootNode.Deactivate();
 
-        Label label = new()
+        AddChild(new Label()
         {
             Message = Message
-        };
+        });
 
-        AddChild(label);
         AddChild(new OkButton());
     }
 

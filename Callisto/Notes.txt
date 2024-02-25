@@ -7,9 +7,16 @@
 
 //
 
-dont create phone number button if none exist
-refactor contact displayer and loader
-all number buttons copy the first number
+reset view
+
+return node in addchild (contacts list)
+
+avoid full reload
+go to view after editing
+cache textures in resources
+
 blinker for textboxes
 better textboxes (delete, move, cursor?)
 more precise scrollers (contactviewpage, contactsloader)
+
+properly center text horizontally

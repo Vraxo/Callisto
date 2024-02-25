@@ -6,7 +6,7 @@ class Buttons : Node
 {
     // Fields
 
-    public int Index = -1;
+    public int ContactIndex = -1;
 
     private Button okButton;
     private Button deleteButton;
@@ -25,13 +25,17 @@ class Buttons : Node
 
     private void CreateOkButton()
     {
-        okButton = new OkButton();
+        okButton = new OkButton()
+        {
+            ContactIndex = ContactIndex
+        };
+
         AddChild(okButton);
     }
 
     private void CreateDeleteButton()
     {
-        if (Index == -1) return;
+        if (ContactIndex == -1) return;
 
         deleteButton = new DeleteButton();
         AddChild(deleteButton, "DeleteButton");
@@ -39,7 +43,7 @@ class Buttons : Node
 
     private void CreateCancelButton()
     {
-        if (Index != -1) return;
+        if (ContactIndex != -1) return;
 
         cancelButton = new CancelButton();
         AddChild(cancelButton, "CancelButton");

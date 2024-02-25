@@ -6,13 +6,13 @@ class Node
 {
     // Fields
 
-    public string Name = "";
+    public string     Name = "";
     public List<Node> Children = [];
-    public Node Parent;
-    public Window Window;
-    public Vector2f Position = new(0, 0);
-    public bool InheritsPosition = true;
-    public bool IsActive { get; private set; } = true;
+    public Node       Parent;
+    public Window     Window;
+    public Vector2f   Position = new(0, 0);
+    public bool       InheritsPosition = true;
+    public bool       IsActive { get; private set; } = true;
 
     // Properties
 
@@ -45,10 +45,7 @@ class Node
 
     // Constructor
 
-    public Node()
-    {
-
-    }
+    public Node() { }
 
     // Public
 
@@ -166,29 +163,7 @@ class Node
 
     // Change scene
 
-    //public void ChangeScene(Node node, string name)
-    //{
-    //    for (int i = 0; i < Children.Count; i ++)
-    //    {
-    //        Children[i].Destroy();
-    //    }
-    //
-    //    Children.Clear();
-    //    AddChild(node, name);
-    //}
-
-    //public void ChangeScene(Node node)
-    //{
-    //    for (int i = 0; i < Children.Count; i++)
-    //    {
-    //        Children[i].Destroy();
-    //    }
-    //
-    //    Children.Clear();
-    //    AddChild(node, node.GetType().Name);
-    //}
-
-    public void ChangeScene(Node node)
+    public async void ChangeScene(Node node)
     {
         Window.RootNode.Destroy();
         Window.RootNode = node;

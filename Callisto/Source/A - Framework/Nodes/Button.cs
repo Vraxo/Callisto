@@ -1,8 +1,6 @@
 ﻿using SFML.System;
 using SFML.Window;
 using SFML.Graphics;
-using Font = SFML.Graphics.Font;
-using Callisto;
 
 namespace Nodex;
 
@@ -14,30 +12,31 @@ class Button : Node
 
     // Numbers
 
-    public Vector2f Size = new(100, 25);
-    public Vector2f Origin = new(0, 0);
-    public Vector2f TextOrigin = new(0, 0);
-    public float OutlineThickness = 0;
+    public Vector2f Size             = new(100, 25);
+    public Vector2f Origin           = new(0, 0);
+    public Vector2f TextOrigin       = new(0, 0);
+    public float    OutlineThickness = 0;
 
     // Text
 
-    public string Text = "";
-    public uint FontSize = 16;
-    public Font Font = FontLoader.Instance.RobotoMono;
+    public string Text     = "";
+    public uint   FontSize = 16;
+    public Font   Font     = FontLoader.Instance.Fonts["RobotoMono"];
 
     // Colors
 
-    public Color TextColor = Color.White;
-    public Color OutlineColor = Color.Black;
-    public Color FillColor = new(64, 64, 64);
-    public Color HoverFillColor = new(96, 96, 96);
-    public Color IdleFillColor = new(64, 64, 64);
+    public Color TextColor       = Color.White;
+    public Color OutlineColor    = Color.Black;
+    public Color FillColor       = new(64, 64, 64);
+    public Color HoverFillColor  = new(96, 96, 96);
+    public Color IdleFillColor   = new(64, 64, 64);
     public Color ActiveFillColor = new(48, 48, 48);
 
     // Etc
 
-    public Action ActionOnClick;
-    private bool isActive = false;
+    public Action actionOnClick;
+
+    private bool isSelected = false;
 
     #endregion
 
@@ -78,17 +77,15 @@ class Button : Node
 
     private void DrawShape()
     {
-        RectangleShape r = new()
+        Window.Draw(new RectangleShape()
         {
-            Position = GlobalPosition,
-            Size = Size,
+            Position         = GlobalPosition,
+            Size             = Size,
+            Origin           = Origin,
             OutlineThickness = OutlineThickness,
-            OutlineColor = OutlineColor,
-            FillColor = FillColor,
-            Origin = Origin
-        };
-
-        r.Draw(Window, RenderStates.Default);
+            OutlineColor     = OutlineColor,
+            FillColor        = FillColor,
+        });
     }
 
     private void DrawText()
@@ -127,8 +124,8 @@ class Button : Node
 
     private void ConnectToEvents()
     {
-        Window.MouseMoved += OnMouseMoved;
-        Window.MouseButtonPressed += OnMouseClicked;
+        Window.MouseMoved          += OnMouseMoved;
+        Window.MouseButtonPressed  += OnMouseClicked;
         Window.MouseButtonReleased += OnMouseReleased;
     }
 
@@ -145,7 +142,7 @@ class Button : Node
     {
         if (IsMouseOver(new(e.X, e.Y)))
         {
-            FillColor = isActive ? ActiveFillColor : HoverFillColor;
+            FillColor = isSelected ? ActiveFillColor : HoverFillColor;
         }
         else
         {
@@ -157,7 +154,7 @@ class Button : Node
     {
         if (IsMouseOver(new(e.X, e.Y)))
         {
-            isActive = true;
+            isSelected = true;
             FillColor = ActiveFillColor;
         }
     }
@@ -166,13 +163,13 @@ class Button : Node
     {
         if (IsMouseOver(new(e.X, e.Y)))
         {
-            if (isActive)
+            if (isSelected)
             {
-                ActionOnClick();
+                actionOnClick();
             }
         }
 
-        isActive = false;
+        isSelected = false;
         FillColor = IdleFillColor;
     }
 }
