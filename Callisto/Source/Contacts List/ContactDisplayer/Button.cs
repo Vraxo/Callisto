@@ -14,7 +14,7 @@ class Button : Nodex.Button
     {
         base.Start();
 
-        Size          = new(250, 50);
+        Size          = new(Window.Size.X, 50);
         OutlineColor  = Color.Transparent;
         actionOnClick = GoToContactViewPage;
     }

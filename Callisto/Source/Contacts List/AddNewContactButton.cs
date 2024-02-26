@@ -12,7 +12,7 @@ class AddNewContactButton : Button
         base.Start();
 
         Text          = "Add New Contact";
-        Size          = new(100, 40);
+        Size          = new(Window.Size.X, 40);
         actionOnClick = GoToContactEditor;
     }
 

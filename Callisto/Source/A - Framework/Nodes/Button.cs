@@ -38,6 +38,11 @@ class Button : Node
 
     private bool isSelected = false;
 
+    // Renderers
+
+    private Text textRenderer = new();
+    private RectangleShape rectangleRenderer = new();
+
     #endregion
 
     // Public
@@ -77,34 +82,30 @@ class Button : Node
 
     private void DrawShape()
     {
-        Window.Draw(new RectangleShape()
-        {
-            Position         = GlobalPosition,
-            Size             = Size,
-            Origin           = Origin,
-            OutlineThickness = OutlineThickness,
-            OutlineColor     = OutlineColor,
-            FillColor        = FillColor,
-        });
+        rectangleRenderer.Position         = GlobalPosition;
+        rectangleRenderer.Size             = Size;
+        rectangleRenderer.Origin           = Origin;
+        rectangleRenderer.OutlineThickness = OutlineThickness;
+        rectangleRenderer.OutlineColor     = OutlineColor;
+        rectangleRenderer.FillColor        = FillColor;
+
+        Window.Draw(rectangleRenderer);
     }
 
     private void DrawText()
     {
-        Text t = new()
-        {
-            DisplayedString = Text,
-            FillColor = TextColor,
-            Position = GlobalPosition,
-            Font = Font,
-            CharacterSize = FontSize
-        };
+        textRenderer.DisplayedString = Text;
+        textRenderer.FillColor       = TextColor;
+        textRenderer.Position        = GlobalPosition;
+        textRenderer.Font            = Font;
+        textRenderer.CharacterSize   = FontSize;
 
-        int x = (int)(GlobalPosition.X - Origin.X + Size.X / 2 - t.GetLocalBounds().Width / 2);
-        int y = (int)(GlobalPosition.Y - Origin.Y + Size.Y / 2 - t.GetLocalBounds().Height / 1.25);
+        int x = (int)(GlobalPosition.X - Origin.X + Size.X / 2 - textRenderer.GetLocalBounds().Width / 2);
+        int y = (int)(GlobalPosition.Y - Origin.Y + Size.Y / 2 - textRenderer.GetLocalBounds().Height / 1.25);
 
-        t.Position = new(x, y);
+        textRenderer.Position = new(x, y);
 
-        t.Draw(Window, RenderStates.Default);
+        Window.Draw(textRenderer);
     }
 
     private bool IsMouseOver(Vector2f mousePosition)

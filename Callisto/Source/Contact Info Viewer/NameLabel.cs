@@ -25,7 +25,7 @@ class NameLabel : Label
         base.Update();
 
         float windowCenter = Window.Size.X / 2;
-        float halfNameLength = RenderedText.GetLocalBounds().Width / 2;
+        float halfNameLength = textRenderer.GetLocalBounds().Width / 2;
 
         Position.X = windowCenter - halfNameLength;
         Position.Y = 0.4F * Window.Size.Y;

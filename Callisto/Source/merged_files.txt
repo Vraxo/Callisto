@@ -1,3 +1,9 @@
+// File: merged_files.txt
+
+
+
+----------------------------------------
+
 // File: script.py
 
 import os
@@ -57,16 +63,16 @@ class Button : Node
 
     // Numbers
 
-    public Vector2f Size          = new(100, 25);
-    public Vector2f Origin        = new(0, 0);
-    public Vector2f TextOrigin    = new(0, 0);
-    public float OutlineThickness = 0;
+    public Vector2f Size             = new(100, 25);
+    public Vector2f Origin           = new(0, 0);
+    public Vector2f TextOrigin       = new(0, 0);
+    public float    OutlineThickness = 0;
 
     // Text
 
-    public string Text   = "";
-    public uint FontSize = 16;
-    public Font Font     = FontLoader.Instance.RobotoMono;
+    public string Text     = "";
+    public uint   FontSize = 16;
+    public Font   Font     = FontLoader.Instance.Fonts["RobotoMono"];
 
     // Colors
 
@@ -80,7 +86,13 @@ class Button : Node
     // Etc
 
     public Action actionOnClick;
+
     private bool isSelected = false;
+
+    // Renderers
+
+    private Text textRenderer = new();
+    private RectangleShape rectangleRenderer = new();
 
     #endregion
 
@@ -121,36 +133,30 @@ class Button : Node
 
     private void DrawShape()
     {
-        RectangleShape r = new()
-        {
-            Position = GlobalPosition,
-            Size = Size,
-            OutlineThickness = OutlineThickness,
-            OutlineColor = OutlineColor,
-            FillColor = FillColor,
-            Origin = Origin
-        };
+        rectangleRenderer.Position         = GlobalPosition;
+        rectangleRenderer.Size             = Size;
+        rectangleRenderer.Origin           = Origin;
+        rectangleRenderer.OutlineThickness = OutlineThickness;
+        rectangleRenderer.OutlineColor     = OutlineColor;
+        rectangleRenderer.FillColor        = FillColor;
 
-        r.Draw(Window, RenderStates.Default);
+        Window.Draw(rectangleRenderer);
     }
 
     private void DrawText()
     {
-        Text t = new()
-        {
-            DisplayedString = Text,
-            FillColor = TextColor,
-            Position = GlobalPosition,
-            Font = Font,
-            CharacterSize = FontSize
-        };
+        textRenderer.DisplayedString = Text;
+        textRenderer.FillColor       = TextColor;
+        textRenderer.Position        = GlobalPosition;
+        textRenderer.Font            = Font;
+        textRenderer.CharacterSize   = FontSize;
 
-        int x = (int)(GlobalPosition.X - Origin.X + Size.X / 2 - t.GetLocalBounds().Width / 2);
-        int y = (int)(GlobalPosition.Y - Origin.Y + Size.Y / 2 - t.GetLocalBounds().Height / 1.25);
+        int x = (int)(GlobalPosition.X - Origin.X + Size.X / 2 - textRenderer.GetLocalBounds().Width / 2);
+        int y = (int)(GlobalPosition.Y - Origin.Y + Size.Y / 2 - textRenderer.GetLocalBounds().Height / 1.25);
 
-        t.Position = new(x, y);
+        textRenderer.Position = new(x, y);
 
-        t.Draw(Window, RenderStates.Default);
+        Window.Draw(textRenderer);
     }
 
     private bool IsMouseOver(Vector2f mousePosition)
@@ -234,11 +240,12 @@ class CircleButton : Node
 {
     // Fields
 
-    public float Radius;
+    public float    Radius;
     public Vector2f Origin;
-    public bool IsVisible;
+    public bool     IsVisible;
 
     protected Action actionOnClick;
+
     private bool isSelected = false;
 
     // Public
@@ -247,7 +254,6 @@ class CircleButton : Node
     {
         base.Start();
 
-        Window.MouseMoved          += OnMouseMoved;
         Window.MouseButtonPressed  += OnMouseClicked;
         Window.MouseButtonReleased += OnMouseReleased;
     }
@@ -263,7 +269,6 @@ class CircleButton : Node
     {
         base.Destroy();
 
-        Window.MouseMoved          -= OnMouseMoved;
         Window.MouseButtonPressed  -= OnMouseClicked;
         Window.MouseButtonReleased -= OnMouseClicked;
     }
@@ -314,18 +319,6 @@ class CircleButton : Node
         }
     }
 
-    private void OnMouseMoved(object? sender, MouseMoveEventArgs e)
-    {
-        if (IsInRange(new(e.X, e.Y)))
-        {
-
-        }
-        else
-        {
-
-        }
-    }
-
     private void OnMouseReleased(object? sender, MouseButtonEventArgs e)
     {
         if (IsInRange(new(e.X, e.Y)))
@@ -357,21 +350,25 @@ class CircleSprite : Node
     public Vector2f Origin;
     public Texture Texture;
 
+    private CircleShape circleShape = new();
+
     // Public
+
+    public override void Start()
+    {
+        base.Start();
+    }
 
     public override void Update()
     {
         base.Update();
 
-        CircleShape c = new()
-        {
-            Position = Position,
-            Radius = Radius,
-            Origin = Origin,
-            Texture = Texture
-        };
+        circleShape.Position = GlobalPosition;
+        circleShape.Radius   = Radius;
+        circleShape.Origin   = Origin;
+        circleShape.Texture  = Texture;
 
-        c.Draw(Window, RenderStates.Default);
+        Window.Draw(circleShape);
     }
 }
 
@@ -388,11 +385,11 @@ class Label : Node
 {
     // Fields
 
-    public string Text = "";
-    public uint FontSize = 16;
-    public Font Font = FontLoader.Instance.RobotoMono;
-    public Vector2f Origin = new(0, 0);
-    public Text RenderedText;
+    public string   Text     = "";
+    public uint     FontSize = 16;
+    public Font     Font     = FontLoader.Instance.Fonts["RobotoMono"];
+    public Vector2f Origin   = new(0, 0);
+    public Text     RenderedText;
 
     // Public
 
@@ -431,13 +428,13 @@ class Node
 {
     // Fields
 
-    public string Name = "";
+    public string     Name = "";
     public List<Node> Children = [];
-    public Node Parent;
-    public Window Window;
-    public Vector2f Position = new(0, 0);
-    public bool InheritsPosition = true;
-    public bool IsActive { get; private set; } = true;
+    public Node       Parent;
+    public Window     Window;
+    public Vector2f   Position = new(0, 0);
+    public bool       InheritsPosition = true;
+    public bool       IsActive { get; private set; } = true;
 
     // Properties
 
@@ -470,10 +467,7 @@ class Node
 
     // Constructor
 
-    public Node()
-    {
-
-    }
+    public Node() { }
 
     // Public
 
@@ -574,7 +568,6 @@ class Node
         node.Name = name;
         node.Window = Window;
         node.Parent = this;
-        node.Window = Window;
         node.Start();
         Children.Add(node);
     }
@@ -584,36 +577,13 @@ class Node
         node.Name = node.GetType().Name;
         node.Window = Window;
         node.Parent = this;
-        node.Window = Window;
         node.Start();
         Children.Add(node);
     }
 
     // Change scene
 
-    //public void ChangeScene(Node node, string name)
-    //{
-    //    for (int i = 0; i < Children.Count; i ++)
-    //    {
-    //        Children[i].Destroy();
-    //    }
-    //
-    //    Children.Clear();
-    //    AddChild(node, name);
-    //}
-
-    //public void ChangeScene(Node node)
-    //{
-    //    for (int i = 0; i < Children.Count; i++)
-    //    {
-    //        Children[i].Destroy();
-    //    }
-    //
-    //    Children.Clear();
-    //    AddChild(node, node.GetType().Name);
-    //}
-
-    public void ChangeScene(Node node)
+    public async void ChangeScene(Node node)
     {
         Window.RootNode.Destroy();
         Window.RootNode = node;
@@ -725,28 +695,28 @@ class TextBox : Node
 
     #region [ - - - FIELDS - - - ]
 
-    public Vector2f Size = new(300, 25);
+    public Vector2f Size   = new(300, 25);
     public Vector2f Origin = new(0, 0);
 
     public string Text = "";
-    public int MaximumCharacters = int.MaxValue;
+    public int    MaximumCharacters = int.MaxValue;
 
     public uint FontSize = 16;
-    public Font Font = FontLoader.Instance.RobotoMono;
+    public Font Font     = FontLoader.Instance.Fonts["RobotoMono"];
 
     public int OutlineThickness = -1;
 
-    public Color SelectedOutlineColor = new(32, 32, 255);
+    public Color SelectedOutlineColor   = new(32, 32, 255);
     public Color DeselectedOutlineColor = new(0, 0, 0, 0);
-    public Color FillColor = new(16, 16, 16);
-    public Color IdleFillColor = new(16, 16, 16);
-    public Color HoverFillColor = new(16, 16, 16);
-    public Color ActiveFillColor = new(32, 32, 32);
+    public Color FillColor              = new(16, 16, 16);
+    public Color IdleFillColor          = new(16, 16, 16);
+    public Color HoverFillColor         = new(16, 16, 16);
+    public Color ActiveFillColor        = new(32, 32, 32);
 
-    private bool isSelected = false;
-    private int cursor = 0;
-    private float padding = 8;
-    private const int Backspace = 8;
+    private bool      isSelected = false;
+    private int       cursor     = 0;
+    private float     padding    = 8;
+    private const int Backspace  = 8;
 
     #endregion
 
@@ -754,20 +724,23 @@ class TextBox : Node
 
     public override void Start()
     {
+        Window.KeyPressed         += OnKeyPressed;
+        Window.TextEntered        += OnTextEntered;
         Window.MouseButtonPressed += OnMouseClicked;
-        Window.TextEntered += OnTextEntered;
-        Window.KeyPressed += OnKeyPressed;
     }
 
     public override void Update()
     {
         base.Update();
+
         DrawShape();
         DrawText();
     }
 
     public override void Destroy()
     {
+        Window.KeyPressed         -= OnKeyPressed;
+        Window.TextEntered        -= OnTextEntered;
         Window.MouseButtonPressed -= OnMouseClicked;
     }
 
@@ -775,17 +748,15 @@ class TextBox : Node
 
     private void DrawShape()
     {
-        RectangleShape r = new()
+        Window.Draw(new RectangleShape()
         {
-            Position = GlobalPosition,
-            Size = Size,
+            Position         = GlobalPosition,
+            Size             = Size,
+            Origin           = Origin,
             OutlineThickness = OutlineThickness,
-            OutlineColor = isSelected ? SelectedOutlineColor : DeselectedOutlineColor,
-            FillColor = FillColor,
-            Origin = Origin
-        };
-
-        r.Draw(Window, RenderStates.Default);
+            OutlineColor     = isSelected ? SelectedOutlineColor : DeselectedOutlineColor,
+            FillColor        = FillColor,
+        });
     }
 
     private void DrawText()
@@ -844,7 +815,7 @@ class TextBox : Node
                 if (Text.Length < MaximumCharacters)
                 {
                     Text = Text.Insert(cursor, e.Unicode);
-                    cursor++;
+                    cursor ++;
                 }
                 break;
 
@@ -852,7 +823,7 @@ class TextBox : Node
                 if (Text.Length > 0)
                 {
                     Text = Text[..^1];
-                    cursor--;
+                    cursor --;
                 }
                 break;
         }
@@ -865,14 +836,14 @@ class TextBox : Node
             case Keyboard.Key.Right:
                 if (cursor < Text.Length)
                 {
-                    cursor++;
+                    cursor ++;
                 }
                 break;
 
             case Keyboard.Key.Left:
                 if (cursor > 0)
                 {
-                    cursor--;
+                    cursor --;
                 }
                 break;
 
@@ -887,15 +858,13 @@ class TextBox : Node
 
 // File: FontLoader.cs
 
-﻿using SFML.Graphics;
-
-namespace Nodex;
+﻿namespace Nodex;
 
 class FontLoader
 {
     // Fields
 
-    public Font RobotoMono;
+    public Dictionary<string, Font> Fonts = [];
 
     // Singleton
 
@@ -912,7 +881,7 @@ class FontLoader
 
     private FontLoader()
     {
-        RobotoMono = new("Resources/RobotoMono.ttf");
+        Fonts.Add("RobotoMono", new("Resources/RobotoMono.ttf"));
     }
 }
 
@@ -990,7 +959,7 @@ class TextureLoader
 {
     // Fields
 
-    public Texture Person;
+    public Dictionary<string, Texture> Textures = [];
 
     // Singleton
 
@@ -1007,7 +976,7 @@ class TextureLoader
 
     private TextureLoader()
     {
-        Person = new("Resources/Person.jpg");
+        Textures.Add("Avatar", new("Resources/Avatar.jpg"));
     }
 }
 
@@ -1095,7 +1064,7 @@ class ContactEditor : Node
     {
         Buttons buttons = new()
         {
-            Index = ContactIndex
+            ContactIndex = ContactIndex
         };
 
         AddChild(buttons);
@@ -1107,7 +1076,8 @@ class ContactEditor : Node
 
         AddChild(new AvatarDisplayer()
         {
-            IsClickable = true
+            ContactIndex = ContactIndex,
+            IsClickable  = true
         });
 
         AddChild(new Scroller());
@@ -1159,8 +1129,8 @@ class ContactInfoField : Node
 
 // File: Fields.cs
 
-﻿using Callisto.AvatarDisplayerNode;
-using Nodex;
+﻿using Nodex;
+using Callisto.AvatarDisplayerNode;
 
 namespace Callisto.ContactEditorNode;
 
@@ -1169,8 +1139,6 @@ class Fields : Node
     public int ContactIndex = -1;
 
     public List<ContactInfoField> NumberFields = [];
-
-    private AvatarDisplayer avatarDisplayer;
 
     private readonly int maximumCharacters = 29;
 
@@ -1189,7 +1157,6 @@ class Fields : Node
     {
         base.Start();
 
-        CreateAvatarDisplayer();
         CreateNameFields();
         CreateNumberFields();
         LoadContactInfoIntoFields();
@@ -1208,8 +1175,7 @@ class Fields : Node
         string firstName = firstNameTextBox.Text;
         string lastName = lastNameTextBox.Text;
         List<string> phoneNumbers = GetPhoneNumbers();
-        string photoPath = avatarDisplayer.PhotoPath;
-
+        string photoPath = GetParent<ContactEditor>().GetChild<AvatarDisplayer>().PhotoPath;
 
         Contact newContact = new()
         {
@@ -1223,16 +1189,6 @@ class Fields : Node
     }
 
     // Create nodes
-
-    private void CreateAvatarDisplayer()
-    {
-        avatarDisplayer = new()
-        {
-            PhotoPath = ContactIndex == -1 ?
-                        "" :
-                        ContactsContainer.Instance.Contacts[ContactIndex].PhotoPath
-        };
-    }
 
     private void CreateNameFields()
     {
@@ -1414,7 +1370,7 @@ class Buttons : Node
 {
     // Fields
 
-    public int Index = -1;
+    public int ContactIndex = -1;
 
     private Button okButton;
     private Button deleteButton;
@@ -1433,13 +1389,17 @@ class Buttons : Node
 
     private void CreateOkButton()
     {
-        okButton = new OkButton();
+        okButton = new OkButton()
+        {
+            ContactIndex = ContactIndex
+        };
+
         AddChild(okButton);
     }
 
     private void CreateDeleteButton()
     {
-        if (Index == -1) return;
+        if (ContactIndex == -1) return;
 
         deleteButton = new DeleteButton();
         AddChild(deleteButton, "DeleteButton");
@@ -1447,7 +1407,7 @@ class Buttons : Node
 
     private void CreateCancelButton()
     {
-        if (Index != -1) return;
+        if (ContactIndex != -1) return;
 
         cancelButton = new CancelButton();
         AddChild(cancelButton, "CancelButton");
@@ -1553,11 +1513,16 @@ using SFML.Window;
 using Callisto.ContactsListNode;
 using Callisto.NotificationDialogNode;
 using Window = Nodex.Window;
+using Callisto.ContactInfoViewerNode;
 
 namespace Callisto.ContactEditorNode.ButtonsNode;
 
 class OkButton : Button
 {
+    // Fields
+
+    public int ContactIndex = -1;
+
     // Public
 
     public override void Start()
@@ -1586,7 +1551,7 @@ class OkButton : Button
     {
         Contact newContact = GetRootNode<ContactEditor>().GetChild<Fields>().GetContact();
 
-        if (GetParent<Buttons>().Index == -1)
+        if (GetParent<Buttons>().ContactIndex == -1)
         {
             CreateNewContact(newContact);
         }
@@ -1603,7 +1568,13 @@ class OkButton : Button
             if (!ContactsContainer.Instance.ContactExists(newContact))
             {
                 ContactsContainer.Instance.Add(newContact);
-                ChangeScene(new ContactsList());
+
+                ContactIndex = ContactsContainer.Instance.Contacts.IndexOf(newContact);
+
+                ChangeScene(new ContactInfoViewer()
+                {
+                    ContactIndex = ContactIndex
+                });
             }
             else
             {
@@ -1620,10 +1591,14 @@ class OkButton : Button
     {
         if (newContact.FirstName != "")
         {
-            ContactsContainer.Instance.Contacts[GetParent<Buttons>().Index] = newContact;
+            ContactsContainer.Instance.Contacts[ContactIndex] = newContact;
             ContactsContainer.Instance.Save();
             ContactsContainer.Instance.Load();
-            ChangeScene(new ContactsList());
+
+            ChangeScene(new ContactInfoViewer()
+            {
+                ContactIndex = ContactIndex
+            });
         }
         else
         {
@@ -1948,7 +1923,7 @@ class AddNewContactButton : Button
         base.Start();
 
         Text          = "Add New Contact";
-        Size          = new(100, 35);
+        Size          = new(Window.Size.X, 40);
         actionOnClick = GoToContactEditor;
     }
 
@@ -1969,10 +1944,113 @@ class AddNewContactButton : Button
 
 ----------------------------------------
 
+// File: ContactsList.cs
+
+﻿using Nodex;
+using Callisto.ContactDisplayerNode;
+
+namespace Callisto.ContactsListNode;
+
+class ContactsList : Node
+{
+    // Fields
+
+    private AddNewContactButton addNewContactButton;
+
+    private int counter = 0;
+
+    // Public
+
+    public override void Start()
+    {
+        ContactsContainer.Instance.Load();
+
+        addNewContactButton = new();
+        AddChild(addNewContactButton);
+
+        //CreateContactDisplayers();
+        AddChild(new Scroller());
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        int numberOfContacts = ContactsContainer.Instance.Contacts.Count;
+
+        if (counter < numberOfContacts)
+        {
+            for (int i = 0; i < 1; i++)
+            {
+                ContactDisplayer contactDisplayer = new();
+                contactDisplayer.ContactIndex = counter + i;
+                AddChild(contactDisplayer, $"ContactDisplayer{counter + i}");
+
+                var button = contactDisplayer.GetChild<ContactDisplayerNode.Button>();
+
+                float x = 0;
+                float y = addNewContactButton.Size.Y + button.Size.Y * (counter + i);
+
+                contactDisplayer.Position = new(x, y);
+
+                contactDisplayer.Update();
+            }
+
+            counter += 1;
+        }
+    }
+
+    // Create nodes
+
+    private async void CreateContactDisplayers()
+    {
+
+        List<Contact> contacts = ContactsContainer.Instance.Contacts;
+
+        for (int i = 0; i < contacts.Count; i++)
+        {
+            ContactDisplayer contactDisplayer = new();
+            contactDisplayer.ContactIndex = i;
+            AddChild(contactDisplayer, $"ContactDisplayer{i}");
+
+            var button = contactDisplayer.GetChild<ContactDisplayerNode.Button>();
+
+            float x = 0;
+            float y = addNewContactButton.Size.Y + button.Size.Y * i;
+
+            contactDisplayer.Position = new(x, y);
+        }
+    }
+}
+
+----------------------------------------
+
+// File: Scroller.cs
+
+﻿namespace Callisto.ContactsListNode;
+
+class Scroller : Nodex.Scroller
+{
+    // Public
+
+    public override void Update()
+    {
+        base.Update();
+
+        float viewHeight = Window.GetView().Center.Y - Window.GetView().Size.Y / 2;
+        CanGoUp = viewHeight > 0;
+
+        float maxContactsListHeight = ContactsContainer.Instance.Contacts.Count * 50;
+        float maxYPosition = maxContactsListHeight - Window.GetView().Size.Y;
+        CanGoDown = viewHeight < maxYPosition;
+    }
+}
+
+----------------------------------------
+
 // File: Button.cs
 
-﻿using SFML.Graphics;
-using Callisto.ContactInfoViewerNode;
+﻿using Callisto.ContactInfoViewerNode;
 
 namespace Callisto.ContactDisplayerNode;
 
@@ -1988,7 +2066,7 @@ class Button : Nodex.Button
     {
         base.Start();
 
-        Size          = new(250, 50);
+        Size          = new(Window.Size.X, 50);
         OutlineColor  = Color.Transparent;
         actionOnClick = GoToContactViewPage;
     }
@@ -2008,6 +2086,47 @@ class Button : Nodex.Button
         {
             ContactIndex = ContactIndex
         });
+    }
+}
+
+----------------------------------------
+
+// File: CircleSprite.cs
+
+﻿using Nodex;
+using SFML.Graphics;
+
+namespace Callisto.ContactDisplayerNode;
+
+class CircleSprite : Nodex.CircleSprite
+{
+    // Fields
+
+    public int ContactIndex = 0;
+
+    // Public
+
+    public override void Start()
+    {
+        base.Start();
+
+        Radius   = 20;
+        Position = new(30, 25);
+        Origin   = new(Radius, Radius);
+        Texture  = GetTexture();
+    }
+
+    // Private
+
+    private Texture GetTexture()
+    {
+        string photoPath = ContactsContainer.Instance.Contacts[ContactIndex].PhotoPath;
+
+        Texture texture = photoPath == "" ?
+                          TextureLoader.Instance.Textures["Avatar"] :
+                          new(photoPath);
+
+        return texture;
     }
 }
 
@@ -2034,49 +2153,15 @@ class ContactDisplayer : Node
             ContactIndex = ContactIndex
         });
 
+        AddChild(new CircleSprite()
+        {
+            ContactIndex = ContactIndex
+        });
+
         AddChild(new Label()
         {
             ContactIndex = ContactIndex
         });
-    }
-}
-
-----------------------------------------
-
-// File: ContactsList.cs
-
-﻿using Nodex;
-using Callisto.ContactDisplayerNode;
-
-namespace Callisto.ContactsListNode;
-
-class ContactsList : Node
-{
-    // Public
-
-    public override void Start()
-    {
-        CreateContactDisplayers();
-        AddChild(new Scroller());
-        AddChild(new AddNewContactButton());
-    }
-
-    // Create nodes
-
-    private void CreateContactDisplayers()
-    {
-        ContactsContainer.Instance.Load();
-
-        List<Contact> contacts = ContactsContainer.Instance.Contacts;
-
-        for (int i = 0; i < contacts.Count; i++)
-        {
-            AddChild(new ContactDisplayer()
-            {
-                ContactIndex = i,
-                Position = new(0, 35 + 50 * i)
-            }, $"ContactDisplayer{i + 1}");
-        }
     }
 }
 
@@ -2099,29 +2184,7 @@ class Label : Nodex.Label
         base.Start();
 
         Text     = ContactsContainer.Instance.Contacts[ContactIndex].GetFullName();
-        Position = new(10, 12);
-    }
-}
-
-----------------------------------------
-
-// File: Scroller.cs
-
-﻿namespace Callisto.ContactsListNode;
-
-class Scroller : Nodex.Scroller
-{
-    // Public
-
-    public override void Update()
-    {
-        base.Update();
-
-        float viewHeight = Window.GetView().Center.Y - Window.GetView().Size.Y / 2;
-        CanGoUp = viewHeight > 0;
-        
-        float contactsListHeight = (ContactsContainer.Instance.Contacts.Count - 10) * 50;
-        CanGoDown = viewHeight < contactsListHeight;
+        Position = new(60, 12);
     }
 }
 
@@ -2252,25 +2315,17 @@ class DeletionDialog : Node
 
 // File: Label.cs
 
-﻿using SFML.System;
-
-namespace Callisto.DeletionDialogNode;
+﻿namespace Callisto.DeletionDialogNode;
 
 class Label : Nodex.Label
 {
-    // Fields
-
-    private readonly Vector2f position = new(25, 15);
-    private readonly string message = "Are you sure you want to delete\nthis contact?";
-    private readonly uint fontSize = 14;
-
     // Public
 
     public override void Start()
     {
-        Position = position;
-        Text     = message;
-        FontSize = fontSize;
+        Position = new(25, 15);
+        Text     = "Are you sure you want to delete\nthis contact?";
+        FontSize = 14;
     }
 }
 
@@ -2388,7 +2443,8 @@ class Contact
 
 // File: ContactsContainer.cs
 
-﻿using YamlDotNet.Serialization;
+﻿using System.Diagnostics;
+using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace Callisto;
@@ -2504,7 +2560,7 @@ class AvatarDisplayer : Node
         AddChild(new CircleSprite()
         {
             Texture = PhotoPath == "" ?
-                      TextureLoader.Instance.Person :
+                      TextureLoader.Instance.Textures["Avatar"] :
                       new(PhotoPath)
         });
 
@@ -2558,7 +2614,7 @@ class CircleButton : Nodex.CircleButton
             {
                 GetParent<AvatarDisplayer>().GetChild<CircleSprite>().Texture = new(photoPath);
                 GetParent<AvatarDisplayer>().PhotoPath = photoPath;
-                Console.WriteLine(photoPath);
+                //GetRootNode<ContactEditor>().GetChild<Fields>().avatarDisplayer.PhotoPath = photoPath;
             }
         }
     }
@@ -2580,7 +2636,6 @@ class CircleSprite : Nodex.CircleSprite
     {
         Radius  = 100;
         Origin  = new(100, 100);
-        Texture = TextureLoader.Instance.Person;
     }
 
     public override void Update()
@@ -2607,7 +2662,7 @@ class Sprite : CircleSprite
     {
         Radius  = 100;
         Origin  = new(100, 100);
-        Texture = TextureLoader.Instance.Person;
+        Texture = TextureLoader.Instance.Textures["Avatar"];
     }
 
     public override void Update()

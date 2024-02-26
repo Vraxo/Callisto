@@ -146,7 +146,6 @@ class Node
         node.Name = name;
         node.Window = Window;
         node.Parent = this;
-        node.Window = Window;
         node.Start();
         Children.Add(node);
     }
@@ -156,14 +155,13 @@ class Node
         node.Name = node.GetType().Name;
         node.Window = Window;
         node.Parent = this;
-        node.Window = Window;
         node.Start();
         Children.Add(node);
     }
 
     // Change scene
 
-    public async void ChangeScene(Node node)
+    public void ChangeScene(Node node)
     {
         Window.RootNode.Destroy();
         Window.RootNode = node;

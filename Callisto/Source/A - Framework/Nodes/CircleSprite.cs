@@ -11,20 +11,24 @@ class CircleSprite : Node
     public Vector2f Origin;
     public Texture Texture;
 
+    private CircleShape circleShape = new();
+
     // Public
+
+    public override void Start()
+    {
+        base.Start();
+    }
 
     public override void Update()
     {
         base.Update();
 
-        CircleShape c = new()
-        {
-            Position = GlobalPosition,
-            Radius   = Radius,
-            Origin   = Origin,
-            Texture  = Texture
-        };
+        circleShape.Position = GlobalPosition;
+        circleShape.Radius   = Radius;
+        circleShape.Origin   = Origin;
+        circleShape.Texture  = Texture;
 
-        c.Draw(Window, RenderStates.Default);
+        Window.Draw(circleShape);
     }
 }

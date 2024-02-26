@@ -11,7 +11,8 @@ class Label : Node
     public uint     FontSize = 16;
     public Font     Font     = FontLoader.Instance.Fonts["RobotoMono"];
     public Vector2f Origin   = new(0, 0);
-    public Text     RenderedText;
+    
+    protected Text textRenderer = new();
 
     // Public
 
@@ -25,15 +26,12 @@ class Label : Node
 
     private void DrawText()
     {
-        RenderedText = new()
-        {
-            Font = Font,
-            DisplayedString = Text,
-            Position = GlobalPosition,
-            CharacterSize = FontSize,
-            Origin = Origin
-        };
+        textRenderer.Position        = GlobalPosition;
+        textRenderer.CharacterSize   = FontSize;
+        textRenderer.Origin          = Origin;
+        textRenderer.Font            = Font;
+        textRenderer.DisplayedString = Text;
 
-        RenderedText.Draw(Window, RenderStates.Default);
+        Window.Draw(textRenderer);
     }
 }

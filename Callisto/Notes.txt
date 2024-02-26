@@ -8,15 +8,16 @@
 //
 
 reset view
-
 return node in addchild (contacts list)
+center avatar in editor
+
+optimize shapes with properties?
 
 avoid full reload
-go to view after editing
 cache textures in resources
 
 blinker for textboxes
 better textboxes (delete, move, cursor?)
 more precise scrollers (contactviewpage, contactsloader)
 
-properly center text horizontally
+properly center text vertically
