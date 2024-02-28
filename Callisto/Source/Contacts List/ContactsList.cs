@@ -59,7 +59,6 @@ class ContactsList : Node
 
     private async void CreateContactDisplayers()
     {
-
         List<Contact> contacts = ContactsContainer.Instance.Contacts;
 
         for (int i = 0; i < contacts.Count; i++)

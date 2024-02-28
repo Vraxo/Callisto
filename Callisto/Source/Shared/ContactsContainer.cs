@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using Nodex;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -47,13 +47,15 @@ class ContactsContainer
         if (File.Exists(filePath))
         {
             var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(PascalCaseNamingConvention.Instance) // Use CamelCaseNamingConvention
+                .WithNamingConvention(PascalCaseNamingConvention.Instance)
                 .Build();
 
             using var reader = new StreamReader(filePath);
             var yamlContacts = deserializer.Deserialize<List<Contact>>(reader);
             Contacts = yamlContacts ?? [];
         }
+
+        LoadAvatarTextures();
     }
 
     public void Save()
@@ -63,7 +65,7 @@ class ContactsContainer
         var filePath = "Resources/Contacts.yaml";
 
         var serializer = new SerializerBuilder()
-            .WithNamingConvention(PascalCaseNamingConvention.Instance) // Use CamelCaseNamingConvention
+            .WithNamingConvention(PascalCaseNamingConvention.Instance)
             .Build();
 
         var yaml = serializer.Serialize(Contacts);
@@ -85,5 +87,21 @@ class ContactsContainer
         }
 
         return false;
+    }
+
+    // Private
+
+    private void LoadAvatarTextures()
+    {
+        foreach (Contact contact in Contacts)
+        {
+            if (contact.HasAvatar)
+            {
+                if (!TextureLoader.Instance.Textures.ContainsKey(contact.Id.ToString()))
+                {
+                    TextureLoader.Instance.Textures.Add(contact.Id.ToString(), new($"Resources/Avatars/{contact.Id}.jpg"));
+                }
+            }
+        }
     }
 }

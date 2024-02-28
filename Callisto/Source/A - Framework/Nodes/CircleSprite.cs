@@ -11,7 +11,7 @@ class CircleSprite : Node
     public Vector2f Origin;
     public Texture Texture;
 
-    private CircleShape circleShape = new();
+    private CircleShape circleRenderer = new();
 
     // Public
 
@@ -24,11 +24,11 @@ class CircleSprite : Node
     {
         base.Update();
 
-        circleShape.Position = GlobalPosition;
-        circleShape.Radius   = Radius;
-        circleShape.Origin   = Origin;
-        circleShape.Texture  = Texture;
+        circleRenderer.Position = GlobalPosition;
+        circleRenderer.Radius   = Radius;
+        circleRenderer.Origin   = Origin;
+        circleRenderer.Texture  = Texture;
 
-        Window.Draw(circleShape);
+        Window.Draw(circleRenderer);
     }
 }

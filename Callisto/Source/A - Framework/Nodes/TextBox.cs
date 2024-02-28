@@ -28,10 +28,13 @@ class TextBox : Node
     public Color HoverFillColor         = new(16, 16, 16);
     public Color ActiveFillColor        = new(32, 32, 32);
 
-    private bool      isSelected = false;
-    private int       cursor     = 0;
-    private float     padding    = 8;
-    private const int Backspace  = 8;
+    private bool      isSelected    = false;
+    private int       cursor        = 0;
+    private float     padding       = 8;
+    private const int BackspaceKey  = 8;
+
+    private RectangleShape rectangleRenderer = new();
+    private Text           textRenderer = new();
 
     #endregion
 
@@ -63,33 +66,27 @@ class TextBox : Node
 
     private void DrawShape()
     {
-        Window.Draw(new RectangleShape()
-        {
-            Position         = GlobalPosition,
-            Size             = Size,
-            Origin           = Origin,
-            OutlineThickness = OutlineThickness,
-            OutlineColor     = isSelected ? SelectedOutlineColor : DeselectedOutlineColor,
-            FillColor        = FillColor,
-        });
+        rectangleRenderer.Position         = GlobalPosition;
+        rectangleRenderer.Size             = Size;
+        rectangleRenderer.Origin           = Origin;
+        rectangleRenderer.OutlineThickness = OutlineThickness;
+        rectangleRenderer.OutlineColor     = isSelected ? SelectedOutlineColor : DeselectedOutlineColor;
+        rectangleRenderer.FillColor        = FillColor;
+
+        Window.Draw(rectangleRenderer);
     }
 
     private void DrawText()
     {
-        Text t = new()
-        {
-            DisplayedString = Text,
-            Position = GlobalPosition,
-            Font = Font,
-            CharacterSize = FontSize
-        };
-
         float x = (int)(GlobalPosition.X + padding - Origin.X);
         float y = (int)(GlobalPosition.Y + Size.Y / 10 - Origin.Y);
 
-        t.Position = new(x, y);
+        textRenderer.Position        = new(x, y);
+        textRenderer.CharacterSize   = FontSize;
+        textRenderer.DisplayedString = Text;
+        textRenderer.Font            = Font;
 
-        t.Draw(Window, RenderStates.Default);
+        Window.Draw(textRenderer);
     }
 
     private bool IsMouseOver(Vector2f mousePosition)
@@ -134,7 +131,7 @@ class TextBox : Node
                 }
                 break;
 
-            case (char)Backspace:
+            case (char)BackspaceKey:
                 if (Text.Length > 0)
                 {
                     Text = Text[..^1];

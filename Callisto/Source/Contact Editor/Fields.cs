@@ -44,14 +44,13 @@ class Fields : Node
         string firstName = firstNameTextBox.Text;
         string lastName = lastNameTextBox.Text;
         List<string> phoneNumbers = GetPhoneNumbers();
-        string photoPath = GetParent<ContactEditor>().GetChild<AvatarDisplayer>().PhotoPath;
 
         Contact newContact = new()
         {
             FirstName    = firstName,
             LastName     = lastName,
             PhoneNumbers = phoneNumbers,
-            PhotoPath    = photoPath,
+            HasAvatar    = GetParent<ContactEditor>().GetChild<AvatarDisplayer>().ImagePath != ""
         };
 
         return newContact;

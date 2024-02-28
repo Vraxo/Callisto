@@ -22,8 +22,7 @@ class CircleButton : Node
     {
         base.Start();
 
-        Window.MouseButtonPressed  += OnMouseClicked;
-        Window.MouseButtonReleased += OnMouseReleased;
+        ConnectToEvents();
     }
 
     public override void Update()
@@ -39,6 +38,20 @@ class CircleButton : Node
 
         Window.MouseButtonPressed  -= OnMouseClicked;
         Window.MouseButtonReleased -= OnMouseClicked;
+    }
+
+    public override void Activate()
+    {
+        base.Activate();
+
+        ConnectToEvents();
+    }
+
+    public override void Deactivate()
+    {
+        base.Deactivate();
+
+        DisconnectFromEvent();
     }
 
     // Private
@@ -78,6 +91,18 @@ class CircleButton : Node
     }
 
     // Events
+
+    private void ConnectToEvents()
+    {
+        Window.MouseButtonPressed += OnMouseClicked;
+        Window.MouseButtonReleased += OnMouseReleased;
+    }
+
+    private void DisconnectFromEvent()
+    {
+        Window.MouseButtonPressed -= OnMouseClicked;
+        Window.MouseButtonReleased -= OnMouseReleased;
+    }
 
     private void OnMouseClicked(object? sender, MouseButtonEventArgs e)
     {

@@ -21,3 +21,9 @@ better textboxes (delete, move, cursor?)
 more precise scrollers (contactviewpage, contactsloader)
 
 properly center text vertically
+
+make sure id is unique
+
+move getcontact from fields to contacteditor
+
+improve get node

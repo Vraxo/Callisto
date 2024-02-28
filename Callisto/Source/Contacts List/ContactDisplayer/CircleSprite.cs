@@ -25,11 +25,17 @@ class CircleSprite : Nodex.CircleSprite
 
     private Texture GetTexture()
     {
-        string photoPath = ContactsContainer.Instance.Contacts[ContactIndex].PhotoPath;
+        Texture texture = TextureLoader.Instance.Textures["Avatar"];
 
-        Texture texture = photoPath == "" ?
-                          TextureLoader.Instance.Textures["Avatar"] :
-                          new(photoPath);
+        if (ContactIndex != -1)
+        {
+            Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
+
+            if (contact.HasAvatar)
+            {
+                texture = TextureLoader.Instance.Textures[contact.Id.ToString()];
+            }
+        }
 
         return texture;
     }

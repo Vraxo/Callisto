@@ -1,4 +1,6 @@
-﻿using Nodex;
+﻿using HarfBuzzSharp;
+using Nodex;
+using SFML.Graphics;
 
 namespace Callisto.AvatarDisplayerNode;
 
@@ -8,26 +10,42 @@ class AvatarDisplayer : Node
 
     public int ContactIndex = -1;
     public bool IsClickable = false;
-    public string PhotoPath = "";
+    public string ImagePath = "";
 
     // Public
 
     public override void Start()
     {
-        PhotoPath = ContactIndex == -1 ?
-                    "" :
-                    ContactsContainer.Instance.Contacts[ContactIndex].PhotoPath;
-
         AddChild(new CircleSprite()
         {
-            Texture = PhotoPath == "" ?
-                      TextureLoader.Instance.Textures["Avatar"] :
-                      new(PhotoPath)
+            Texture = GetTexture() 
         });
 
         if (IsClickable)
         {
-            AddChild(new CircleButton());
+            AddChild(new CircleButton()
+            {
+                ContactIndex = ContactIndex
+            });
         }
+    }
+
+    // Private
+
+    private Texture GetTexture()
+    {
+        Texture texture = TextureLoader.Instance.Textures["Avatar"];
+
+        if (ContactIndex != -1)
+        {
+            Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
+
+            if (contact.HasAvatar)
+            {
+                texture = TextureLoader.Instance.Textures[contact.Id.ToString()];
+            }
+        }
+
+        return texture;
     }
 }

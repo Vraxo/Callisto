@@ -1,9 +1,9 @@
 ﻿using Nodex;
 using SFML.Window;
-using Callisto.ContactsListNode;
+using Callisto.AvatarDisplayerNode;
+using Callisto.ContactInfoViewerNode;
 using Callisto.NotificationDialogNode;
 using Window = Nodex.Window;
-using Callisto.ContactInfoViewerNode;
 
 namespace Callisto.ContactEditorNode.ButtonsNode;
 
@@ -61,6 +61,11 @@ class OkButton : Button
 
                 ContactIndex = ContactsContainer.Instance.Contacts.IndexOf(newContact);
 
+                SaveAvatar();
+
+                ContactsContainer.Instance.Save();
+                ContactsContainer.Instance.Load();
+
                 ChangeScene(new ContactInfoViewer()
                 {
                     ContactIndex = ContactIndex
@@ -82,6 +87,9 @@ class OkButton : Button
         if (newContact.FirstName != "")
         {
             ContactsContainer.Instance.Contacts[ContactIndex] = newContact;
+
+            SaveAvatar();
+
             ContactsContainer.Instance.Save();
             ContactsContainer.Instance.Load();
 
@@ -116,5 +124,16 @@ class OkButton : Button
 
         window.Start();
         Program.AddWindow(window);
+    }
+
+    private void SaveAvatar()
+    {
+        string imagePath = GetParent<Buttons>().GetParent<ContactEditor>().GetChild<AvatarDisplayer>().ImagePath;
+
+        if (imagePath != "")
+        {
+            string extension = Path.GetExtension(imagePath);
+            File.Copy(imagePath, $"Resources/Avatars/{ContactsContainer.Instance.Contacts[ContactIndex].Id}{extension}");
+        }
     }
 }

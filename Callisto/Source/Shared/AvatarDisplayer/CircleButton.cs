@@ -2,6 +2,10 @@
 
 class CircleButton : Nodex.CircleButton
 {
+    // Fields
+
+    public int ContactIndex = -1;
+
     // Public
 
     public override void Start()
@@ -36,8 +40,7 @@ class CircleButton : Nodex.CircleButton
             if (extension == ".png" || extension == ".jpg")
             {
                 GetParent<AvatarDisplayer>().GetChild<CircleSprite>().Texture = new(photoPath);
-                GetParent<AvatarDisplayer>().PhotoPath = photoPath;
-                //GetRootNode<ContactEditor>().GetChild<Fields>().avatarDisplayer.PhotoPath = photoPath;
+                GetParent<AvatarDisplayer>().ImagePath = photoPath;
             }
         }
     }

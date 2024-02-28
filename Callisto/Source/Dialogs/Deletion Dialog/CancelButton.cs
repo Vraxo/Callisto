@@ -1,5 +1,4 @@
 ﻿using Nodex;
-using SFML.Graphics;
 
 namespace Callisto.DeletionDialogNode;
 
