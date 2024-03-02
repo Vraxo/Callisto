@@ -12,7 +12,7 @@ class Label : Nodex.Label
     {
         base.Start();
 
-        Text     = ContactsContainer.Instance.Contacts[ContactIndex].GetFullName();
+        Text = ContactsContainer.Instance.Contacts[ContactIndex].GetFullName();
         Position = new(60, 12);
     }
 }

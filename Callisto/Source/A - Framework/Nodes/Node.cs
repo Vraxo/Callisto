@@ -6,13 +6,13 @@ class Node
 {
     // Fields
 
-    public string     Name = "";
+    public string Name = "";
     public List<Node> Children = [];
-    public Node       Parent;
-    public Window     Window;
-    public Vector2f   Position = new(0, 0);
-    public bool       InheritsPosition = true;
-    public bool       IsActive { get; private set; } = true;
+    public Node Parent;
+    public Window Window;
+    public Vector2f Position = new(0, 0);
+    public bool InheritsPosition = true;
+    public bool IsActive { get; private set; } = true;
 
     // Properties
 

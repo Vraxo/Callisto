@@ -10,11 +10,11 @@ class CancelButton : Button
     {
         base.Start();
 
-        Text          = "Cancel";
-        Size          = new(100, 20);
-        Position      = new(Window.Size.X - Size.X - 25, 75);
-        FontSize      = 12;
-        TextColor     = Color.Red;
+        Text = "Cancel";
+        Size = new(100, 20);
+        Position = new(Window.Size.X - Size.X - 25, 75);
+        FontSize = 12;
+        TextColor = Color.Red;
         actionOnClick = Parent.Destroy;
     }
 }

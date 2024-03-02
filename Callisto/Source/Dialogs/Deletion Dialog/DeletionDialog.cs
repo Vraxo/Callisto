@@ -5,7 +5,7 @@ namespace Callisto.DeletionDialogNode;
 class DeletionDialog : Node
 {
     // Fields
-    
+
     private Nodex.Label label;
     private Button confirmButton;
     private Button cancelButton;
@@ -15,7 +15,7 @@ class DeletionDialog : Node
     public override void Start()
     {
         Program.MainWindow.RootNode.Deactivate();
-        
+
         CreateLabel();
         CreateConfirmButton();
         CreateCancelButton();

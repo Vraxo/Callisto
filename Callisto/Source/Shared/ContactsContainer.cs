@@ -99,7 +99,10 @@ class ContactsContainer
             {
                 if (!TextureLoader.Instance.Textures.ContainsKey(contact.Id.ToString()))
                 {
-                    TextureLoader.Instance.Textures.Add(contact.Id.ToString(), new($"Resources/Avatars/{contact.Id}.jpg"));
+                    string id = contact.Id.ToString();
+                    string path = $"Resources/Avatars/{contact.Id}.jpg";
+
+                    TextureLoader.Instance.Textures.Add(id, new(path));
                 }
             }
         }

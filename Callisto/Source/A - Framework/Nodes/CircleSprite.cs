@@ -1,5 +1,5 @@
-﻿using SFML.System;
-using SFML.Graphics;
+﻿using SFML.Graphics;
+using SFML.System;
 
 namespace Nodex;
 
@@ -25,9 +25,9 @@ class CircleSprite : Node
         base.Update();
 
         circleRenderer.Position = GlobalPosition;
-        circleRenderer.Radius   = Radius;
-        circleRenderer.Origin   = Origin;
-        circleRenderer.Texture  = Texture;
+        circleRenderer.Radius = Radius;
+        circleRenderer.Origin = Origin;
+        circleRenderer.Texture = Texture;
 
         Window.Draw(circleRenderer);
     }

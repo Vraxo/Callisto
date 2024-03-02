@@ -1,6 +1,6 @@
-﻿using SFML.System;
+﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
-using SFML.Graphics;
 
 namespace Nodex;
 
@@ -8,9 +8,9 @@ class CircleButton : Node
 {
     // Fields
 
-    public float    Radius;
+    public float Radius;
     public Vector2f Origin;
-    public bool     IsVisible;
+    public bool IsVisible;
 
     protected Action actionOnClick;
 
@@ -36,7 +36,7 @@ class CircleButton : Node
     {
         base.Destroy();
 
-        Window.MouseButtonPressed  -= OnMouseClicked;
+        Window.MouseButtonPressed -= OnMouseClicked;
         Window.MouseButtonReleased -= OnMouseClicked;
     }
 
@@ -62,11 +62,11 @@ class CircleButton : Node
         {
             CircleShape c = new()
             {
-                Position         = Position,
-                Radius           = Radius,
-                Origin           = Origin,
-                OutlineColor     = Color.Blue,
-                FillColor        = Color.Transparent,
+                Position = Position,
+                Radius = Radius,
+                Origin = Origin,
+                OutlineColor = Color.Blue,
+                FillColor = Color.Transparent,
                 OutlineThickness = 1,
             };
 

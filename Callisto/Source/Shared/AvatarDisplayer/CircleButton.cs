@@ -1,4 +1,6 @@
-﻿namespace Callisto.AvatarDisplayerNode;
+﻿using Nodex;
+
+namespace Callisto.AvatarDisplayerNode;
 
 class CircleButton : Nodex.CircleButton
 {
@@ -12,8 +14,8 @@ class CircleButton : Nodex.CircleButton
     {
         base.Start();
 
-        Radius        = 100;
-        Origin        = new(Radius, Radius);
+        Radius = 100;
+        Origin = new(Radius, Radius);
         actionOnClick = OpenPhotoSelectionDialog;
     }
 
@@ -31,16 +33,16 @@ class CircleButton : Nodex.CircleButton
         OpenFileDialog openFileDialog = new();
         openFileDialog.ShowDialog();
 
-        string photoPath = openFileDialog.FileName;
+        string imagePath = openFileDialog.FileName;
 
-        if (photoPath != null)
+        if (imagePath != null)
         {
-            string extension = Path.GetExtension(photoPath);
+            string extension = Path.GetExtension(imagePath);
 
             if (extension == ".png" || extension == ".jpg")
             {
-                GetParent<AvatarDisplayer>().GetChild<CircleSprite>().Texture = new(photoPath);
-                GetParent<AvatarDisplayer>().ImagePath = photoPath;
+                GetParent<AvatarDisplayer>().GetChild<CircleSprite>().Texture = new(imagePath);
+                GetParent<AvatarDisplayer>().ImagePath = imagePath;
             }
         }
     }

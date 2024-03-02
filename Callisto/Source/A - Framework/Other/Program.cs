@@ -1,5 +1,5 @@
-﻿using SFML.Window;
-using Callisto.ContactsListNode;
+﻿using Callisto.ContactsListNode;
+using SFML.Window;
 
 namespace Nodex;
 

@@ -1,5 +1,4 @@
-﻿using Callisto;
-using SFML.Window;
+﻿using SFML.Window;
 
 namespace Nodex;
 

@@ -1,7 +1,4 @@
-﻿using Nodex;
-using SFML.Graphics;
-
-namespace Callisto.NotificationDialogNode;
+﻿namespace Callisto.NotificationDialogNode;
 
 class OkButton : Button
 {
@@ -13,11 +10,11 @@ class OkButton : Button
 
         //contactEditor = Program.MainWindow.RootNode.GetRootNode<ContactEditor>();
 
-        Text          = "OK";
-        Position      = new(25, 75);
-        Size          = new(100, 20);
-        FontSize      = 12;
-        TextColor     = Color.Green;
+        Text = "OK";
+        Position = new(25, 75);
+        Size = new(100, 20);
+        FontSize = 12;
+        TextColor = Color.Green;
         actionOnClick = Parent.Destroy;
     }
 }

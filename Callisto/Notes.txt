@@ -27,3 +27,5 @@ make sure id is unique
 move getcontact from fields to contacteditor
 
 improve get node
+
+refactor allowed character sets

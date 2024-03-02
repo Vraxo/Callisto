@@ -10,16 +10,6 @@ class Contact
     public List<string> PhoneNumbers { get; set; }
     public bool HasAvatar { get; set; }
 
-    // Constructor
-
-    public Contact()
-    {
-        HasAvatar = false;
-
-        Random random = new();
-        Id = random.Next();
-    }
-
     // Public
 
     public string GetFullName()

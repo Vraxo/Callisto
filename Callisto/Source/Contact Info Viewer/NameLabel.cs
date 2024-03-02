@@ -15,7 +15,7 @@ class NameLabel : Label
         Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
         string fullName = contact.GetFullName();
 
-        Text     = fullName;
+        Text = fullName;
         FontSize = 32;
         Position = new(0, 200);
     }

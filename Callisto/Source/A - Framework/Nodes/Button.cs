@@ -1,6 +1,6 @@
-﻿using SFML.System;
+﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
-using SFML.Graphics;
 
 namespace Nodex;
 
@@ -12,24 +12,24 @@ class Button : Node
 
     // Numbers
 
-    public Vector2f Size             = new(100, 25);
-    public Vector2f Origin           = new(0, 0);
-    public Vector2f TextOrigin       = new(0, 0);
-    public float    OutlineThickness = 0;
+    public Vector2f Size = new(100, 25);
+    public Vector2f Origin = new(0, 0);
+    public Vector2f TextOrigin = new(0, 0);
+    public float OutlineThickness = 0;
 
     // Text
 
-    public string Text     = "";
-    public uint   FontSize = 16;
-    public Font   Font     = FontLoader.Instance.Fonts["RobotoMono"];
+    public string Text = "";
+    public uint FontSize = 16;
+    public Font Font = FontLoader.Instance.Fonts["RobotoMono"];
 
     // Colors
 
-    public Color TextColor       = Color.White;
-    public Color OutlineColor    = Color.Black;
-    public Color FillColor       = new(64, 64, 64);
-    public Color HoverFillColor  = new(96, 96, 96);
-    public Color IdleFillColor   = new(64, 64, 64);
+    public Color TextColor = Color.White;
+    public Color OutlineColor = Color.Black;
+    public Color FillColor = new(64, 64, 64);
+    public Color HoverFillColor = new(96, 96, 96);
+    public Color IdleFillColor = new(64, 64, 64);
     public Color ActiveFillColor = new(48, 48, 48);
 
     // Etc
@@ -82,12 +82,12 @@ class Button : Node
 
     private void DrawShape()
     {
-        rectangleRenderer.Position         = GlobalPosition;
-        rectangleRenderer.Size             = Size;
-        rectangleRenderer.Origin           = Origin;
+        rectangleRenderer.Position = GlobalPosition;
+        rectangleRenderer.Size = Size;
+        rectangleRenderer.Origin = Origin;
         rectangleRenderer.OutlineThickness = OutlineThickness;
-        rectangleRenderer.OutlineColor     = OutlineColor;
-        rectangleRenderer.FillColor        = FillColor;
+        rectangleRenderer.OutlineColor = OutlineColor;
+        rectangleRenderer.FillColor = FillColor;
 
         Window.Draw(rectangleRenderer);
     }
@@ -95,10 +95,10 @@ class Button : Node
     private void DrawText()
     {
         textRenderer.DisplayedString = Text;
-        textRenderer.FillColor       = TextColor;
-        textRenderer.Position        = GlobalPosition;
-        textRenderer.Font            = Font;
-        textRenderer.CharacterSize   = FontSize;
+        textRenderer.FillColor = TextColor;
+        textRenderer.Position = GlobalPosition;
+        textRenderer.Font = Font;
+        textRenderer.CharacterSize = FontSize;
 
         int x = (int)(GlobalPosition.X - Origin.X + Size.X / 2 - textRenderer.GetLocalBounds().Width / 2);
         int y = (int)(GlobalPosition.Y - Origin.Y + Size.Y / 2 - textRenderer.GetLocalBounds().Height / 1.25);
@@ -125,8 +125,8 @@ class Button : Node
 
     private void ConnectToEvents()
     {
-        Window.MouseMoved          += OnMouseMoved;
-        Window.MouseButtonPressed  += OnMouseClicked;
+        Window.MouseMoved += OnMouseMoved;
+        Window.MouseButtonPressed += OnMouseClicked;
         Window.MouseButtonReleased += OnMouseReleased;
     }
 

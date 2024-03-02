@@ -1,7 +1,7 @@
-﻿using Nodex;
-using Callisto.AvatarDisplayerNode;
-using Callisto.ContactsListNode;
+﻿using Callisto.AvatarDisplayerNode;
 using Callisto.ContactEditorNode.ButtonsNode;
+using Callisto.ContactsListNode;
+using Nodex;
 
 namespace Callisto.ContactEditorNode;
 
@@ -15,12 +15,10 @@ class ContactEditor : Node
 
     public override void Start()
     {
-        Buttons buttons = new()
+        AddChild(new Buttons()
         {
             ContactIndex = ContactIndex
-        };
-
-        AddChild(buttons);
+        });
 
         AddChild(new Fields()
         {
@@ -30,7 +28,7 @@ class ContactEditor : Node
         AddChild(new AvatarDisplayer()
         {
             ContactIndex = ContactIndex,
-            IsClickable  = true
+            IsClickable = true
         });
 
         AddChild(new Scroller());

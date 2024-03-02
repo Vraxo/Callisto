@@ -1,5 +1,4 @@
-﻿using HarfBuzzSharp;
-using Nodex;
+﻿using Nodex;
 using SFML.Graphics;
 
 namespace Callisto.AvatarDisplayerNode;
@@ -18,7 +17,7 @@ class AvatarDisplayer : Node
     {
         AddChild(new CircleSprite()
         {
-            Texture = GetTexture() 
+            Texture = GetTexture()
         });
 
         if (IsClickable)
@@ -28,6 +27,11 @@ class AvatarDisplayer : Node
                 ContactIndex = ContactIndex
             });
         }
+    }
+
+    public override void Update()
+    {
+        base.Update();
     }
 
     // Private

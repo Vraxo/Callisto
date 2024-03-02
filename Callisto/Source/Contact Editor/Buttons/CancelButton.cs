@@ -1,6 +1,5 @@
-﻿using Nodex;
-using SFML.Graphics;
-using Callisto.ContactsListNode;
+﻿using Callisto.ContactsListNode;
+using Nodex;
 
 namespace Callisto.ContactEditorNode.ButtonsNode;
 

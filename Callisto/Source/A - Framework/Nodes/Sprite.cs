@@ -1,5 +1,5 @@
-﻿using SFML.System;
-using SFML.Graphics;
+﻿using SFML.Graphics;
+using SFML.System;
 
 namespace Nodex;
 
@@ -20,9 +20,9 @@ class Sprite : Node
         RectangleShape r = new()
         {
             Position = Position,
-            Size     = Size,
-            Origin   = Origin,
-            Texture  = Texture
+            Size = Size,
+            Origin = Origin,
+            Texture = Texture
         };
 
         r.Draw(Window, RenderStates.Default);

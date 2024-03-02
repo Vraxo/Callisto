@@ -1,5 +1,4 @@
-﻿using Nodex;
-using Callisto.ContactsListNode;
+﻿using Callisto.ContactsListNode;
 
 namespace Callisto.ContactInfoViewerNode;
 
@@ -11,7 +10,7 @@ class ReturnButton : Button
     {
         base.Start();
 
-        Text          = "<-";
+        Text = "<-";
         actionOnClick = GoToContactsList;
     }
 

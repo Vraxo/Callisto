@@ -1,5 +1,5 @@
-﻿using SFML.Window;
-using SFML.Graphics;
+﻿using SFML.Graphics;
+using SFML.Window;
 
 namespace Nodex;
 

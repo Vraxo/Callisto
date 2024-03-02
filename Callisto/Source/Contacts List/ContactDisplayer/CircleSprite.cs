@@ -15,10 +15,10 @@ class CircleSprite : Nodex.CircleSprite
     {
         base.Start();
 
-        Radius   = 20;
+        Radius = 20;
         Position = new(30, 25);
-        Origin   = new(Radius, Radius);
-        Texture  = GetTexture();
+        Origin = new(Radius, Radius);
+        Texture = GetTexture();
     }
 
     // Private

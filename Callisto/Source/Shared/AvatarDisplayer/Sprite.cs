@@ -8,8 +8,8 @@ class Sprite : CircleSprite
 
     public override void Start()
     {
-        Radius  = 100;
-        Origin  = new(Radius, Radius);
+        Radius = 100;
+        Origin = new(Radius, Radius);
         Texture = TextureLoader.Instance.Textures["Avatar"];
     }
 

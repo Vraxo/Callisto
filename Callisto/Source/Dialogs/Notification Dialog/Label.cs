@@ -11,7 +11,7 @@ class Label : Nodex.Label
     public override void Start()
     {
         Position = new(25, 15);
-        Text     = Message;
+        Text = Message;
         FontSize = 14;
     }
 }

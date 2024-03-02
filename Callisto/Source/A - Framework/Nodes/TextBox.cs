@@ -1,6 +1,6 @@
-﻿using SFML.System;
+﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
-using SFML.Graphics;
 
 namespace Nodex;
 
@@ -10,31 +10,38 @@ class TextBox : Node
 
     #region [ - - - FIELDS - - - ]
 
-    public Vector2f Size   = new(300, 25);
+    public Vector2f Size = new(300, 25);
     public Vector2f Origin = new(0, 0);
 
     public string Text = "";
-    public int    MaximumCharacters = int.MaxValue;
+    public int MaximumCharacters = int.MaxValue;
+
+    public List<char> AllowedCharacters = [];
 
     public uint FontSize = 16;
-    public Font Font     = FontLoader.Instance.Fonts["RobotoMono"];
+    public Font Font = FontLoader.Instance.Fonts["RobotoMono"];
 
     public int OutlineThickness = -1;
 
-    public Color SelectedOutlineColor   = new(32, 32, 255);
+    public Color SelectedOutlineColor = new(32, 32, 255);
     public Color DeselectedOutlineColor = new(0, 0, 0, 0);
-    public Color FillColor              = new(16, 16, 16);
-    public Color IdleFillColor          = new(16, 16, 16);
-    public Color HoverFillColor         = new(16, 16, 16);
-    public Color ActiveFillColor        = new(32, 32, 32);
+    public Color FillColor = new(16, 16, 16);
+    public Color IdleFillColor = new(16, 16, 16);
+    public Color HoverFillColor = new(16, 16, 16);
+    public Color ActiveFillColor = new(32, 32, 32);
 
-    private bool      isSelected    = false;
-    private int       cursor        = 0;
-    private float     padding       = 8;
-    private const int BackspaceKey  = 8;
+    private bool isSelected = false;
+    private int cursor = 0;
+    private float padding = 8;
+    private const int BackspaceKey = 8;
+
+    private byte caretAlpha = 255;
+    private int caretTimer = 0;
+    private int caretMaxTime = 3000;
 
     private RectangleShape rectangleRenderer = new();
-    private Text           textRenderer = new();
+    private Text textRenderer = new();
+    private Text caretRenderer = new();
 
     #endregion
 
@@ -42,8 +49,8 @@ class TextBox : Node
 
     public override void Start()
     {
-        Window.KeyPressed         += OnKeyPressed;
-        Window.TextEntered        += OnTextEntered;
+        Window.KeyPressed += OnKeyPressed;
+        Window.TextEntered += OnTextEntered;
         Window.MouseButtonPressed += OnMouseClicked;
     }
 
@@ -53,12 +60,13 @@ class TextBox : Node
 
         DrawShape();
         DrawText();
+        DrawCaret();
     }
 
     public override void Destroy()
     {
-        Window.KeyPressed         -= OnKeyPressed;
-        Window.TextEntered        -= OnTextEntered;
+        Window.KeyPressed -= OnKeyPressed;
+        Window.TextEntered -= OnTextEntered;
         Window.MouseButtonPressed -= OnMouseClicked;
     }
 
@@ -66,12 +74,12 @@ class TextBox : Node
 
     private void DrawShape()
     {
-        rectangleRenderer.Position         = GlobalPosition;
-        rectangleRenderer.Size             = Size;
-        rectangleRenderer.Origin           = Origin;
+        rectangleRenderer.Position = GlobalPosition;
+        rectangleRenderer.Size = Size;
+        rectangleRenderer.Origin = Origin;
         rectangleRenderer.OutlineThickness = OutlineThickness;
-        rectangleRenderer.OutlineColor     = isSelected ? SelectedOutlineColor : DeselectedOutlineColor;
-        rectangleRenderer.FillColor        = FillColor;
+        rectangleRenderer.OutlineColor = isSelected ? SelectedOutlineColor : DeselectedOutlineColor;
+        rectangleRenderer.FillColor = FillColor;
 
         Window.Draw(rectangleRenderer);
     }
@@ -81,12 +89,36 @@ class TextBox : Node
         float x = (int)(GlobalPosition.X + padding - Origin.X);
         float y = (int)(GlobalPosition.Y + Size.Y / 10 - Origin.Y);
 
-        textRenderer.Position        = new(x, y);
-        textRenderer.CharacterSize   = FontSize;
+        textRenderer.Position = new(x, y);
+        textRenderer.CharacterSize = FontSize;
         textRenderer.DisplayedString = Text;
-        textRenderer.Font            = Font;
+        textRenderer.Font = Font;
 
         Window.Draw(textRenderer);
+    }
+
+    private void DrawCaret()
+    {
+        if (!isSelected)
+        {
+            return;
+        }
+
+        caretRenderer.DisplayedString = "|";
+        caretRenderer.Font = Font;
+        caretRenderer.CharacterSize = FontSize;
+        caretRenderer.Position = new(GlobalPosition.X + 10 * (cursor + 1), GlobalPosition.Y);
+        caretRenderer.FillColor = new(255, 255, 255, caretAlpha);
+
+        if (caretTimer > caretMaxTime)
+        {
+            caretAlpha = (byte)(caretAlpha == 255 ? 0 : 255);
+            caretTimer = 0;
+        }
+
+        caretTimer++;
+
+        Window.Draw(caretRenderer);
     }
 
     private bool IsMouseOver(Vector2f mousePosition)
@@ -126,6 +158,14 @@ class TextBox : Node
             default:
                 if (Text.Length < MaximumCharacters)
                 {
+                    if (AllowedCharacters.Count > 0)
+                    {
+                        if (!AllowedCharacters.Contains(e.Unicode[0]))
+                        {
+                            return;
+                        }
+                    }
+
                     Text = Text.Insert(cursor, e.Unicode);
                     cursor ++;
                 }
@@ -148,14 +188,14 @@ class TextBox : Node
             case Keyboard.Key.Right:
                 if (cursor < Text.Length)
                 {
-                    cursor ++;
+                    cursor++;
                 }
                 break;
 
             case Keyboard.Key.Left:
                 if (cursor > 0)
                 {
-                    cursor --;
+                    cursor--;
                 }
                 break;
 

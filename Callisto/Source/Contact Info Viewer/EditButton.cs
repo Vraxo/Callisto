@@ -15,7 +15,7 @@ class EditButton : Button
     {
         base.Start();
 
-        Text          = "Edit";
+        Text = "Edit";
         actionOnClick = GoToContactEditor;
     }
 

@@ -1,6 +1,5 @@
 ﻿using Callisto.DeletionDialogNode;
 using Nodex;
-using SFML.Graphics;
 using SFML.Window;
 using Window = Nodex.Window;
 

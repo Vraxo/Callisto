@@ -1,8 +1,8 @@
-﻿using Nodex;
-using SFML.Window;
-using Callisto.AvatarDisplayerNode;
+﻿using Callisto.AvatarDisplayerNode;
 using Callisto.ContactInfoViewerNode;
 using Callisto.NotificationDialogNode;
+using Nodex;
+using SFML.Window;
 using Window = Nodex.Window;
 
 namespace Callisto.ContactEditorNode.ButtonsNode;
@@ -19,10 +19,10 @@ class OkButton : Button
     {
         base.Start();
 
-        Text          = "OK";
+        Text = "OK";
         actionOnClick = ConfirmContact;
-        Origin        = Size / 2;
-        TextOrigin    = Size / 2;
+        Origin = Size / 2;
+        TextOrigin = Size / 2;
     }
 
     public override void Update()
@@ -90,6 +90,8 @@ class OkButton : Button
 
             SaveAvatar();
 
+            Console.WriteLine();
+
             ContactsContainer.Instance.Save();
             ContactsContainer.Instance.Load();
 
@@ -133,7 +135,8 @@ class OkButton : Button
         if (imagePath != "")
         {
             string extension = Path.GetExtension(imagePath);
-            File.Copy(imagePath, $"Resources/Avatars/{ContactsContainer.Instance.Contacts[ContactIndex].Id}{extension}");
+            File.Copy(imagePath, $"Resources/Avatars/{ContactsContainer.Instance.Contacts[ContactIndex].Id}{extension}", true);
+            TextureLoader.Instance.Textures[ContactsContainer.Instance.Contacts[ContactIndex].Id.ToString()] = new(imagePath);
         }
     }
 }

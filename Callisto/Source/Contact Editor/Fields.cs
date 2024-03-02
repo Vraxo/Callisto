@@ -5,20 +5,20 @@ namespace Callisto.ContactEditorNode;
 
 class Fields : Node
 {
+    #region [ - - - Fields - - - ]
+
     public int ContactIndex = -1;
-
     public List<ContactInfoField> NumberFields = [];
-
-    private readonly int maximumCharacters = 29;
-
+    public int MaximumCharacters = 29;
+    
     private List<ContactInfoField> fields = [];
-
     private ContactInfoField firstNameField;
     private ContactInfoField lastNameField;
-
     private TextBox firstNameTextBox;
     private TextBox lastNameTextBox;
-    private List<TextBox> numberTextBoxes = [];
+    private List<TextBox> phoneNumberTextBoxes = [];
+
+    #endregion
 
     // Public
 
@@ -27,14 +27,14 @@ class Fields : Node
         base.Start();
 
         CreateNameFields();
-        CreateNumberFields();
+        CreatePhoneNumberFields();
         LoadContactInfoIntoFields();
     }
 
     public override void Update()
     {
         base.Update();
-        
+
         UpdateFields();
         HandleExtraNumberFields();
     }
@@ -47,10 +47,11 @@ class Fields : Node
 
         Contact newContact = new()
         {
-            FirstName    = firstName,
-            LastName     = lastName,
+            Id = ContactIndex == -1 ? new Random().Next() : ContactsContainer.Instance.Contacts[ContactIndex].Id,
+            FirstName = firstName,
+            LastName = lastName,
             PhoneNumbers = phoneNumbers,
-            HasAvatar    = GetParent<ContactEditor>().GetChild<AvatarDisplayer>().ImagePath != ""
+            HasAvatar = GetParent<ContactEditor>().GetChild<AvatarDisplayer>().ImagePath != ""
         };
 
         return newContact;
@@ -67,19 +68,19 @@ class Fields : Node
         lastNameTextBox = lastNameField.GetChild<TextBox>();
     }
 
-    private void CreateNumberFields()
+    private void CreatePhoneNumberFields()
     {
         if (ContactIndex != -1)
         {
-            CreateExistingNumberFields();
+            CreateExistingPhoneNumberFields();
         }
         else
         {
-            CreateNewNumberField();
+            CreateNewPhoneNumberField();
         }
     }
 
-    private void CreateExistingNumberFields()
+    private void CreateExistingPhoneNumberFields()
     {
         int phoneNumbersCount = ContactsContainer.Instance.Contacts[ContactIndex].PhoneNumbers.Count;
 
@@ -87,15 +88,16 @@ class Fields : Node
         {
             ContactInfoField numberField = CreateField($"Phone Number {i + 1}");
             NumberFields.Add(numberField);
-            numberTextBoxes.Add(numberField.GetChild<TextBox>());
+            phoneNumberTextBoxes.Add(numberField.GetChild<TextBox>());
+            phoneNumberTextBoxes.Last().AllowedCharacters = "0123456789".ToCharArray().ToList();
         }
     }
 
-    private void CreateNewNumberField()
+    private void CreateNewPhoneNumberField()
     {
         ContactInfoField numberField = CreateField($"Phone Number 1");
         NumberFields.Add(numberField);
-        numberTextBoxes.Add(numberField.GetChild<TextBox>());
+        phoneNumberTextBoxes.Add(numberField.GetChild<TextBox>());
     }
 
     private ContactInfoField CreateField(string labelText)
@@ -107,7 +109,7 @@ class Fields : Node
 
         AddChild(field, labelText.Replace(" ", ""));
         fields.Add(field);
-        field.GetChild<TextBox>().MaximumCharacters = maximumCharacters;
+        field.GetChild<TextBox>().MaximumCharacters = MaximumCharacters;
 
         return field;
     }
@@ -137,14 +139,14 @@ class Fields : Node
 
             for (int i = 0; i < contact.PhoneNumbers.Count; i++)
             {
-                numberTextBoxes[i].Text = contact.PhoneNumbers[i];
+                phoneNumberTextBoxes[i].Text = contact.PhoneNumbers[i];
             }
         }
     }
 
     private List<string> GetPhoneNumbers()
     {
-        List<string> phoneNumbers = numberTextBoxes
+        List<string> phoneNumbers = phoneNumberTextBoxes
             .Select(textBox => textBox.Text.Trim())
             .Where(text => !string.IsNullOrWhiteSpace(text))
             .ToList();
@@ -162,11 +164,11 @@ class Fields : Node
 
     private void DeleteExtraNumberFields()
     {
-        for (int i = numberTextBoxes.Count - 1; i > 0; i --)
+        for (int i = phoneNumberTextBoxes.Count - 1; i > 0; i--)
         {
-            if (numberTextBoxes[i].Text.Length == 0)
+            if (phoneNumberTextBoxes[i].Text.Length == 0)
             {
-                if (numberTextBoxes[i - 1].Text.Length == 0)
+                if (phoneNumberTextBoxes[i - 1].Text.Length == 0)
                 {
                     RemoveFieldAndTextBoxAt(i);
                 }
@@ -179,16 +181,18 @@ class Fields : Node
         Children.Remove(NumberFields[index]);
         fields.Remove(NumberFields[index]);
         NumberFields.RemoveAt(index);
-        numberTextBoxes.RemoveAt(index);
+        phoneNumberTextBoxes.RemoveAt(index);
     }
 
     private void CreateExtraNumberFields()
     {
-        if (!string.IsNullOrWhiteSpace(numberTextBoxes.Last().Text))
+        if (!string.IsNullOrWhiteSpace(phoneNumberTextBoxes.Last().Text))
         {
-            ContactInfoField numberField = CreateField($"Phone Number {NumberFields.Count + 1}");
+            string labelText = $"Phone Number {NumberFields.Count + 1}";
+
+            ContactInfoField numberField = CreateField(labelText);
             NumberFields.Add(numberField);
-            numberTextBoxes.Add(numberField.GetChild<TextBox>());
+            phoneNumberTextBoxes.Add(numberField.GetChild<TextBox>());
         }
     }
 }

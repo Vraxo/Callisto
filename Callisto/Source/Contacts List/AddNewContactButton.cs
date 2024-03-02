@@ -1,5 +1,5 @@
-﻿using Nodex;
-using Callisto.ContactEditorNode;
+﻿using Callisto.ContactEditorNode;
+using Nodex;
 
 namespace Callisto.ContactsListNode;
 
@@ -11,8 +11,8 @@ class AddNewContactButton : Button
     {
         base.Start();
 
-        Text          = "Add New Contact";
-        Size          = new(Window.Size.X, 40);
+        Text = "Add New Contact";
+        Size = new(Window.Size.X, 40);
         actionOnClick = GoToContactEditor;
     }
 
