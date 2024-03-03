@@ -23,6 +23,6 @@ class TextureLoader
 
     private TextureLoader()
     {
-        Textures.Add("Avatar", new("Resources/Avatar.jpg"));
+        Textures.Add("Avatar", new("Resources/DefaultAvatar.jpg"));
     }
 }

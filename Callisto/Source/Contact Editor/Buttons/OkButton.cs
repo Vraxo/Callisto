@@ -134,9 +134,17 @@ class OkButton : Button
 
         if (imagePath != "")
         {
+            if (!Directory.Exists("Resouces/Avatars"))
+            {
+                Directory.CreateDirectory("Resources/Avatars");
+            }
+
             string extension = Path.GetExtension(imagePath);
-            File.Copy(imagePath, $"Resources/Avatars/{ContactsContainer.Instance.Contacts[ContactIndex].Id}{extension}", true);
-            TextureLoader.Instance.Textures[ContactsContainer.Instance.Contacts[ContactIndex].Id.ToString()] = new(imagePath);
+            string contactId = ContactsContainer.Instance.Contacts[ContactIndex].Id.ToString();
+            string avatarPath = $"Resources/Avatars/{contactId}{extension}";
+
+            File.Copy(imagePath, avatarPath, true);
+            TextureLoader.Instance.Textures[contactId] = new(imagePath);
         }
     }
 }

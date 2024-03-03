@@ -116,7 +116,7 @@ class TextBox : Node
             caretTimer = 0;
         }
 
-        caretTimer++;
+        caretTimer ++;
 
         Window.Draw(caretRenderer);
     }
