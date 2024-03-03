@@ -2,7 +2,7 @@
 
 namespace Nodex;
 
-class Scroller : Node
+class VerticalViewScroller : Node
 {
     // Fields
 

@@ -89,7 +89,7 @@ class Node
         }
     }
 
-    // Get special nodes
+    // Get special nodeNames
 
     public T GetParent<T>() where T : Node
     {
@@ -111,7 +111,34 @@ class Node
         return (T)Window.RootNode;
     }
 
+    public T? GetNode<T>(string path) where T : Node
+    {
+        string[] nodeNames = path.Split('/');
+
+        Node currentNode = GetRootNode();
+
+        for (int i = 0; i < nodeNames.Length; i ++)
+        {
+            currentNode = currentNode.GetChild(nodeNames[i]);
+        }
+
+        return (T)currentNode;
+    }
+
     // Get child
+
+    public Node GetChild(string name)
+    {
+        foreach (Node child in Children)
+        {
+            if (child.Name == name)
+            {
+                return child;
+            }
+        }
+
+        return null;
+    }
 
     public T GetChild<T>(string name) where T : Node
     {

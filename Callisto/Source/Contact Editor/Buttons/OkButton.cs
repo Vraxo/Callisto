@@ -130,7 +130,7 @@ class OkButton : Button
 
     private void SaveAvatar()
     {
-        string imagePath = GetParent<Buttons>().GetParent<ContactEditor>().GetChild<AvatarDisplayer>().ImagePath;
+        string imagePath = GetNode<AvatarDisplayer>("AvatarDisplayer").ImagePath;
 
         if (imagePath != "")
         {

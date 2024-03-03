@@ -1,6 +1,6 @@
 ﻿namespace Callisto.ContactEditorNode;
 
-class Scroller : Nodex.Scroller
+class Scroller : Nodex.VerticalViewScroller
 {
     // Fields
 

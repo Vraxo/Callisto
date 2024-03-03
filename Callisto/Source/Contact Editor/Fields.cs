@@ -51,7 +51,7 @@ class Fields : Node
             FirstName = firstName,
             LastName = lastName,
             PhoneNumbers = phoneNumbers,
-            HasAvatar = GetParent<ContactEditor>().GetChild<AvatarDisplayer>().ImagePath != ""
+            HasAvatar = GetNode<AvatarDisplayer>("AvatarDisplayer").ImagePath != null
         };
 
         return newContact;

@@ -1,6 +1,6 @@
 ﻿namespace Callisto.ContactsListNode;
 
-class Scroller : Nodex.Scroller
+class Scroller : Nodex.VerticalViewScroller
 {
     // Public
 
