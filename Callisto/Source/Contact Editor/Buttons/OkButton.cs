@@ -30,7 +30,7 @@ class OkButton : Button
         base.Update();
 
         float x = Window.Size.X / 2F;
-        float y = GetRootNode<ContactEditor>().GetChild<Fields>().NumberFields.Count * 50 + Window.Size.Y * 0.8F;
+        float y = GetNode<PhoneNumberFields>("Fields/PhoneNumberFields").Fields.Count * 50 + Window.Size.Y * 0.8F;
 
         Position = new(x, y);
     }
