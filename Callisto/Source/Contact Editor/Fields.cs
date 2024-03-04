@@ -86,10 +86,7 @@ class Fields : Node
 
         for (int i = 0; i < phoneNumbersCount + 1; i ++)
         {
-            ContactInfoField numberField = CreateField($"Phone Number {i + 1}");
-            NumberFields.Add(numberField);
-            phoneNumberTextBoxes.Add(numberField.GetChild<TextBox>());
-            phoneNumberTextBoxes.Last().AllowedCharacters = "0123456789".ToCharArray().ToList();
+            CreateNumberField($"Phone Number {i + 1}");
         }
     }
 
@@ -188,11 +185,15 @@ class Fields : Node
     {
         if (!string.IsNullOrWhiteSpace(phoneNumberTextBoxes.Last().Text))
         {
-            string labelText = $"Phone Number {NumberFields.Count + 1}";
-
-            ContactInfoField numberField = CreateField(labelText);
-            NumberFields.Add(numberField);
-            phoneNumberTextBoxes.Add(numberField.GetChild<TextBox>());
+            CreateNumberField($"Phone Number {NumberFields.Count + 1}");
         }
+    }
+
+    private void CreateNumberField(string labelText)
+    {
+        ContactInfoField numberField = CreateField(labelText);
+        NumberFields.Add(numberField);
+        phoneNumberTextBoxes.Add(numberField.GetChild<TextBox>());
+        phoneNumberTextBoxes.Last().AllowedCharacters = "0123456789".ToCharArray().ToList();
     }
 }

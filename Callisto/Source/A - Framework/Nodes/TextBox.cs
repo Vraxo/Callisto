@@ -37,7 +37,7 @@ class TextBox : Node
 
     private byte caretAlpha = 255;
     private int caretTimer = 0;
-    private int caretMaxTime = 3000;
+    private int caretMaxTime = 2000;
 
     private RectangleShape rectangleRenderer = new();
     private Text textRenderer = new();
@@ -99,16 +99,15 @@ class TextBox : Node
 
     private void DrawCaret()
     {
-        if (!isSelected)
-        {
-            return;
-        }
+        if (!isSelected) return;
 
         caretRenderer.DisplayedString = "|";
         caretRenderer.Font = Font;
         caretRenderer.CharacterSize = FontSize;
-        caretRenderer.Position = new(GlobalPosition.X + 10 * (cursor + 1), GlobalPosition.Y);
+        caretRenderer.Position = new(GlobalPosition.X + (textRenderer.GetLocalBounds().Width / Text.Length) * (cursor + 1), GlobalPosition.Y);
         caretRenderer.FillColor = new(255, 255, 255, caretAlpha);
+
+        Console.WriteLine(textRenderer.GetLocalBounds().Width);
 
         if (caretTimer > caretMaxTime)
         {
@@ -168,6 +167,7 @@ class TextBox : Node
 
                     Text = Text.Insert(cursor, e.Unicode);
                     cursor ++;
+                    caretAlpha = 255;
                 }
                 break;
 
@@ -188,14 +188,14 @@ class TextBox : Node
             case Keyboard.Key.Right:
                 if (cursor < Text.Length)
                 {
-                    cursor++;
+                    cursor ++;
                 }
                 break;
 
             case Keyboard.Key.Left:
                 if (cursor > 0)
                 {
-                    cursor--;
+                    cursor --;
                 }
                 break;
 
