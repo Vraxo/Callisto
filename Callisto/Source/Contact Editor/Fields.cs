@@ -47,14 +47,15 @@ class Fields : Node
         string firstName = firstNameTextBox.Text;
         string lastName = lastNameTextBox.Text;
         List<string> phoneNumbers = GetChild<PhoneNumberFields>().GetPhoneNumbers();
+        int id = ContactIndex == -1 ? Contact.GenerateUniqueId() : ContactsContainer.Instance.Contacts[ContactIndex].Id;
 
         Contact newContact = new()
         {
-            Id = ContactIndex == -1 ? new Random().Next() : ContactsContainer.Instance.Contacts[ContactIndex].Id,
+            Id = id,
             FirstName = firstName,
             LastName = lastName,
             PhoneNumbers = phoneNumbers,
-            HasAvatar = GetNode<AvatarDisplayer>("AvatarDisplayer").ImagePath != null
+            HasAvatar = GetNode<AvatarDisplayer>("AvatarDisplayer").ImagePath != ""
         };
 
         return newContact;

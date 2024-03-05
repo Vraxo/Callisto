@@ -1,31 +1,19 @@
-* set dyanmic size and position using parents instead of making new classes
-* singletons / persistant nodes?
 * inherit size?
-* windows as nodes ?
-
 
 
 //
 
+make sure id is unique
+move getcontact from fields to contacteditor
+properly center text vertically
+
 reset view
-return node in addchild (contacts list)
 center avatar in editor
 
 optimize shapes with properties?
 
-avoid full reload
-cache textures in resources
-
 blinker for textboxes
 better textboxes (delete, move, cursor?)
-more precise scrollers (contactviewpage, contactsloader)
-
-properly center text vertically
-
-make sure id is unique
-
-move getcontact from fields to contacteditor
-
-improve get node
+more precise scrollers (contactviewpage, contacteditor)
 
 refactor allowed character sets

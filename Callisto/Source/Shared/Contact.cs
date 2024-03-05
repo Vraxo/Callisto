@@ -16,4 +16,27 @@ class Contact
     {
         return FirstName + " " + LastName;
     }
+
+    // Static
+
+    public static int GenerateUniqueId()
+    {
+        List<int> ids = [];
+
+        foreach (Contact contact in ContactsContainer.Instance.Contacts)
+        {
+            ids.Add(contact.Id);
+        }
+
+        Random random = new();
+
+        int id = random.Next();
+
+        while (ids.Contains(id))
+        {
+            id = random.Next();
+        }
+
+        return id;
+    }
 }
