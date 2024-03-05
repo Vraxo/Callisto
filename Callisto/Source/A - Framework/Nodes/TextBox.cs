@@ -107,8 +107,6 @@ class TextBox : Node
         caretRenderer.Position = new(GlobalPosition.X + (textRenderer.GetLocalBounds().Width / Text.Length) * (cursor + 1), GlobalPosition.Y);
         caretRenderer.FillColor = new(255, 255, 255, caretAlpha);
 
-        Console.WriteLine(textRenderer.GetLocalBounds().Width);
-
         if (caretTimer > caretMaxTime)
         {
             caretAlpha = (byte)(caretAlpha == 255 ? 0 : 255);

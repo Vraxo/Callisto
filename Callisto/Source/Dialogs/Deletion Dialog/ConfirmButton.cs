@@ -15,7 +15,7 @@ class ConfirmButton : Button
     {
         base.Start();
 
-        contactEditor = Program.MainWindow.RootNode.GetRootNode<ContactEditor>();
+        contactEditor = Program.MainWindow.RootNode.GetNode<ContactEditor>("");
 
         Text = "Confirm";
         Position = new(25, 75);

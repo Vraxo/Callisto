@@ -101,21 +101,16 @@ class Node
         return (T)this;
     }
 
-    public Node GetRootNode()
-    {
-        return Window.RootNode;
-    }
-
-    public T? GetRootNode<T>() where T : Node
-    {
-        return (T)Window.RootNode;
-    }
-
     public T? GetNode<T>(string path) where T : Node
     {
+        if (path == "")
+        {
+            return (T)Window.RootNode;
+        }
+
         string[] nodeNames = path.Split('/');
 
-        Node currentNode = GetRootNode();
+        Node currentNode = Window.RootNode;
 
         for (int i = 0; i < nodeNames.Length; i ++)
         {

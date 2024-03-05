@@ -39,7 +39,7 @@ class OkButton : Button
 
     private void ConfirmContact()
     {
-        Contact newContact = GetRootNode<ContactEditor>().GetChild<Fields>().GetContact();
+        Contact newContact = GetNode<ContactEditor>("").GetContact();
 
         if (GetParent<Buttons>().ContactIndex == -1)
         {

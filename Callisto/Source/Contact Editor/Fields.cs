@@ -10,12 +10,12 @@ class Fields : Node
     public int ContactIndex = -1;
     public List<ContactInfoField> NumberFields = [];
     public int MaximumCharacters = 29;
-    
+    public TextBox FirstNameTextBox;
+    public TextBox LastNameTextBox;
+
     private List<ContactInfoField> fields = [];
     private ContactInfoField firstNameField;
     private ContactInfoField lastNameField;
-    private TextBox firstNameTextBox;
-    private TextBox lastNameTextBox;
 
     #endregion
 
@@ -42,24 +42,7 @@ class Fields : Node
         UpdateFields();
     }
 
-    public Contact GetContact()
-    {
-        string firstName = firstNameTextBox.Text;
-        string lastName = lastNameTextBox.Text;
-        List<string> phoneNumbers = GetChild<PhoneNumberFields>().GetPhoneNumbers();
-        int id = ContactIndex == -1 ? Contact.GenerateUniqueId() : ContactsContainer.Instance.Contacts[ContactIndex].Id;
 
-        Contact newContact = new()
-        {
-            Id = id,
-            FirstName = firstName,
-            LastName = lastName,
-            PhoneNumbers = phoneNumbers,
-            HasAvatar = GetNode<AvatarDisplayer>("AvatarDisplayer").ImagePath != ""
-        };
-
-        return newContact;
-    }
 
     // Create nodes
 
@@ -72,7 +55,7 @@ class Fields : Node
 
         AddChild(firstNameField);
         fields.Add(firstNameField);
-        firstNameTextBox = firstNameField.GetChild<TextBox>();
+        FirstNameTextBox = firstNameField.GetChild<TextBox>();
 
         lastNameField = new ContactInfoField()
         {
@@ -81,14 +64,14 @@ class Fields : Node
 
         AddChild(lastNameField);
         fields.Add(lastNameField);
-        lastNameTextBox = lastNameField.GetChild<TextBox>();
+        LastNameTextBox = lastNameField.GetChild<TextBox>();
     }
 
     // Private
 
     private void UpdateFields()
     {
-        float fieldX = (Window.Size.X / 2) - (firstNameTextBox.Size.X / 2);
+        float fieldX = (Window.Size.X / 2) - (FirstNameTextBox.Size.X / 2);
 
         for (int i = 0; i < fields.Count; i++)
         {
@@ -104,8 +87,8 @@ class Fields : Node
         {
             Contact contact = ContactsContainer.Instance.Contacts[index];
 
-            firstNameTextBox.Text = contact.FirstName;
-            lastNameTextBox.Text = contact.LastName;
+            FirstNameTextBox.Text = contact.FirstName;
+            LastNameTextBox.Text = contact.LastName;
         }
     }
 }

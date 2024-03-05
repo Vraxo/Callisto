@@ -17,3 +17,5 @@ better textboxes (delete, move, cursor?)
 more precise scrollers (contactviewpage, contacteditor)
 
 refactor allowed character sets
+
+GetRootNode -> GetNode ?
