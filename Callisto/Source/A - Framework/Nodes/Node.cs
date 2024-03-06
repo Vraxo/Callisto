@@ -185,6 +185,7 @@ class Node
 
     public void ChangeScene(Node node)
     {
+        Window.ResetView();
         Window.RootNode.Destroy();
         Window.RootNode = node;
         node.Name = node.GetType().Name;

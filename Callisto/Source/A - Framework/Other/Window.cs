@@ -35,6 +35,12 @@ class Window : RenderWindow
         Display();
     }
 
+    public void ResetView()
+    {
+        FloatRect visibleArea = new(0, 0, Size.X, Size.Y);
+        SetView(new(visibleArea));
+    }
+
     // Events
 
     private void OnClosed(object? sender, EventArgs e)

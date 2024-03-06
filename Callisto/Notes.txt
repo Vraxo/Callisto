@@ -1,10 +1,9 @@
 * inherit size?
 
 
+
 //
 
-make sure id is unique
-move getcontact from fields to contacteditor
 properly center text vertically
 
 reset view

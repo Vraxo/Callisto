@@ -1,4 +1,5 @@
 ﻿using Nodex;
+using SFML.Graphics;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -23,7 +24,11 @@ class ContactsContainer
         }
     }
 
-    private ContactsContainer() { }
+    private ContactsContainer() 
+    {
+        Load();
+        LoadAvatarTextures();
+    }
 
     // Public
 
@@ -54,8 +59,6 @@ class ContactsContainer
             var yamlContacts = deserializer.Deserialize<List<Contact>>(reader);
             Contacts = yamlContacts ?? [];
         }
-
-        LoadAvatarTextures();
     }
 
     public void Save()
@@ -95,16 +98,35 @@ class ContactsContainer
     {
         foreach (Contact contact in Contacts)
         {
-            if (contact.HasAvatar)
-            {
-                if (!TextureLoader.Instance.Textures.ContainsKey(contact.Id.ToString()))
-                {
-                    string id = contact.Id.ToString();
-                    string path = $"Resources/Avatars/{contact.Id}.jpg";
+            string id = contact.Id.ToString();
 
-                    TextureLoader.Instance.Textures.Add(id, new(path));
+            if (!contact.HasAvatar || TextureLoader.Instance.Textures.ContainsKey(id))
+                continue;
+
+            if (!TextureLoader.Instance.Textures.ContainsKey(id))
+            {
+                string path = $"Resources/Avatars/{contact.Id}.jpg";
+
+                if (File.Exists(path))
+                {
+                    try
+                    {
+                        TextureLoader.Instance.Textures.Add(id, new(path));
+                    }
+                    catch
+                    {
+                        contact.HasAvatar = false;
+                    }
                 }
+                else
+                {
+                    contact.HasAvatar = false;
+                }
+
             }
         }
+        
+        Save();
+        Load();
     }
 }
