@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
+using View = SFML.Graphics.View;
 
 namespace Nodex;
 
@@ -41,6 +42,28 @@ class Window : RenderWindow
         SetView(new(visibleArea));
     }
 
+    // Private
+
+    private void AdjustView()
+    {
+        View oldView = GetView();
+        var yy = MathF.Abs((Size.Y / 2) - oldView.Center.Y);
+
+        float remainder = yy % 50;
+
+        if (remainder < 25)
+        {
+            yy -= remainder;
+        }
+        else
+        {
+            yy += 50 - remainder;
+        }
+
+        FloatRect visibleArea = new(0, yy, Size.X, Size.Y);
+        SetView(new(visibleArea));
+    }
+
     // Events
 
     private void OnClosed(object? sender, EventArgs e)
@@ -61,7 +84,6 @@ class Window : RenderWindow
 
         Size = new((uint)x, (uint)y);
 
-        FloatRect visibleArea = new(0, 0, Size.X, Size.Y);
-        SetView(new(visibleArea));
+        AdjustView();
     }
 }

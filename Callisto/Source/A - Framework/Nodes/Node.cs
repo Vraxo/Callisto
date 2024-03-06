@@ -188,6 +188,7 @@ class Node
         Window.ResetView();
         Window.RootNode.Destroy();
         Window.RootNode = node;
+
         node.Name = node.GetType().Name;
         node.Window = Window;
         node.Start();
