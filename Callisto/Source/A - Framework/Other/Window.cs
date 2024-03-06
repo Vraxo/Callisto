@@ -41,6 +41,11 @@ class Window : RenderWindow
     {
         RootNode.Destroy();
         Close();
+
+        if (Program.MainWindow == this)
+        {
+            Environment.Exit(0);
+        }
     }
 
     private void OnResized(object? sender, SizeEventArgs e)

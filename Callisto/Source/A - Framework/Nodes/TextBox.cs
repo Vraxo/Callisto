@@ -1,6 +1,6 @@
-﻿using SFML.Graphics;
-using SFML.System;
+﻿using SFML.System;
 using SFML.Window;
+using SFML.Graphics;
 
 namespace Nodex;
 
@@ -28,16 +28,19 @@ class TextBox : Node
     public Color FillColor = new(16, 16, 16);
     public Color IdleFillColor = new(16, 16, 16);
     public Color HoverFillColor = new(16, 16, 16);
-    public Color ActiveFillColor = new(32, 32, 32);
 
     private bool isSelected = false;
-    private int cursor = 0;
+    private int caretX = 0;
     private float padding = 8;
     private const int BackspaceKey = 8;
 
-    private byte caretAlpha = 255;
     private int caretTimer = 0;
+    private const int CaretMinTime = 0;
     private int caretMaxTime = 2000;
+
+    private byte caretAlpha = 255;
+    private const int CaretMinAlpha = 0;
+    private const int CaretMaxAlpha = 255;
 
     private RectangleShape rectangleRenderer = new();
     private Text textRenderer = new();
@@ -70,7 +73,7 @@ class TextBox : Node
         Window.MouseButtonPressed -= OnMouseClicked;
     }
 
-    // Private
+    // Drawing
 
     private void DrawShape()
     {
@@ -104,19 +107,54 @@ class TextBox : Node
         caretRenderer.DisplayedString = "|";
         caretRenderer.Font = Font;
         caretRenderer.CharacterSize = FontSize;
-        caretRenderer.Position = new(GlobalPosition.X + (textRenderer.GetLocalBounds().Width / Text.Length) * (cursor + 1), GlobalPosition.Y);
+
+        float characterWidth = textRenderer.GetLocalBounds().Width / Text.Length;
+        float x = GlobalPosition.X + padding + characterWidth * caretX;
+        float y = GlobalPosition.Y;
+
+        caretRenderer.Position = new(x, y);
         caretRenderer.FillColor = new(255, 255, 255, caretAlpha);
 
         if (caretTimer > caretMaxTime)
         {
-            caretAlpha = (byte)(caretAlpha == 255 ? 0 : 255);
-            caretTimer = 0;
+            caretAlpha = (byte)(caretAlpha == CaretMaxAlpha ? CaretMinAlpha : CaretMaxAlpha);
+            caretTimer = CaretMinTime;
         }
 
         caretTimer ++;
 
         Window.Draw(caretRenderer);
     }
+
+    // Operations
+
+    private void InsertCharacter(char character)
+    {
+        if (Text.Length >= MaximumCharacters) return;
+
+        if (AllowedCharacters.Count > 0)
+        {
+            if (!AllowedCharacters.Contains(character))
+            {
+                return;
+            }
+        }
+
+        Text = Text.Insert(caretX, character.ToString());
+        caretX++;
+        caretAlpha = CaretMaxAlpha;
+    }
+
+    private void DeleteLastCharacter()
+    {
+        if (Text.Length > 0)
+        {
+            Text = Text[..^1];
+            caretX--;
+        }
+    }
+
+    // Private
 
     private bool IsMouseOver(Vector2f mousePosition)
     {
@@ -138,7 +176,7 @@ class TextBox : Node
         if (IsMouseOver(new(e.X, e.Y)))
         {
             isSelected = true;
-            cursor = Text.Length;
+            caretX = Text.Length;
         }
         else
         {
@@ -150,31 +188,16 @@ class TextBox : Node
     {
         if (!isSelected) return;
 
-        switch (e.Unicode[0])
+        char unicode = e.Unicode[0];
+
+        switch (unicode)
         {
             default:
-                if (Text.Length < MaximumCharacters)
-                {
-                    if (AllowedCharacters.Count > 0)
-                    {
-                        if (!AllowedCharacters.Contains(e.Unicode[0]))
-                        {
-                            return;
-                        }
-                    }
-
-                    Text = Text.Insert(cursor, e.Unicode);
-                    cursor ++;
-                    caretAlpha = 255;
-                }
+                InsertCharacter(unicode);
                 break;
 
             case (char)BackspaceKey:
-                if (Text.Length > 0)
-                {
-                    Text = Text[..^1];
-                    cursor --;
-                }
+                DeleteLastCharacter();
                 break;
         }
     }
@@ -184,16 +207,16 @@ class TextBox : Node
         switch (e.Code)
         {
             case Keyboard.Key.Right:
-                if (cursor < Text.Length)
+                if (caretX < Text.Length)
                 {
-                    cursor ++;
+                    caretX ++;
                 }
                 break;
 
             case Keyboard.Key.Left:
-                if (cursor > 0)
+                if (caretX > 0)
                 {
-                    cursor --;
+                    caretX --;
                 }
                 break;
 
