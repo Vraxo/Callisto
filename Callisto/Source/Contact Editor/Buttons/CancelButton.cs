@@ -12,7 +12,7 @@ class CancelButton : Button
         base.Start();
 
         Text = "Cancel";
-        TextColor = Color.Red;
+        Style.TextColor = Color.Red;
         actionOnClick = CancelEdit;
     }
 

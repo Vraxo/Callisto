@@ -1,20 +1,16 @@
+
+
 * inherit size?
 
 
 
 //
 
-properly center text vertically
-
-reset view
-center avatar in editor
-
-optimize shapes with properties?
-
 blinker for textboxes
 better textboxes (delete, move, cursor?)
 more precise scrollers (contactviewpage, contacteditor)
-
+center avatar in editor
 refactor allowed character sets
-
-GetRootNode -> GetNode ?
+add support for png
+properly center text vertically
+optimize shapes with properties?

@@ -39,7 +39,7 @@ class CircleButton : Nodex.CircleButton
         {
             string extension = Path.GetExtension(imagePath);
 
-            if (extension == ".png" || extension == ".jpg")
+            if (extension == ".jpg")
             {
                 GetNode<CircleSprite>("AvatarDisplayer/CircleSprite").Texture = new(imagePath);
                 GetParent<AvatarDisplayer>().ImagePath = imagePath;

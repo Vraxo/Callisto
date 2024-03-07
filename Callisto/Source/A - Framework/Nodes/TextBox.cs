@@ -52,9 +52,7 @@ class TextBox : Node
 
     public override void Start()
     {
-        Window.KeyPressed += OnKeyPressed;
-        Window.TextEntered += OnTextEntered;
-        Window.MouseButtonPressed += OnMouseClicked;
+        ConnectToEvents();
     }
 
     public override void Update()
@@ -68,9 +66,21 @@ class TextBox : Node
 
     public override void Destroy()
     {
-        Window.KeyPressed -= OnKeyPressed;
-        Window.TextEntered -= OnTextEntered;
-        Window.MouseButtonPressed -= OnMouseClicked;
+        DisconnectFromEvents();
+    }
+
+    public override void Activate()
+    {
+        base.Activate();
+
+        ConnectToEvents();
+    }
+
+    public override void Deactivate()
+    {
+        base.Deactivate();
+
+        DisconnectFromEvents();
     }
 
     // Drawing
@@ -141,7 +151,7 @@ class TextBox : Node
         }
 
         Text = Text.Insert(caretX, character.ToString());
-        caretX++;
+        caretX ++;
         caretAlpha = CaretMaxAlpha;
     }
 
@@ -167,6 +177,22 @@ class TextBox : Node
         bool matchY2 = mousePosition.Y < GlobalPosition.Y + Size.Y;
 
         return matchX1 && matchX2 && matchY1 && matchY2;
+    }
+
+    // Event connection
+
+    private void ConnectToEvents()
+    {
+        Window.KeyPressed += OnKeyPressed;
+        Window.TextEntered += OnTextEntered;
+        Window.MouseButtonPressed += OnMouseClicked;
+    }
+
+    private void DisconnectFromEvents()
+    {
+        Window.KeyPressed -= OnKeyPressed;
+        Window.TextEntered -= OnTextEntered;
+        Window.MouseButtonPressed -= OnMouseClicked;
     }
 
     // Events

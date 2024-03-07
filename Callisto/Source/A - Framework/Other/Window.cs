@@ -1,5 +1,5 @@
-﻿using SFML.Graphics;
-using SFML.Window;
+﻿using SFML.Window;
+using SFML.Graphics;
 using View = SFML.Graphics.View;
 
 namespace Nodex;
@@ -47,20 +47,21 @@ class Window : RenderWindow
     private void AdjustView()
     {
         View oldView = GetView();
-        var yy = MathF.Abs((Size.Y / 2) - oldView.Center.Y);
+        
+        float y = MathF.Abs((Size.Y / 2) - oldView.Center.Y);
 
-        float remainder = yy % 50;
+        float remainder = y % 50;
 
         if (remainder < 25)
         {
-            yy -= remainder;
+            y -= remainder;
         }
         else
         {
-            yy += 50 - remainder;
+            y += 50 - remainder;
         }
 
-        FloatRect visibleArea = new(0, yy, Size.X, Size.Y);
+        FloatRect visibleArea = new(0, y, Size.X, Size.Y);
         SetView(new(visibleArea));
     }
 

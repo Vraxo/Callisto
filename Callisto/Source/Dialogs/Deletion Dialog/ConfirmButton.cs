@@ -21,7 +21,7 @@ class ConfirmButton : Button
         Position = new(25, 75);
         Size = new(100, 20);
         FontSize = 12;
-        TextColor = Color.Green;
+        Style.TextColor = Color.Green;
         actionOnClick = Confirm;
     }
 

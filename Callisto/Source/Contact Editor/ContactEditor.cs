@@ -35,7 +35,7 @@ class ContactEditor : Node
             IsClickable = true
         });
 
-        AddChild(new Scroller());
+        AddChild(new VerticalViewScroller());
     }
 
     public void DeleteContact()

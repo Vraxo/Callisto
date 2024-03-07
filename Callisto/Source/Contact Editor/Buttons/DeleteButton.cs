@@ -14,7 +14,7 @@ class DeleteButton : Button
         base.Start();
 
         Text = "Delete";
-        TextColor = Color.Red;
+        Style.TextColor = Color.Red;
         actionOnClick = GetConfirmationForContactDeletion;
     }
 

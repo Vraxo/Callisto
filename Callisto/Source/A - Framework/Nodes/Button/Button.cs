@@ -16,7 +16,6 @@ class Button : Node
     public Vector2f Size = new(100, 25);
     public Vector2f Origin = new(0, 0);
     public Vector2f TextOrigin = new(0, 0);
-    public float OutlineThickness = 0;
 
     // Text
 
@@ -26,12 +25,7 @@ class Button : Node
 
     // Colors
 
-    public Color TextColor = Color.White;
-    public Color OutlineColor = Color.Black;
-    public Color FillColor = new(64, 64, 64);
-    public Color HoverFillColor = new(96, 96, 96);
-    public Color IdleFillColor = new(64, 64, 64);
-    public Color ActiveFillColor = new(48, 48, 48);
+    public ButtonStyle Style = new();
 
     // Etc
 
@@ -86,9 +80,9 @@ class Button : Node
         rectangleRenderer.Position = GlobalPosition;
         rectangleRenderer.Size = Size;
         rectangleRenderer.Origin = Origin;
-        rectangleRenderer.OutlineThickness = OutlineThickness;
-        rectangleRenderer.OutlineColor = OutlineColor;
-        rectangleRenderer.FillColor = FillColor;
+        rectangleRenderer.OutlineThickness = Style.OutlineThickness;
+        rectangleRenderer.OutlineColor = Style.OutlineColor;
+        rectangleRenderer.FillColor = Style.FillColor;
 
         Window.Draw(rectangleRenderer);
     }
@@ -96,7 +90,7 @@ class Button : Node
     private void DrawText()
     {
         textRenderer.DisplayedString = Text;
-        textRenderer.FillColor = TextColor;
+        textRenderer.FillColor = Style.TextColor;
         textRenderer.Position = GlobalPosition;
         textRenderer.Font = Font;
         textRenderer.CharacterSize = FontSize;
@@ -144,11 +138,11 @@ class Button : Node
     {
         if (IsMouseOver(new(e.X, e.Y)))
         {
-            FillColor = isSelected ? ActiveFillColor : HoverFillColor;
+            Style.FillColor = isSelected ? Style.ActiveFillColor : Style.HoverFillColor;
         }
         else
         {
-            FillColor = IdleFillColor;
+            Style.FillColor = Style.IdleFillColor;
         }
     }
 
@@ -157,7 +151,7 @@ class Button : Node
         if (IsMouseOver(new(e.X, e.Y)))
         {
             isSelected = true;
-            FillColor = ActiveFillColor;
+            Style.FillColor = Style.ActiveFillColor;
         }
     }
 
@@ -172,6 +166,6 @@ class Button : Node
         }
 
         isSelected = false;
-        FillColor = IdleFillColor;
+        Style.FillColor = Style.IdleFillColor;
     }
 }

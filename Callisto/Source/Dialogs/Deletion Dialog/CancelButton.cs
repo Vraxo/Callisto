@@ -14,7 +14,7 @@ class CancelButton : Button
         Size = new(100, 20);
         Position = new(Window.Size.X - Size.X - 25, 75);
         FontSize = 12;
-        TextColor = Color.Red;
+        Style.TextColor = Color.Red;
         actionOnClick = Parent.Destroy;
     }
 }
