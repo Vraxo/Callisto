@@ -82,7 +82,7 @@ class PhoneNumberFields : Node
         };
 
         AddChild(field, labelText.Replace(" ", ""));
-        field.GetChild<TextBox>().MaximumCharacters = MaximumCharacters;
+        field.GetChild<TextBox>().MaxCharacters = MaximumCharacters;
         Fields.Add(field);
 
         return field;

@@ -14,20 +14,14 @@ class TextBox : Node
     public Vector2f Origin = new(0, 0);
 
     public string Text = "";
-    public int MaximumCharacters = int.MaxValue;
+    public int MaxCharacters = int.MaxValue;
 
     public List<char> AllowedCharacters = [];
 
     public uint FontSize = 16;
     public Font Font = FontLoader.Instance.Fonts["RobotoMono"];
 
-    public int OutlineThickness = -1;
-
-    public Color SelectedOutlineColor = new(32, 32, 255);
-    public Color DeselectedOutlineColor = new(0, 0, 0, 0);
-    public Color FillColor = new(16, 16, 16);
-    public Color IdleFillColor = new(16, 16, 16);
-    public Color HoverFillColor = new(16, 16, 16);
+    public TextBoxStyle Style = new();
 
     private bool isSelected = false;
     private int caretX = 0;
@@ -90,9 +84,9 @@ class TextBox : Node
         rectangleRenderer.Position = GlobalPosition;
         rectangleRenderer.Size = Size;
         rectangleRenderer.Origin = Origin;
-        rectangleRenderer.OutlineThickness = OutlineThickness;
-        rectangleRenderer.OutlineColor = isSelected ? SelectedOutlineColor : DeselectedOutlineColor;
-        rectangleRenderer.FillColor = FillColor;
+        rectangleRenderer.OutlineThickness = Style.OutlineThickness;
+        rectangleRenderer.OutlineColor = isSelected ? Style.SelectedOutlineColor : Style.DeselectedOutlineColor;
+        rectangleRenderer.FillColor = Style.FillColor;
 
         Window.Draw(rectangleRenderer);
     }
@@ -140,7 +134,7 @@ class TextBox : Node
 
     private void InsertCharacter(char character)
     {
-        if (Text.Length >= MaximumCharacters) return;
+        if (Text.Length >= MaxCharacters) return;
 
         if (AllowedCharacters.Count > 0)
         {
