@@ -12,33 +12,16 @@ class TextBox : Node
 
     public Vector2f Size = new(300, 25);
     public Vector2f Origin = new(0, 0);
-
     public string Text = "";
     public int MaxCharacters = int.MaxValue;
-
     public List<char> AllowedCharacters = [];
-
-    public uint FontSize = 16;
-    public Font Font = FontLoader.Instance.Fonts["RobotoMono"];
-
     public TextBoxStyle Style = new();
-
-    private bool isSelected = false;
-    private int caretX = 0;
-    private float padding = 8;
+    public Text TextRenderer = new();
+    public bool IsSelected = false;
+    
     private const int BackspaceKey = 8;
-
-    private int caretTimer = 0;
-    private const int CaretMinTime = 0;
-    private int caretMaxTime = 2000;
-
-    private byte caretAlpha = 255;
-    private const int CaretMinAlpha = 0;
-    private const int CaretMaxAlpha = 255;
-
+    private Caret caret;
     private RectangleShape rectangleRenderer = new();
-    private Text textRenderer = new();
-    private Text caretRenderer = new();
 
     #endregion
 
@@ -46,16 +29,19 @@ class TextBox : Node
 
     public override void Start()
     {
+        caret = new();
+
+        AddChild(caret);
+
         ConnectToEvents();
     }
 
     public override void Update()
     {
-        base.Update();
-
         DrawShape();
         DrawText();
-        DrawCaret();
+
+        base.Update();
     }
 
     public override void Destroy()
@@ -85,7 +71,7 @@ class TextBox : Node
         rectangleRenderer.Size = Size;
         rectangleRenderer.Origin = Origin;
         rectangleRenderer.OutlineThickness = Style.OutlineThickness;
-        rectangleRenderer.OutlineColor = isSelected ? Style.SelectedOutlineColor : Style.DeselectedOutlineColor;
+        rectangleRenderer.OutlineColor = IsSelected ? Style.SelectedOutlineColor : Style.DeselectedOutlineColor;
         rectangleRenderer.FillColor = Style.FillColor;
 
         Window.Draw(rectangleRenderer);
@@ -93,41 +79,15 @@ class TextBox : Node
 
     private void DrawText()
     {
-        float x = (int)(GlobalPosition.X + padding - Origin.X);
+        float x = (int)(GlobalPosition.X + Style.Padding - Origin.X);
         float y = (int)(GlobalPosition.Y + Size.Y / 10 - Origin.Y);
 
-        textRenderer.Position = new(x, y);
-        textRenderer.CharacterSize = FontSize;
-        textRenderer.DisplayedString = Text;
-        textRenderer.Font = Font;
+        TextRenderer.Position = new(x, y);
+        TextRenderer.CharacterSize = Style.FontSize;
+        TextRenderer.DisplayedString = Text;
+        TextRenderer.Font = Style.Font;
 
-        Window.Draw(textRenderer);
-    }
-
-    private void DrawCaret()
-    {
-        if (!isSelected) return;
-
-        caretRenderer.DisplayedString = "|";
-        caretRenderer.Font = Font;
-        caretRenderer.CharacterSize = FontSize;
-
-        float characterWidth = textRenderer.GetLocalBounds().Width / Text.Length;
-        float x = GlobalPosition.X + padding + characterWidth * caretX;
-        float y = GlobalPosition.Y;
-
-        caretRenderer.Position = new(x, y);
-        caretRenderer.FillColor = new(255, 255, 255, caretAlpha);
-
-        if (caretTimer > caretMaxTime)
-        {
-            caretAlpha = (byte)(caretAlpha == CaretMaxAlpha ? CaretMinAlpha : CaretMaxAlpha);
-            caretTimer = CaretMinTime;
-        }
-
-        caretTimer ++;
-
-        Window.Draw(caretRenderer);
+        Window.Draw(TextRenderer);
     }
 
     // Operations
@@ -144,17 +104,16 @@ class TextBox : Node
             }
         }
 
-        Text = Text.Insert(caretX, character.ToString());
-        caretX ++;
-        caretAlpha = CaretMaxAlpha;
+        Text = Text.Insert(caret.X, character.ToString());
+        caret.X ++;
     }
 
     private void DeleteLastCharacter()
     {
         if (Text.Length > 0)
         {
-            Text = Text[..^1];
-            caretX--;
+            Text = Text.Remove(caret.X - 1, 1);
+            caret.X --;
         }
     }
 
@@ -195,18 +154,18 @@ class TextBox : Node
     {
         if (IsMouseOver(new(e.X, e.Y)))
         {
-            isSelected = true;
-            caretX = Text.Length;
+            IsSelected = true;
+            caret.X = Text.Length;
         }
         else
         {
-            isSelected = false;
+            IsSelected = false;
         }
     }
 
     private void OnTextEntered(object? sender, TextEventArgs e)
     {
-        if (!isSelected) return;
+        if (!IsSelected) return;
 
         char unicode = e.Unicode[0];
 
@@ -227,21 +186,21 @@ class TextBox : Node
         switch (e.Code)
         {
             case Keyboard.Key.Right:
-                if (caretX < Text.Length)
+                if (caret.X < Text.Length)
                 {
-                    caretX ++;
+                    caret.X ++;
                 }
                 break;
 
             case Keyboard.Key.Left:
-                if (caretX > 0)
+                if (caret.X > 0)
                 {
-                    caretX --;
+                    caret.X --;
                 }
                 break;
 
             case Keyboard.Key.Enter:
-                isSelected = false;
+                IsSelected = false;
                 break;
         }
     }

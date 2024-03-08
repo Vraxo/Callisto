@@ -7,7 +7,7 @@ class PhoneNumberFields : Node
     // Field
 
     public int ContactIndex = -1;
-    public int MaximumCharacters = 25;
+    public int MaxCharacters = 25;
 
     public List<ContactInfoField> Fields = [];
     private List<TextBox> textBoxes = [];
@@ -82,7 +82,7 @@ class PhoneNumberFields : Node
         };
 
         AddChild(field, labelText.Replace(" ", ""));
-        field.GetChild<TextBox>().MaxCharacters = MaximumCharacters;
+        field.GetChild<TextBox>().MaxCharacters = MaxCharacters;
         Fields.Add(field);
 
         return field;

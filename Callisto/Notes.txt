@@ -6,9 +6,10 @@
 
 //
 
+more precise scrollers (contactviewpage, contacteditor)
 blinker for textboxes
 better textboxes (delete, move, cursor?)
-more precise scrollers (contactviewpage, contacteditor)
+
 center avatar in editor
 refactor allowed character sets
 add support for png

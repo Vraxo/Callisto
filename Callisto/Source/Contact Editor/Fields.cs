@@ -9,7 +9,7 @@ class Fields : Node
 
     public int ContactIndex = -1;
     public List<ContactInfoField> NumberFields = [];
-    public int MaximumCharacters = 29;
+    public int MaxCharacters = 29;
     public TextBox FirstNameTextBox;
     public TextBox LastNameTextBox;
 
@@ -42,8 +42,6 @@ class Fields : Node
         UpdateFields();
     }
 
-
-
     // Create nodes
 
     private void CreateNameFields()
@@ -56,6 +54,7 @@ class Fields : Node
         AddChild(firstNameField);
         fields.Add(firstNameField);
         FirstNameTextBox = firstNameField.GetChild<TextBox>();
+        FirstNameTextBox.MaxCharacters = MaxCharacters;
 
         lastNameField = new ContactInfoField()
         {
@@ -65,6 +64,7 @@ class Fields : Node
         AddChild(lastNameField);
         fields.Add(lastNameField);
         LastNameTextBox = lastNameField.GetChild<TextBox>();
+        LastNameTextBox.MaxCharacters = MaxCharacters;
     }
 
     // Private
