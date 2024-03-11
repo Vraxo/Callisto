@@ -1,6 +1,5 @@
 ﻿using Callisto.AvatarDisplayerNode;
 using Callisto.ContactInfoViewerNode;
-using Callisto.NotificationDialogNode;
 using Nodex;
 using SFML.Window;
 using Window = Nodex.Window;

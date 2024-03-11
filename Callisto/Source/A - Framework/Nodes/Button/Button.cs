@@ -13,12 +13,15 @@ class Button : Node
     public Vector2f Size = new(100, 25);
     public Vector2f Origin = new(0, 0);
     public Vector2f TextOrigin = new(0, 0);
+
     public string Text = "";
     public ButtonStyle Style = new();
+
     public Action OnClick = () => { };
     public Action<Button> OnUpdate = (button) => { };
 
     private bool isSelected = false;
+
     private Text textRenderer = new();
     private RectangleShape rectangleRenderer = new();
 
