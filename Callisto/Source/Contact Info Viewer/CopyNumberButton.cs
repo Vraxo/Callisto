@@ -19,8 +19,8 @@ class CopyNumberButton : Button
         Position = new(0, Window.Size.Y * 0.55F);
         Size = new(270, 50);
         Style.OutlineThickness = 0;
-        FontSize = 24;
-        actionOnClick = CopyPhoneNumber;
+        Style.FontSize = 24;
+        OnClick = CopyPhoneNumber;
     }
 
     // Callback

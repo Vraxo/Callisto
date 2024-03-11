@@ -13,7 +13,7 @@ class AddNewContactButton : Button
 
         Text = "Add New Contact";
         Size = new(Window.Size.X, 40);
-        actionOnClick = GoToContactEditor;
+        OnClick = GoToContactEditor;
     }
 
     public override void Update()

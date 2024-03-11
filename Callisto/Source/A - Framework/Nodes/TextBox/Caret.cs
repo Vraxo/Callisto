@@ -52,7 +52,7 @@ class Caret : Node
         if (!parent.IsSelected) return;
 
         Draw();
-        SetAlpha();
+        UpdateAlpha();
     }
 
     // Private
@@ -63,8 +63,6 @@ class Caret : Node
         float _x = GlobalPosition.X + characterWidth * X;
         float _y = GlobalPosition.Y;
 
-        Console.WriteLine(X);
-
         renderer.Position = new(_x, _y);
         renderer.DisplayedString = "|";
         renderer.Font = parent.Style.Font;
@@ -74,7 +72,7 @@ class Caret : Node
         Window.Draw(renderer);
     }
 
-    private void SetAlpha()
+    private void UpdateAlpha()
     {
         if (timer > MaxTime)
         {

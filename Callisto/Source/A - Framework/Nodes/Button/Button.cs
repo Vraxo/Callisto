@@ -1,7 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using System.Drawing;
 
 namespace Nodex;
 
@@ -11,30 +10,15 @@ class Button : Node
 
     #region [ - - - FIELDS - - - ]
 
-    // Numbers
-
     public Vector2f Size = new(100, 25);
     public Vector2f Origin = new(0, 0);
     public Vector2f TextOrigin = new(0, 0);
-
-    // Text
-
     public string Text = "";
-    public uint FontSize = 16;
-    public Font Font = FontLoader.Instance.Fonts["RobotoMono"];
-
-    // Colors
-
     public ButtonStyle Style = new();
-
-    // Etc
-
-    public Action actionOnClick;
+    public Action OnClick = () => { };
+    public Action<Button> OnUpdate = (button) => { };
 
     private bool isSelected = false;
-
-    // Renderers
-
     private Text textRenderer = new();
     private RectangleShape rectangleRenderer = new();
 
@@ -50,6 +34,7 @@ class Button : Node
     public override void Update()
     {
         base.Update();
+        OnUpdate(this);
         DrawShape();
         DrawText();
     }
@@ -92,8 +77,8 @@ class Button : Node
         textRenderer.DisplayedString = Text;
         textRenderer.FillColor = Style.TextColor;
         textRenderer.Position = GlobalPosition;
-        textRenderer.Font = Font;
-        textRenderer.CharacterSize = FontSize;
+        textRenderer.Font = Style.Font;
+        textRenderer.CharacterSize = Style.FontSize;
 
         int x = (int)(GlobalPosition.X - Origin.X + Size.X / 2 - textRenderer.GetLocalBounds().Width / 2);
         int y = (int)(GlobalPosition.Y - Origin.Y + Size.Y / 2 - textRenderer.GetLocalBounds().Height / 1.25);
@@ -161,7 +146,7 @@ class Button : Node
         {
             if (isSelected)
             {
-                actionOnClick();
+                OnClick();
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿using Nodex;
 
-namespace Callisto.NotificationDialogNode;
+namespace Callisto;
 
 class NotificationDialog : Node
 {
@@ -16,16 +16,28 @@ class NotificationDialog : Node
 
         AddChild(new Label()
         {
-            Message = Message
+            Text = Message,
+            Position = new(25, 15),
+            FontSize = 14
         });
 
-        AddChild(new OkButton());
+        AddChild(new Button()
+        {
+            Text = "OK",
+            Position = new(25, 75),
+            Size = new(100, 20),
+            Style = new()
+            {
+                FontSize = 12,
+                TextColor = Color.Green,
+            },
+            OnClick = Destroy,
+        });
     }
 
     public override void Destroy()
     {
         base.Destroy();
-
         Program.MainWindow.RootNode.Activate();
         Program.RemoveWindow(Window);
     }

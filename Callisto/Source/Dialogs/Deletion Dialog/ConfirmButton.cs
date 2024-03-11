@@ -20,9 +20,9 @@ class ConfirmButton : Button
         Text = "Confirm";
         Position = new(25, 75);
         Size = new(100, 20);
-        FontSize = 12;
+        Style.FontSize = 12;
         Style.TextColor = Color.Green;
-        actionOnClick = Confirm;
+        OnClick = Confirm;
     }
 
     // Callback

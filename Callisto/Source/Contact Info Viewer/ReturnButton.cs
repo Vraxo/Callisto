@@ -11,7 +11,7 @@ class ReturnButton : Button
         base.Start();
 
         Text = "<-";
-        actionOnClick = GoToContactsList;
+        OnClick = GoToContactsList;
     }
 
     // Callback

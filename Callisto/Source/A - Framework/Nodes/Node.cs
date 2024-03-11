@@ -120,6 +120,25 @@ class Node
         return (T)currentNode;
     }
 
+    public Node GetNode(string path)
+    {
+        if (path == "")
+        {
+            return Window.RootNode;
+        }
+
+        string[] nodeNames = path.Split('/');
+
+        Node currentNode = Window.RootNode;
+
+        for (int i = 0; i < nodeNames.Length; i ++)
+        {
+            currentNode = currentNode.GetChild(nodeNames[i]);
+        }
+
+        return currentNode;
+    }
+
     // Get child
 
     public Node GetChild(string name)

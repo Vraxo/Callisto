@@ -20,7 +20,7 @@ class OkButton : Button
         base.Start();
 
         Text = "OK";
-        actionOnClick = ConfirmContact;
+        OnClick = ConfirmContact;
         Origin = Size / 2;
         TextOrigin = Size / 2;
     }

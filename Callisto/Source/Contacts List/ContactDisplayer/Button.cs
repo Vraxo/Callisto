@@ -16,7 +16,7 @@ class Button : Nodex.Button
 
         Size = new(Window.Size.X, 50);
         Style.OutlineColor = Color.Transparent;
-        actionOnClick = GoToContactViewPage;
+        OnClick = GoToContactViewPage;
     }
 
     public override void Update()

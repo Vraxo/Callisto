@@ -1,5 +1,4 @@
 ﻿using Nodex;
-using Callisto.AvatarDisplayerNode;
 
 namespace Callisto.ContactEditorNode;
 

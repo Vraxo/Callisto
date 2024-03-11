@@ -13,7 +13,7 @@ class CancelButton : Button
 
         Text = "Cancel";
         Style.TextColor = Color.Red;
-        actionOnClick = CancelEdit;
+        OnClick = CancelEdit;
     }
 
     public override void Update()
