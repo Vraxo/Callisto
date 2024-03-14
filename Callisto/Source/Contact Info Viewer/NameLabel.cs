@@ -8,9 +8,7 @@ class NameLabel : Label
 
     public int ContactIndex = -1;
 
-    private const int Factor = 50;
-
-    private const maxFontSize = 32;
+    private const uint MaxFontSize = 32;
 
     // Public
 
@@ -45,29 +43,16 @@ class NameLabel : Label
 
     private void UpdateFontSize()
     {
-        if (TextRenderer.GetLocalBounds().Width > Window.Size.X - Factor)
+        if (TextRenderer.GetLocalBounds().Width < Window.Size.X)
         {
-            FontSize --;
+            FontSize = MaxFontSize;
             TextRenderer.CharacterSize = FontSize;
         }
-        else
+
+        while (TextRenderer.GetLocalBounds().Width > Window.Size.X)
         {
-            uint currentSize = FontSize;
-
-            FontSize++;
-
-            if (FontSize > maxFontSize)
-            {
-                FontSize = maxFontSize;
-            }
-
+            FontSize--;
             TextRenderer.CharacterSize = FontSize;
-
-            if (TextRenderer.GetLocalBounds().Width > Window.Size.X - Factor)
-            {
-                FontSize = currentSize;
-                TextRenderer.CharacterSize = FontSize;
-            }
         }
     }
 }
