@@ -43,11 +43,11 @@ class NameLabel : Label
 
     private void UpdateFontSize()
     {
-        if (TextRenderer.GetLocalBounds().Width < Window.Size.X)
-        {
+        //if (TextRenderer.GetLocalBounds().Width < Window.Size.X)
+        //{
             FontSize = MaxFontSize;
             TextRenderer.CharacterSize = FontSize;
-        }
+        //}
 
         while (TextRenderer.GetLocalBounds().Width > Window.Size.X)
         {

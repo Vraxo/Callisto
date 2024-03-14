@@ -1,6 +1,6 @@
 ﻿using Nodex;
 using Callisto.AvatarDisplayerNode;
-using System.Windows.Forms;
+using Callisto.ContactsListNode;
 
 namespace Callisto.ContactInfoViewerNode;
 
@@ -19,7 +19,14 @@ class ContactInfoViewer : Node
             ContactIndex = ContactIndex
         });
 
-        AddChild(new ReturnButton());
+        AddChild(new Button()
+        {
+            Text = "<-",
+            OnClick = () =>
+            {
+                ChangeScene(new ContactsList());
+            }
+        }) ;
 
         AddChild(new EditButton()
         {

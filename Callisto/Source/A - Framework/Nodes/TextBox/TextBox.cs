@@ -1,6 +1,7 @@
 ﻿using SFML.System;
 using SFML.Window;
 using SFML.Graphics;
+using System.Net.Http.Headers;
 
 namespace Nodex;
 
@@ -106,6 +107,7 @@ class TextBox : Node
         }
 
         Text = Text.Insert(caret.X, character.ToString());
+
         caret.X ++;
     }
 
@@ -114,7 +116,7 @@ class TextBox : Node
         if (Text.Length > 0)
         {
             Text = Text.Remove(caret.X - 1, 1);
-            caret.X--;
+            caret.X --;
         }
     }
 
@@ -180,6 +182,9 @@ class TextBox : Node
 
             case (char)BackspaceKey:
                 DeleteLastCharacter();
+                break;
+
+            case (char)22:
                 break;
         }
     }
