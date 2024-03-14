@@ -1,5 +1,5 @@
-﻿using SFML.Graphics;
-using SFML.System;
+﻿using SFML.System;
+using SFML.Graphics;
 
 namespace Nodex;
 
@@ -11,14 +11,15 @@ class Label : Node
     public uint FontSize = 16;
     public Font Font = FontLoader.Instance.Fonts["RobotoMono"];
     public Vector2f Origin = new(0, 0);
-
-    protected Text textRenderer = new();
+    public Action<Label> OnUpdate = (label) => { };
+    public Text TextRenderer = new();
 
     // Public
 
     public override void Update()
     {
         base.Update();
+        OnUpdate(this);
         DrawText();
     }
 
@@ -26,12 +27,12 @@ class Label : Node
 
     private void DrawText()
     {
-        textRenderer.Position = GlobalPosition;
-        textRenderer.CharacterSize = FontSize;
-        textRenderer.Origin = Origin;
-        textRenderer.Font = Font;
-        textRenderer.DisplayedString = Text;
+        TextRenderer.Position = GlobalPosition;
+        TextRenderer.CharacterSize = FontSize;
+        TextRenderer.Origin = Origin;
+        TextRenderer.Font = Font;
+        TextRenderer.DisplayedString = Text;
 
-        Window.Draw(textRenderer);
+        Window.Draw(TextRenderer);
     }
 }

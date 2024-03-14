@@ -1,5 +1,6 @@
-﻿using Callisto.AvatarDisplayerNode;
-using Nodex;
+﻿using Nodex;
+using Callisto.AvatarDisplayerNode;
+using System.Windows.Forms;
 
 namespace Callisto.ContactInfoViewerNode;
 

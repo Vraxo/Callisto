@@ -7,7 +7,6 @@
 //
 
 more precise scrollers (contactviewpage, contacteditor)
-blinker for textboxes
 better textboxes (delete, move, cursor?)
 
 center avatar in editor
@@ -15,3 +14,4 @@ refactor allowed character sets
 add support for png
 properly center text vertically
 optimize shapes with properties?
+return added child

@@ -18,8 +18,9 @@ class TextBox : Node
     public TextBoxStyle Style = new();
     public Text TextRenderer = new();
     public bool IsSelected = false;
-    
+
     private const int BackspaceKey = 8;
+    private bool IsControlPressed = false;
     private Caret caret;
     private RectangleShape rectangleRenderer = new();
 
@@ -113,7 +114,7 @@ class TextBox : Node
         if (Text.Length > 0)
         {
             Text = Text.Remove(caret.X - 1, 1);
-            caret.X --;
+            caret.X--;
         }
     }
 
@@ -137,6 +138,7 @@ class TextBox : Node
     private void ConnectToEvents()
     {
         Window.KeyPressed += OnKeyPressed;
+        Window.KeyReleased += OnKeyReleased;
         Window.TextEntered += OnTextEntered;
         Window.MouseButtonPressed += OnMouseClicked;
     }
@@ -144,6 +146,7 @@ class TextBox : Node
     private void DisconnectFromEvents()
     {
         Window.KeyPressed -= OnKeyPressed;
+        Window.KeyReleased -= OnKeyReleased;
         Window.TextEntered -= OnTextEntered;
         Window.MouseButtonPressed -= OnMouseClicked;
     }
@@ -183,24 +186,52 @@ class TextBox : Node
 
     private void OnKeyPressed(object? sender, KeyEventArgs e)
     {
+        if (!IsSelected) return;
+
         switch (e.Code)
         {
             case Keyboard.Key.Right:
                 if (caret.X < Text.Length)
                 {
-                    caret.X ++;
+                    caret.X++;
                 }
                 break;
 
             case Keyboard.Key.Left:
                 if (caret.X > 0)
                 {
-                    caret.X --;
+                    caret.X--;
                 }
                 break;
 
             case Keyboard.Key.Enter:
                 IsSelected = false;
+                break;
+
+            case Keyboard.Key.LControl:
+            case Keyboard.Key.RControl:
+                IsControlPressed = true;
+                break;
+
+            case Keyboard.Key.V:
+                if (IsControlPressed)
+                {
+                    foreach (char character in Clipboard.Contents.ToCharArray())
+                    {
+                        InsertCharacter(character);
+                    }
+                }
+                break;
+        }
+    }
+
+    private void OnKeyReleased(object? sender, KeyEventArgs e)
+    {
+        switch (e.Code)
+        {
+            case Keyboard.Key.LControl:
+            case Keyboard.Key.RControl:
+                IsControlPressed = false;
                 break;
         }
     }
