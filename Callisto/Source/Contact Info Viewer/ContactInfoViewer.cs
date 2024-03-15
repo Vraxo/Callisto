@@ -1,6 +1,7 @@
 ﻿using Nodex;
 using Callisto.AvatarDisplayerNode;
 using Callisto.ContactsListNode;
+using Callisto.ContactEditorNode;
 
 namespace Callisto.ContactInfoViewerNode;
 
@@ -14,12 +15,12 @@ class ContactInfoViewer : Node
 
     public override void Start()
     {
-        AddChild(new AvatarDisplayer()
+        AddChild(new AvatarDisplayer
         {
             ContactIndex = ContactIndex
         });
 
-        AddChild(new Button()
+        AddChild(new Button
         {
             Text = "<-",
             OnClick = () =>
@@ -28,24 +29,44 @@ class ContactInfoViewer : Node
             }
         }) ;
 
-        AddChild(new EditButton()
+        AddChild(new Button
+        {
+            Text = "Edit",
+            OnUpdate = (button) =>
+            {
+                button.Position.X = button.Window.Size.X - button.Size.X;
+            },
+            OnClick = () =>
+            {
+                ChangeScene(new ContactEditor
+                {
+                    ContactIndex = ContactIndex
+                });
+            }
+        });
+
+        AddChild(new NameLabel
         {
             ContactIndex = ContactIndex
         });
 
-        AddChild(new NameLabel()
+        AddChild(new CopyNumberButtons
         {
             ContactIndex = ContactIndex
         });
 
-        AddChild(new CopyNumberButtons()
+        AddChild(new Nodex.VerticalViewScroller
         {
-            ContactIndex = ContactIndex
-        });
+            OnUpdate = (scroller) =>
+            {
+                float viewHeight = Window.GetView().Center.Y - Window.GetView().Size.Y / 2;
+                scroller.CanGoUp = viewHeight > 0;
 
-        AddChild(new Scroller()
-        {
-            ContactIndex = ContactIndex
+                Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
+                
+                float contactsListHeight = contact.PhoneNumbers.Count * 50;
+                scroller.CanGoDown = viewHeight < contactsListHeight;
+            }
         });
     }
 }

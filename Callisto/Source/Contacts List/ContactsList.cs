@@ -40,7 +40,7 @@ class ContactsList : Node
 
             AddChild(contactDisplayer, $"ContactDisplayer{i}");
 
-            var button = contactDisplayer.GetChild<ContactDisplayerNode.Button>();
+            var button = contactDisplayer.GetChild<Button>();
 
             float x = 0;
             float y = addNewContactButton.Size.Y + button.Size.Y * i;

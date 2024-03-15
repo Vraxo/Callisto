@@ -120,6 +120,17 @@ class TextBox : Node
         }
     }
 
+    private void PasteText()
+    {
+        if (IsControlPressed)
+        {
+            foreach (char character in Clipboard.Contents.ToCharArray())
+            {
+                InsertCharacter(character);
+            }
+        }
+    }
+
     // Private
 
     private bool IsMouseOver(Vector2f mousePosition)
@@ -157,6 +168,8 @@ class TextBox : Node
 
     private void OnMouseClicked(object? sender, MouseButtonEventArgs e)
     {
+        if (e.Button != Mouse.Button.Left) return;
+
         if (IsMouseOver(new(e.X, e.Y)))
         {
             IsSelected = true;
@@ -196,17 +209,11 @@ class TextBox : Node
         switch (e.Code)
         {
             case Keyboard.Key.Right:
-                if (caret.X < Text.Length)
-                {
-                    caret.X++;
-                }
+                caret.X ++;
                 break;
 
             case Keyboard.Key.Left:
-                if (caret.X > 0)
-                {
-                    caret.X--;
-                }
+                caret.X --;
                 break;
 
             case Keyboard.Key.Enter:
@@ -219,13 +226,7 @@ class TextBox : Node
                 break;
 
             case Keyboard.Key.V:
-                if (IsControlPressed)
-                {
-                    foreach (char character in Clipboard.Contents.ToCharArray())
-                    {
-                        InsertCharacter(character);
-                    }
-                }
+                PasteText();
                 break;
         }
     }

@@ -9,7 +9,7 @@ class CircleSprite : Nodex.CircleSprite
     public override void Start()
     {
         Radius = 100;
-        Origin = new(100, 100);
+        Origin = new(Radius, Radius);
     }
 
     public override void Update()

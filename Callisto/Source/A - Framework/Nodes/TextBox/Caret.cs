@@ -31,7 +31,21 @@ class Caret : Node
 
         set
         {
-            x = value;
+            if (value > x)
+            {
+                if (x < parent.Text.Length)
+                {
+                    x++;
+                }
+            }
+            else
+            {
+                if (x > 0)
+                {
+                    x --;
+                }
+            }
+
             alpha = MaxAlpha;
         }
     }

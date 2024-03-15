@@ -9,12 +9,20 @@ class VerticalViewScroller : Node
     public int Factor = 50;
     public bool CanGoUp = false;
     public bool CanGoDown = false;
+    public Action<VerticalViewScroller> OnUpdate = (scroller) => { };
 
     // Public
 
     public override void Start()
     {
         Window.MouseWheelScrolled += OnMouseWheelScrolled;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        OnUpdate(this);
     }
 
     public override void Destroy()

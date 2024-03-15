@@ -1,4 +1,5 @@
 ﻿using Nodex;
+using Callisto.ContactInfoViewerNode;
 
 namespace Callisto.ContactDisplayerNode;
 
@@ -12,9 +13,24 @@ class ContactDisplayer : Node
 
     public override void Start()
     {
-        AddChild(new Button()
+        AddChild(new Button
         {
-            ContactIndex = ContactIndex
+            Size = new(Window.Size.X, 50),
+            Style = new()
+            {
+                OutlineColor = Color.Transparent
+            },
+            OnUpdate = (button) =>
+            {
+                button.Size.X = Window.Size.X;
+            },
+            OnClick = () =>
+            {
+                ChangeScene(new ContactInfoViewer()
+                {
+                    ContactIndex = ContactIndex
+                });
+            }
         });
 
         AddChild(new CircleSprite()
@@ -22,9 +38,10 @@ class ContactDisplayer : Node
             ContactIndex = ContactIndex
         });
 
-        AddChild(new Label()
+        AddChild(new Label
         {
-            ContactIndex = ContactIndex
+            Text = ContactsContainer.Instance.Contacts[ContactIndex].GetFullName(),
+            Position = new(60, 12)
         });
     }
 }

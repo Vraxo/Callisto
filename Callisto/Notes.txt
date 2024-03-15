@@ -3,15 +3,21 @@
 
 
 
+... at the end of long contact names
+refactor allowed character sets
+add support for png
+properly center text vertically
 
 
 more precise scrollers (contactviewpage, contacteditor)
 better textboxes (delete, move, cursor?)
 
 center avatar in editor
-refactor allowed character sets
-add support for png
-properly center text vertically
+
+
+
 optimize shapes with properties?
 return added child
 fix view (going smaller from fullscreen shows that the view is lower than it should be)
+delete last character from behind another character
+handle control+ characters

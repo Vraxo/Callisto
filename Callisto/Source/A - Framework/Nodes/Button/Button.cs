@@ -136,6 +136,8 @@ class Button : Node
 
     private void OnMouseClicked(object? sender, MouseButtonEventArgs e)
     {
+        if (e.Button != Mouse.Button.Left) return;
+
         if (IsMouseOver(new(e.X, e.Y)))
         {
             isSelected = true;
@@ -145,6 +147,8 @@ class Button : Node
 
     private void OnMouseReleased(object? sender, MouseButtonEventArgs e)
     {
+        if (e.Button != Mouse.Button.Left) return;
+
         if (IsMouseOver(new(e.X, e.Y)))
         {
             if (isSelected)
