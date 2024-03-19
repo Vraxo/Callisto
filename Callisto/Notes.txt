@@ -2,9 +2,6 @@
 
 
 
-
-... at the end of long contact names
-refactor allowed character sets
 add support for png
 delete last character from behind another character
 

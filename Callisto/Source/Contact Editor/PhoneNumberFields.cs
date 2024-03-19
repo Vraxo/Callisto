@@ -93,7 +93,7 @@ class PhoneNumberFields : Node
     {
         ContactInfoField numberField = CreateField(labelText);
         textBoxes.Add(numberField.GetChild<TextBox>());
-        textBoxes.Last().AllowedCharacters = "0123456789".ToCharArray().ToList();
+        textBoxes.Last().AllowedCharacters = CharacterSet.Numbers;
 
         Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
         int phoneNumbersCount = contact.PhoneNumbers.Count;
