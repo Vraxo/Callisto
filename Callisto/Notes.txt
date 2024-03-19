@@ -3,7 +3,6 @@
 
 
 add support for png
-delete last character from behind another character
 
 more precise scrollers (contactviewpage, contacteditor)
 better textboxes (delete, move, cursor?)

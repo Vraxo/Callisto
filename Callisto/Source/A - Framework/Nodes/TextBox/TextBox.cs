@@ -117,7 +117,7 @@ class TextBox : Node
 
     private void DeleteLastCharacter()
     {
-        if (Text.Length > 0)
+        if (caret.X > 0)
         {
             Text = Text.Remove(caret.X - 1, 1);
             caret.X --;
