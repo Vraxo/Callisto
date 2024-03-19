@@ -35,7 +35,7 @@ class NameLabel : Label
     private void UpdatePosition()
     {
         float windowCenter = Window.Size.X / 2;
-        float halfNameLength = TextRenderer.GetLocalBounds().Width / 2;
+        float halfNameLength = Renderer.GetLocalBounds().Width / 2;
 
         Position.X = windowCenter - halfNameLength;
         Position.Y = 0.4F * Window.Size.Y;
@@ -43,16 +43,13 @@ class NameLabel : Label
 
     private void UpdateFontSize()
     {
-        //if (TextRenderer.GetLocalBounds().Width < Window.Size.X)
-        //{
-            FontSize = MaxFontSize;
-            TextRenderer.CharacterSize = FontSize;
-        //}
+        FontSize = MaxFontSize;
+        Renderer.CharacterSize = FontSize;
 
-        while (TextRenderer.GetLocalBounds().Width > Window.Size.X)
+        while (Renderer.GetLocalBounds().Width > Window.Size.X)
         {
-            FontSize--;
-            TextRenderer.CharacterSize = FontSize;
+            FontSize --;
+            Renderer.CharacterSize = FontSize;
         }
     }
 }

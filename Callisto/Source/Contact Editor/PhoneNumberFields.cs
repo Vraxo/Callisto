@@ -34,6 +34,7 @@ class PhoneNumberFields : Node
 
         UpdateFields();
         CreateExtraNumberFields();
+        DeleteExtraNumberFields();
     }
 
     public List<string> GetPhoneNumbers()
@@ -95,9 +96,9 @@ class PhoneNumberFields : Node
         textBoxes.Last().AllowedCharacters = "0123456789".ToCharArray().ToList();
 
         Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
-        int numberOfPhoneNumbers = contact.PhoneNumbers.Count;
+        int phoneNumbersCount = contact.PhoneNumbers.Count;
 
-        if (index != -1 && index < numberOfPhoneNumbers)
+        if (index != -1 && index < phoneNumbersCount)
         {
             textBoxes.Last().Text = contact.PhoneNumbers[index];
         }
@@ -109,5 +110,26 @@ class PhoneNumberFields : Node
         {
             CreateNumberField($"Phone Number {Fields.Count + 1}");
         }
+    }
+
+    private void DeleteExtraNumberFields()
+    {
+        for (int i = textBoxes.Count - 1; i > 0; i--)
+        {
+            if (textBoxes[i].Text.Length == 0)
+            {
+                if (textBoxes[i - 1].Text.Length == 0)
+                {
+                    RemoveFieldAndTextBoxAt(i);
+                }
+            }
+        }
+    }
+
+    private void RemoveFieldAndTextBoxAt(int index)
+    {
+        Children.Remove(Fields[index]);
+        Fields.Remove(Fields[index]);
+        textBoxes.RemoveAt(index);
     }
 }

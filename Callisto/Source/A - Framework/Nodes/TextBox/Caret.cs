@@ -35,14 +35,14 @@ class Caret : Node
             {
                 if (x < parent.Text.Length)
                 {
-                    x++;
+                    x = value;
                 }
             }
             else
             {
                 if (x > 0)
                 {
-                    x --;
+                    x = value;
                 }
             }
 
@@ -81,7 +81,7 @@ class Caret : Node
         renderer.DisplayedString = "|";
         renderer.Font = parent.Style.Font;
         renderer.CharacterSize = parent.Style.FontSize;
-        renderer.FillColor = new(255, 255, 255, alpha);
+        renderer.FillColor = GetFillColor();
 
         Window.Draw(renderer);
     }
@@ -95,5 +95,13 @@ class Caret : Node
         }
 
         timer ++;
+    }
+
+    private Color GetFillColor()
+    {
+        Color color = parent.Style.TextColor;
+        color.A = alpha;
+
+        return color;
     }
 }

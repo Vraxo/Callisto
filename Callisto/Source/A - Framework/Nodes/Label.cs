@@ -12,7 +12,7 @@ class Label : Node
     public Font Font = FontLoader.Instance.Fonts["RobotoMono"];
     public Vector2f Origin = new(0, 0);
     public Action<Label> OnUpdate = (label) => { };
-    public Text TextRenderer = new();
+    public Text Renderer = new();
 
     // Public
 
@@ -27,12 +27,12 @@ class Label : Node
 
     private void DrawText()
     {
-        TextRenderer.Position = GlobalPosition;
-        TextRenderer.CharacterSize = FontSize;
-        TextRenderer.Origin = Origin;
-        TextRenderer.Font = Font;
-        TextRenderer.DisplayedString = Text;
+        Renderer.Position = GlobalPosition;
+        Renderer.CharacterSize = FontSize;
+        Renderer.Origin = Origin;
+        Renderer.Font = Font;
+        Renderer.DisplayedString = Text;
 
-        Window.Draw(TextRenderer);
+        Window.Draw(Renderer);
     }
 }

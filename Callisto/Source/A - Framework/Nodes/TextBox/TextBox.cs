@@ -1,7 +1,6 @@
 ﻿using SFML.System;
 using SFML.Window;
 using SFML.Graphics;
-using System.Net.Http.Headers;
 
 namespace Nodex;
 
@@ -81,13 +80,16 @@ class TextBox : Node
 
     private void DrawText()
     {
-        float x = (int)(GlobalPosition.X + Style.Padding - Origin.X);
-        float y = (int)(GlobalPosition.Y + Size.Y / 10 - Origin.Y);
 
-        TextRenderer.Position = new(x, y);
         TextRenderer.CharacterSize = Style.FontSize;
         TextRenderer.DisplayedString = Text;
+        TextRenderer.Color = Style.TextColor;
         TextRenderer.Font = Style.Font;
+
+        int x = (int)(GlobalPosition.X + Style.Padding - Origin.X);
+        int y = (int)(GlobalPosition.Y + Size.Y / 10 - Origin.Y);
+        
+        TextRenderer.Position = new(x, y);
 
         Window.Draw(TextRenderer);
     }
@@ -96,6 +98,8 @@ class TextBox : Node
 
     private void InsertCharacter(char character)
     {
+        if (IsControlPressed) return;
+
         if (Text.Length >= MaxCharacters) return;
 
         if (AllowedCharacters.Count > 0)
@@ -124,10 +128,14 @@ class TextBox : Node
     {
         if (IsControlPressed)
         {
+            IsControlPressed = false;
+
             foreach (char character in Clipboard.Contents.ToCharArray())
             {
                 InsertCharacter(character);
             }
+
+            IsControlPressed = true;
         }
     }
 

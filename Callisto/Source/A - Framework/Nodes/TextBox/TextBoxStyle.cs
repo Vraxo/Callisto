@@ -9,6 +9,7 @@ class TextBoxStyle
 
     public float Padding = 8;
 
+    public Color TextColor = new(255, 255, 255);
     public Color SelectedOutlineColor = new(32, 32, 255);
     public Color DeselectedOutlineColor = new(0, 0, 0, 0);
     public Color FillColor = new(16, 16, 16);

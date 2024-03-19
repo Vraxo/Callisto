@@ -38,10 +38,9 @@ class ContactDisplayer : Node
             ContactIndex = ContactIndex
         });
 
-        AddChild(new Label
+        AddChild(new NameLabel
         {
-            Text = ContactsContainer.Instance.Contacts[ContactIndex].GetFullName(),
-            Position = new(60, 12)
+            ContactIndex = ContactIndex
         });
     }
 }

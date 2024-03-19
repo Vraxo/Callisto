@@ -89,7 +89,7 @@ class Node
         }
     }
 
-    // Get special nodeNames
+    // Get special nodes
 
     public T GetParent<T>() where T : Node
     {
@@ -100,6 +100,8 @@ class Node
 
         return (T)this;
     }
+
+    // Get node from the root
 
     public T? GetNode<T>(string path) where T : Node
     {
