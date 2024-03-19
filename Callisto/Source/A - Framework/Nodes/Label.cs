@@ -19,6 +19,7 @@ class Label : Node
     public override void Update()
     {
         base.Update();
+
         OnUpdate(this);
         DrawText();
     }
