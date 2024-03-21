@@ -5,7 +5,7 @@ using Callisto.ContactEditorNode;
 
 namespace Callisto.ContactInfoViewerNode;
 
-class ContactInfoViewer : Node
+class ContactViewer : Node
 {
     // Fields
 

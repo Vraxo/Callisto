@@ -26,7 +26,7 @@ class ContactDisplayer : Node
             },
             OnClick = () =>
             {
-                ChangeScene(new ContactInfoViewer()
+                ChangeScene(new ContactViewer()
                 {
                     ContactIndex = ContactIndex
                 });

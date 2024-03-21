@@ -101,11 +101,14 @@ class ContactsContainer
             string id = contact.Id.ToString();
 
             if (!contact.HasAvatar || TextureLoader.Instance.Textures.ContainsKey(id))
+            {
                 continue;
+            }
 
             if (!TextureLoader.Instance.Textures.ContainsKey(id))
             {
-                string path = $"Resources/Avatars/{contact.Id}.jpg";
+                string extension = GetTextureExtension($"Resources/Avatars/{contact.Id}");
+                string path = $"Resources/Avatars/{contact.Id}{extension}";
 
                 if (File.Exists(path))
                 {
@@ -122,11 +125,19 @@ class ContactsContainer
                 {
                     contact.HasAvatar = false;
                 }
-
             }
         }
         
         Save();
         Load();
+    }
+
+    private string GetTextureExtension(string imageName)
+    {
+        string extension = File.Exists($"{imageName}.jpg") ? 
+                           ".jpg" : 
+                           ".png";
+
+        return extension;
     }
 }

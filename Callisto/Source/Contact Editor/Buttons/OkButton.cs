@@ -65,7 +65,7 @@ class OkButton : Button
                 ContactsContainer.Instance.Save();
                 ContactsContainer.Instance.Load();
 
-                ChangeScene(new ContactInfoViewer()
+                ChangeScene(new ContactViewer()
                 {
                     ContactIndex = ContactIndex
                 });
@@ -94,7 +94,7 @@ class OkButton : Button
             ContactsContainer.Instance.Save();
             ContactsContainer.Instance.Load();
 
-            ChangeScene(new ContactInfoViewer()
+            ChangeScene(new ContactViewer()
             {
                 ContactIndex = ContactIndex
             });
