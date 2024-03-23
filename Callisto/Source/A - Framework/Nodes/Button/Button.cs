@@ -20,7 +20,7 @@ class Button : Node
     public Action OnClick = () => { };
     public Action<Button> OnUpdate = (button) => { };
 
-    private bool isSelected = false;
+    private bool pressed = false;
 
     private Text textRenderer = new();
     private RectangleShape rectangleRenderer = new();
@@ -126,7 +126,7 @@ class Button : Node
     {
         if (IsMouseOver(new(e.X, e.Y)))
         {
-            Style.FillColor = isSelected ? Style.ActiveFillColor : Style.HoverFillColor;
+            Style.FillColor = pressed ? Style.ActiveFillColor : Style.HoverFillColor;
         }
         else
         {
@@ -140,7 +140,7 @@ class Button : Node
 
         if (IsMouseOver(new(e.X, e.Y)))
         {
-            isSelected = true;
+            pressed = true;
             Style.FillColor = Style.ActiveFillColor;
         }
     }
@@ -151,13 +151,13 @@ class Button : Node
 
         if (IsMouseOver(new(e.X, e.Y)))
         {
-            if (isSelected)
+            if (pressed)
             {
                 OnClick();
             }
         }
 
-        isSelected = false;
+        pressed = false;
         Style.FillColor = Style.IdleFillColor;
     }
 }

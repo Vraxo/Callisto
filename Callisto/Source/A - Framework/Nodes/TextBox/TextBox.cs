@@ -17,7 +17,7 @@ class TextBox : Node
     public List<char> AllowedCharacters = [];
     public TextBoxStyle Style = new();
     public Text TextRenderer = new();
-    public bool IsSelected = false;
+    public bool Selected = false;
 
     private const int BackspaceKey = 8;
     private bool IsControlPressed = false;
@@ -72,7 +72,7 @@ class TextBox : Node
         rectangleRenderer.Size = Size;
         rectangleRenderer.Origin = Origin;
         rectangleRenderer.OutlineThickness = Style.OutlineThickness;
-        rectangleRenderer.OutlineColor = IsSelected ? Style.SelectedOutlineColor : Style.DeselectedOutlineColor;
+        rectangleRenderer.OutlineColor = Selected ? Style.SelectedOutlineColor : Style.DeselectedOutlineColor;
         rectangleRenderer.FillColor = Style.FillColor;
 
         Window.Draw(rectangleRenderer);
@@ -180,18 +180,18 @@ class TextBox : Node
 
         if (IsMouseOver(new(e.X, e.Y)))
         {
-            IsSelected = true;
+            Selected = true;
             caret.X = Text.Length;
         }
         else
         {
-            IsSelected = false;
+            Selected = false;
         }
     }
 
     private void OnTextEntered(object? sender, TextEventArgs e)
     {
-        if (!IsSelected) return;
+        if (!Selected) return;
 
         char unicode = e.Unicode[0];
 
@@ -212,7 +212,7 @@ class TextBox : Node
 
     private void OnKeyPressed(object? sender, KeyEventArgs e)
     {
-        if (!IsSelected) return;
+        if (!Selected) return;
 
         switch (e.Code)
         {
@@ -225,7 +225,7 @@ class TextBox : Node
                 break;
 
             case Keyboard.Key.Enter:
-                IsSelected = false;
+                Selected = false;
                 break;
 
             case Keyboard.Key.LControl:

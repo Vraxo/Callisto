@@ -46,10 +46,11 @@ class ContactEditor : Node
 
     public Contact GetContact()
     {
+        int id = ContactIndex == -1 ? Contact.GenerateUniqueId() : ContactsContainer.Instance.Contacts[ContactIndex].Id;
         string firstName = fields.FirstNameTextBox.Text;
         string lastName = fields.LastNameTextBox.Text;
         List<string> phoneNumbers = fields.GetChild<PhoneNumberFields>().GetPhoneNumbers();
-        int id = ContactIndex == -1 ? Contact.GenerateUniqueId() : ContactsContainer.Instance.Contacts[ContactIndex].Id;
+        bool hasAvatar = GetNode<AvatarDisplayerNode.CircleSprite>("AvatarDisplayer/CircleSprite").Texture != TextureLoader.Instance.Textures["Avatar"];
 
         Contact newContact = new()
         {
@@ -57,7 +58,7 @@ class ContactEditor : Node
             FirstName = firstName,
             LastName = lastName,
             PhoneNumbers = phoneNumbers,
-            HasAvatar = GetNode<AvatarDisplayer>("AvatarDisplayer").ImagePath != ""
+            HasAvatar = hasAvatar
         };
 
         return newContact;

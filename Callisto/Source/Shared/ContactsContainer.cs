@@ -24,11 +24,7 @@ class ContactsContainer
         }
     }
 
-    private ContactsContainer() 
-    {
-        Load();
-        LoadAvatarTextures();
-    }
+    private ContactsContainer() { }
 
     // Public
 
@@ -45,20 +41,10 @@ class ContactsContainer
         Load();
     }
 
-    public void Load()
+    public void Reload()
     {
-        var filePath = "Resources/Contacts.yaml";
-
-        if (File.Exists(filePath))
-        {
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(PascalCaseNamingConvention.Instance)
-                .Build();
-
-            using var reader = new StreamReader(filePath);
-            var yamlContacts = deserializer.Deserialize<List<Contact>>(reader);
-            Contacts = yamlContacts ?? [];
-        }
+        Save();
+        Load();
     }
 
     public void Save()
@@ -74,6 +60,22 @@ class ContactsContainer
         var yaml = serializer.Serialize(Contacts);
 
         File.WriteAllText(filePath, yaml);
+    }
+
+    public void Load()
+    {
+        var filePath = "Resources/Contacts.yaml";
+
+        if (File.Exists(filePath))
+        {
+            var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(PascalCaseNamingConvention.Instance)
+                .Build();
+
+            using var reader = new StreamReader(filePath);
+            var yamlContacts = deserializer.Deserialize<List<Contact>>(reader);
+            Contacts = yamlContacts ?? [];
+        }
     }
 
     public bool ContactExists(Contact newContact)

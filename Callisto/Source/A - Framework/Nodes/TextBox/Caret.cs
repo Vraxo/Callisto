@@ -63,7 +63,7 @@ class Caret : Node
     {
         base.Update();
 
-        if (!parent.IsSelected) return;
+        if (!parent.Selected) return;
 
         Draw();
         UpdateAlpha();

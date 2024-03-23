@@ -1,6 +1,7 @@
 ﻿using SFML.Window;
 using SFML.Graphics;
 using View = SFML.Graphics.View;
+using SFML.System;
 
 namespace Nodex;
 
@@ -80,11 +81,22 @@ class Window : RenderWindow
 
     private void OnResized(object? sender, SizeEventArgs e)
     {
-        float x = Size.X < 360 ? 360 : Size.X;
-        float y = Size.Y < 640 ? 640 : Size.Y;
+        // Ensure a minimum window size
+        float minWidth = 360;
+        float minHeight = 640;
+        float newX = Math.Max(e.Width, minWidth);
+        float newY = Math.Max(e.Height, minHeight);
 
-        Size = new((uint)x, (uint)y);
+        // Update the window size
+        Size = new((uint)newX, (uint)newY);
 
-        AdjustView();
+        // Recalculate view center based on new window size
+        float viewCenterX = newX / 2f;
+        float viewCenterY = newY / 2f;
+
+        // Adjust the view
+        View view = new(new FloatRect(0, 0, newX, newY));
+        view.Center = new(viewCenterX, viewCenterY);
+        SetView(view);
     }
 }

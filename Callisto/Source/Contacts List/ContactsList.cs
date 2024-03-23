@@ -17,6 +17,7 @@ class ContactsList : Node
         CreateDirectories();
 
         ContactsContainer.Instance.Load();
+        AvatarLoader.Instance.Load();
 
         addNewContactButton = new AddNewContactButton();
         AddChild(addNewContactButton);
