@@ -1,10 +1,6 @@
 
 
 
-center button
-origin options for button
-origin otpions for textbox
-
 center avatar in editor
 
 resizing causes view to reset to up
@@ -14,5 +10,8 @@ better textboxes (delete, move, cursor?)
 return added child (for where?)
 get child with paths?
 optimize shapes with properties?
+
+
+refactor delete button
 
 delete avatar?

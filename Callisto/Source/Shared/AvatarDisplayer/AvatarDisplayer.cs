@@ -22,9 +22,23 @@ class AvatarDisplayer : Node
 
         if (IsClickable)
         {
-            AddChild(new CircleButton
+            AddChild(new TopHalfCircleButton
             {
-                ContactIndex = ContactIndex
+                Text = "New",
+                Style = new()
+                {
+                    TextColor = new(255, 255, 255, 255),
+                    FillColor = new(0, 0, 0, 0),
+                    HoverFillColor = new(0, 96, 0, 128),
+                    PressedFillColor = new(0, 48, 0, 196),
+                    UnpressedFillColor = new(0, 0, 0, 0)
+                },
+                OnUpdate = (button) =>
+                {
+                    button.Visible = button.Style.FillColor != button.Style.UnpressedFillColor;
+                    button.Position = new(Window.Size.X / 2, Window.Size.Y * 0.2F);
+                },
+                OnClick = OpenPhotoSelectionDialog
             });
         }
     }
@@ -46,5 +60,26 @@ class AvatarDisplayer : Node
         }
 
         return texture;
+    }
+
+    // Callbacks
+
+    private void OpenPhotoSelectionDialog()
+    {
+        OpenFileDialog openFileDialog = new();
+        openFileDialog.ShowDialog();
+
+        string imagePath = openFileDialog.FileName;
+
+        if (imagePath != null)
+        {
+            string extension = Path.GetExtension(imagePath);
+
+            if (extension == ".jpg" || extension == ".png")
+            {
+                GetChild<CircleSprite>("CircleSprite").Texture = new(imagePath);
+                ImagePath = imagePath;
+            }
+        }
     }
 }

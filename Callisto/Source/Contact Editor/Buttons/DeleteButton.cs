@@ -1,6 +1,6 @@
-﻿using Callisto.DeletionDialogNode;
-using Nodex;
+﻿using Nodex;
 using SFML.Window;
+using Callisto.DeletionDialogNode;
 using Window = Nodex.Window;
 
 namespace Callisto.ContactEditorNode.ButtonsNode;

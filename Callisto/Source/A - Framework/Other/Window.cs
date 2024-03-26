@@ -42,6 +42,29 @@ class Window : RenderWindow
         SetView(new(visibleArea));
     }
 
+    // Private
+
+    private void AdjustView()
+    {
+        View oldView = GetView();
+
+        float y = MathF.Abs((Size.Y / 2) - oldView.Center.Y);
+
+        float remainder = y % 50;
+
+        if (remainder < 50)
+        {
+            y -= remainder;
+        }
+        else
+        {
+            y += 50 - remainder;
+        }
+
+        FloatRect visibleArea = new(0, y, Size.X, Size.Y);
+        SetView(new(visibleArea));
+    }
+
     // Events
 
     private void OnClosed(object? sender, EventArgs e)
@@ -57,22 +80,11 @@ class Window : RenderWindow
 
     private void OnResized(object? sender, SizeEventArgs e)
     {
-        // Ensure a minimum window size
-        float minWidth = 360;
-        float minHeight = 640;
-        float newX = Math.Max(e.Width, minWidth);
-        float newY = Math.Max(e.Height, minHeight);
+        float x = Size.X < 360 ? 360 : Size.X;
+        float y = Size.Y < 640 ? 640 : Size.Y;
 
-        // Update the window size
-        Size = new((uint)newX, (uint)newY);
+        Size = new((uint)x, (uint)y);
 
-        // Recalculate view center based on new window size
-        float viewCenterX = newX / 2f;
-        float viewCenterY = newY / 2f;
-
-        // Adjust the view
-        View view = new(new FloatRect(0, 0, newX, newY));
-        view.Center = new(viewCenterX, viewCenterY);
-        SetView(view);
+        AdjustView();
     }
 }

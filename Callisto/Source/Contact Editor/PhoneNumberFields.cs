@@ -8,8 +8,8 @@ class PhoneNumberFields : Node
 
     public int ContactIndex = -1;
     public int MaxCharacters = 25;
-
     public List<ContactInfoField> Fields = [];
+
     private List<TextBox> textBoxes = [];
 
     // Public
@@ -33,8 +33,8 @@ class PhoneNumberFields : Node
         base.Update();
 
         UpdateFields();
-        //CreateExtraNumberFields();
-        //DeleteExtraNumberFields();
+        CreateExtraNumberFields();
+        DeleteExtraNumberFields();
     }
 
     public List<string> GetPhoneNumbers()
@@ -55,7 +55,7 @@ class PhoneNumberFields : Node
 
         for (int i = 0; i < Fields.Count; i++)
         {
-            Fields[i].Position = new(fieldX, Window.Size.Y * (0.4F + ((i + 2) * 0.2F)));
+            Fields[i].Position = new(fieldX, Window.Size.Y * (0.4F + ((i + 2) * 0.1F)));
         }
     }
 

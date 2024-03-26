@@ -20,6 +20,8 @@ class Button : Node
     public Action OnClick = () => { };
     public Action<Button> OnUpdate = (button) => { };
 
+    public bool Visible = true;
+
     private bool pressed = false;
 
     private Text textRenderer = new();
@@ -38,6 +40,9 @@ class Button : Node
     {
         base.Update();
         OnUpdate(this);
+
+        if (!Visible) return;
+
         DrawShape();
         DrawText();
     }
@@ -126,11 +131,11 @@ class Button : Node
     {
         if (IsMouseOver(new(e.X, e.Y)))
         {
-            Style.FillColor = pressed ? Style.ActiveFillColor : Style.HoverFillColor;
+            Style.FillColor = pressed ? Style.PressedFillColor : Style.HoverFillColor;
         }
         else
         {
-            Style.FillColor = Style.IdleFillColor;
+            Style.FillColor = Style.UnpressedFillColor;
         }
     }
 
@@ -141,7 +146,7 @@ class Button : Node
         if (IsMouseOver(new(e.X, e.Y)))
         {
             pressed = true;
-            Style.FillColor = Style.ActiveFillColor;
+            Style.FillColor = Style.PressedFillColor;
         }
     }
 
@@ -158,6 +163,6 @@ class Button : Node
         }
 
         pressed = false;
-        Style.FillColor = Style.IdleFillColor;
+        Style.FillColor = Style.UnpressedFillColor;
     }
 }

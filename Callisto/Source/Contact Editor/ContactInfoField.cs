@@ -21,7 +21,6 @@ class ContactInfoField : Node
         AddChild(new TextBox
         {
             Position = new(0, 25),
-            Size = new(300, 50)
         });
     }
 }

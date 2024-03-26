@@ -16,7 +16,7 @@ class CircleButton : Nodex.CircleButton
 
         Radius = 100;
         Origin = new(Radius, Radius);
-        actionOnClick = OpenPhotoSelectionDialog;
+        //actionOnClick = OpenPhotoSelectionDialog;
     }
 
     public override void Update()
@@ -28,22 +28,5 @@ class CircleButton : Nodex.CircleButton
 
     // Callbacks
 
-    private void OpenPhotoSelectionDialog()
-    {
-        OpenFileDialog openFileDialog = new();
-        openFileDialog.ShowDialog();
 
-        string imagePath = openFileDialog.FileName;
-
-        if (imagePath != null)
-        {
-            string extension = Path.GetExtension(imagePath);
-
-            if (extension == ".jpg" || extension == ".png")
-            {
-                GetNode<CircleSprite>("AvatarDisplayer/CircleSprite").Texture = new(imagePath);
-                GetParent<AvatarDisplayer>().ImagePath = imagePath;
-            }
-        }
-    }
 }
