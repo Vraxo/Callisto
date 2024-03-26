@@ -1,12 +1,13 @@
 
 
 
+center button
+origin options for button
+origin otpions for textbox
 
-fix view (going smaller from fullscreen shows that the view is lower than it should be)
-control caret with mouse
 center avatar in editor
 
-
+resizing causes view to reset to up
 
 more precise scrollers (contactviewpage, contacteditor)
 better textboxes (delete, move, cursor?)

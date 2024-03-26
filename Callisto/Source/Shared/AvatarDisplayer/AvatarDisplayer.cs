@@ -15,23 +15,18 @@ class AvatarDisplayer : Node
 
     public override void Start()
     {
-        AddChild(new CircleSprite()
+        AddChild(new CircleSprite
         {
             Texture = GetTexture()
         });
 
         if (IsClickable)
         {
-            AddChild(new CircleButton()
+            AddChild(new CircleButton
             {
                 ContactIndex = ContactIndex
             });
         }
-    }
-
-    public override void Update()
-    {
-        base.Update();
     }
 
     // Private

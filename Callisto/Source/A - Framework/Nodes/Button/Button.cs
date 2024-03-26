@@ -83,8 +83,8 @@ class Button : Node
         textRenderer.Font = Style.Font;
         textRenderer.CharacterSize = Style.FontSize;
 
-        int x = (int)(GlobalPosition.X - Origin.X + Size.X / 2 - textRenderer.GetLocalBounds().Width / 2);
-        int y = (int)(GlobalPosition.Y - Origin.Y + Size.Y / 2 - textRenderer.GetLocalBounds().Height / 1.25);
+        float x = GlobalPosition.X - Origin.X + Size.X / 2 - textRenderer.GetLocalBounds().Width / 2;
+        float y = GlobalPosition.Y + rectangleRenderer.GetLocalBounds().Height / 2 - textRenderer.GetLocalBounds().Height - Origin.Y;
 
         textRenderer.Position = new(x, y);
 

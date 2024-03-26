@@ -1,6 +1,9 @@
 ﻿using SFML.System;
 using SFML.Window;
 using SFML.Graphics;
+using System.Security.Cryptography.Xml;
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace Nodex;
 
@@ -80,15 +83,14 @@ class TextBox : Node
 
     private void DrawText()
     {
-
         TextRenderer.CharacterSize = Style.FontSize;
         TextRenderer.DisplayedString = Text;
         TextRenderer.Color = Style.TextColor;
         TextRenderer.Font = Style.Font;
 
-        int x = (int)(GlobalPosition.X + Style.Padding - Origin.X);
-        int y = (int)(GlobalPosition.Y + Size.Y / 10 - Origin.Y);
-        
+        float x = GlobalPosition.X + Style.Padding - Origin.X;
+        float y = GlobalPosition.Y + rectangleRenderer.GetLocalBounds().Height / 2 - TextRenderer.GetLocalBounds().Height;
+
         TextRenderer.Position = new(x, y);
 
         Window.Draw(TextRenderer);
@@ -181,7 +183,7 @@ class TextBox : Node
         if (IsMouseOver(new(e.X, e.Y)))
         {
             Selected = true;
-            caret.X = Text.Length;
+            caret.GetInPosition(e.X);
         }
         else
         {

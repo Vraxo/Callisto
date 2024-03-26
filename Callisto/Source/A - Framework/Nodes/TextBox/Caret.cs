@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Nodex;
 
@@ -69,13 +70,34 @@ class Caret : Node
         UpdateAlpha();
     }
 
+    public void GetInPosition(float mouseX)
+    {
+        if (parent.Text.Length == 0)
+        {
+            X = 0;
+        }
+        else
+        {
+            int x = (int)(mouseX - parent.GlobalPosition.X - parent.Style.Padding);
+            int characterWidth = (int)(parent.TextRenderer.GetGlobalBounds().Width / parent.Text.Length);
+            X = x / characterWidth;
+
+            X = X > parent.Text.Length ?
+                parent.Text.Length :
+                X;
+        }
+    }
+
     // Private
 
     private void Draw()
     {
         float characterWidth = (parent.Style.FontSize * 10) / 16;
-        float _x = GlobalPosition.X + characterWidth * X;
-        float _y = GlobalPosition.Y;
+        float _x = GlobalPosition.X + characterWidth/4 + characterWidth * X;
+        //float _y = GlobalPosition.Y;
+
+        //int x = (int)(GlobalPosition.X + Style.Padding - Origin.X);
+        int _y = (int)(parent.GlobalPosition.Y + parent.Size.Y / 2 - parent.TextRenderer.GetLocalBounds().Height / 2);
 
         renderer.Position = new(_x, _y);
         renderer.DisplayedString = "|";

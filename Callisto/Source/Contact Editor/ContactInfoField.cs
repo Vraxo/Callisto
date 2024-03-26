@@ -12,19 +12,16 @@ class ContactInfoField : Node
 
     public override void Start()
     {
-        Label label = new()
+        AddChild(new Label
         {
             Text = LabelText,
             Position = new(0, 0)
-        };
+        });
 
-        AddChild(label);
-
-        TextBox textBox = new()
+        AddChild(new TextBox
         {
-            Position = new(0, 25)
-        };
-
-        AddChild(textBox);
+            Position = new(0, 25),
+            Size = new(300, 50)
+        });
     }
 }

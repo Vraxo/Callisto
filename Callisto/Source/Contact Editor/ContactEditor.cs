@@ -17,19 +17,19 @@ class ContactEditor : Node
 
     public override void Start()
     {
-        AddChild(new Buttons()
+        AddChild(new Buttons
         {
             ContactIndex = ContactIndex
         });
 
-        fields = new Fields() 
+        fields = new Fields
         { 
             ContactIndex = ContactIndex 
         };
 
         AddChild(fields);
 
-        AddChild(new AvatarDisplayer()
+        AddChild(new AvatarDisplayer
         {
             ContactIndex = ContactIndex,
             IsClickable = true

@@ -1,7 +1,6 @@
 ﻿using SFML.Window;
 using SFML.Graphics;
 using View = SFML.Graphics.View;
-using SFML.System;
 
 namespace Nodex;
 
@@ -40,29 +39,6 @@ class Window : RenderWindow
     public void ResetView()
     {
         FloatRect visibleArea = new(0, 0, Size.X, Size.Y);
-        SetView(new(visibleArea));
-    }
-
-    // Private
-
-    private void AdjustView()
-    {
-        View oldView = GetView();
-        
-        float y = MathF.Abs((Size.Y / 2) - oldView.Center.Y);
-
-        float remainder = y % 50;
-
-        if (remainder < 25)
-        {
-            y -= remainder;
-        }
-        else
-        {
-            y += 50 - remainder;
-        }
-
-        FloatRect visibleArea = new(0, y, Size.X, Size.Y);
         SetView(new(visibleArea));
     }
 
