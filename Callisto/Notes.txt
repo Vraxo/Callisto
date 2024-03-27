@@ -1,10 +1,7 @@
 
 
 
-inline delete button
-
 add cancel button
-
 add delete avatar button
 
 try fixing centering textboxes vertically

@@ -37,8 +37,6 @@ class Buttons : Node
 
     private void CreateCancelButton()
     {
-        if (ContactIndex != -1) return;
-
         AddChild(new Button
         {
             Text = "Cancel",
@@ -48,7 +46,14 @@ class Buttons : Node
             },
             OnUpdate = (button) =>
             {
-                button.Position.X = Window.Size.X - button.Size.X;
+                if (ContactIndex == -1)
+                {
+                    button.Position.X = Window.Size.X - button.Size.X;
+                }
+                else
+                {
+                    button.Position.X = 0;
+                }
             },
             OnClick = () =>
             {
