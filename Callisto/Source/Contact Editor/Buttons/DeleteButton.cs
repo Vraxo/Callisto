@@ -29,13 +29,15 @@ class DeleteButton : Button
 
     private void GetConfirmationForContactDeletion()
     {
-        Window window = new
-        (
-            new(360, 120),
-            "Confirm contact deletion",
-            Styles.Close,
-            new ContextSettings(0, 0, 16)
-        )
+        WindowInfo windowInfo = new()
+        {
+            VideoMode = new(360, 120),
+            Title = "Confirm contact deletion",
+            Styles = Styles.Close,
+            ContextSettings = new(0, 0, 16)
+        };
+
+        Window window = new(windowInfo)
         {
             RootNode = new DeletionDialog()
         };

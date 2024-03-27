@@ -13,8 +13,7 @@ class Window : RenderWindow
 
     // Constructor
 
-    public Window(VideoMode mode, string title, Styles styles, ContextSettings settings) :
-           base(mode, title, styles, settings)
+    public Window(WindowInfo info) : base(info.VideoMode, info.Title, info.Styles, info.ContextSettings)
     {
         Resized += OnResized;
         Closed += OnClosed;

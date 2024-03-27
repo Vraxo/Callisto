@@ -41,17 +41,17 @@ class Program
 
     private static void CreateMainWindow()
     {
-        MainWindow = new
-        (
-            new(360, 640),
-            "Callisto",
-            Styles.Default,
-            new ContextSettings(0, 0, 16)
-        );
+        WindowInfo windowInfo = new()
+        {
+            VideoMode = new(360, 640),
+            Title = "Callisto",
+            Styles = Styles.Default,
+            ContextSettings = new(0, 0, 16)
+        };
 
+        MainWindow = new(windowInfo);
         Windows.Add(MainWindow);
         MainWindow.RootNode = new ContactsList();
-
         MainWindow.Start();
     }
 }

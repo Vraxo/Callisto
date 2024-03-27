@@ -112,17 +112,16 @@ class OkButton : Button
             Message = message
         };
 
-        Window window = new
-        (
-            new(360, 120),
-            "Invalid first name",
-            Styles.Close,
-            new ContextSettings(0, 0, 16)
-        )
+        WindowInfo windowInfo = new()
         {
-            RootNode = notificationDialog
+            VideoMode = new(360, 120),
+            Title = "Invalid first name",
+            Styles = Styles.Close,
+            ContextSettings = new(0, 0, 16)
         };
 
+        Window window = new(windowInfo);
+        window.RootNode = notificationDialog;
         window.Start();
         Program.AddWindow(window);
     }
