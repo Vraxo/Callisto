@@ -66,8 +66,6 @@ class CircleButton : Node
                 Radius = Radius,
                 Origin = Origin,
                 OutlineColor = Color.Blue,
-                FillColor = Color.Transparent,
-                OutlineThickness = 1,
             };
 
             Window.Draw(c);

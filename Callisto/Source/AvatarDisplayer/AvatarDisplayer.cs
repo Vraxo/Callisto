@@ -40,6 +40,14 @@ class AvatarDisplayer : Node
                 },
                 OnClick = OpenPhotoSelectionDialog
             });
+
+            if (ContactIndex != -1)
+            {
+                if (ContactsContainer.Instance.Contacts[ContactIndex].HasAvatar)
+                {
+                    CreateDeleteButton();
+                }
+            }
         }
     }
 
@@ -62,6 +70,29 @@ class AvatarDisplayer : Node
         return texture;
     }
 
+    private void CreateDeleteButton()
+    {
+        AddChild(new BottomHalfCircleButton
+        {
+            Text = "Delete",
+            Origin = new(100, 0),
+            Style = new()
+            {
+                TextColor = new(255, 255, 255, 255),
+                FillColor = new(0, 0, 0, 0),
+                HoverFillColor = new(96, 0, 0, 128),
+                PressedFillColor = new(96, 0, 0, 196),
+                UnpressedFillColor = new(0, 0, 0, 0)
+            },
+            OnUpdate = (button) =>
+            {
+                button.Visible = button.Style.FillColor != button.Style.UnpressedFillColor;
+                button.Position = new(Window.Size.X / 2, Window.Size.Y * 0.2F);
+            },
+            OnClick = DeleteAvatar
+        });
+    }
+
     // Callbacks
 
     private void OpenPhotoSelectionDialog()
@@ -77,9 +108,17 @@ class AvatarDisplayer : Node
 
             if (extension == ".jpg" || extension == ".png")
             {
-                GetChild<CircleSprite>("CircleSprite").Texture = new(imagePath);
                 ImagePath = imagePath;
+                GetChild<CircleSprite>("CircleSprite").Texture = new(imagePath);
+                CreateDeleteButton();
             }
         }
+    }
+
+    private void DeleteAvatar()
+    {
+        ImagePath = "";
+        GetChild<CircleSprite>("CircleSprite").Texture = TextureLoader.Instance.Textures["Avatar"];
+        GetChild<BottomHalfCircleButton>().Destroy();
     }
 }

@@ -144,5 +144,27 @@ class OkButton : Button
             File.Copy(imagePath, avatarPath, true);
             TextureLoader.Instance.Textures[contactId] = new(imagePath);
         }
+        else
+        {
+            DeleteAvatar();
+        }
+    }
+
+    private void DeleteAvatar()
+    {
+        string contactId = ContactsContainer.Instance.Contacts[ContactIndex].Id.ToString();
+
+        string pngPath = $"Resources/Avatars/{contactId}.png";
+        string jpgPath = $"Resources/Avatars/{contactId}.jpg";
+
+        if (File.Exists(pngPath))
+        {
+            File.Delete(pngPath);
+        }
+
+        if (File.Exists(jpgPath))
+        {
+            File.Delete(jpgPath);
+        }
     }
 }

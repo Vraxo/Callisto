@@ -1,9 +1,6 @@
 ﻿using SFML.System;
 using SFML.Window;
 using SFML.Graphics;
-using System.Security.Cryptography.Xml;
-using System.Windows.Forms;
-using System.Drawing;
 
 namespace Nodex;
 
@@ -83,10 +80,18 @@ class TextBox : Node
 
     private void DrawText()
     {
-        TextRenderer.CharacterSize = Style.FontSize;
         TextRenderer.DisplayedString = Text;
+        TextRenderer.CharacterSize = Style.FontSize;
         TextRenderer.Color = Style.TextColor;
         TextRenderer.Font = Style.Font;
+
+        //auto text = sf::Text{ "Centered Text", font };
+        //auto center = text.getGlobalBounds().getSize() / 2.f;
+        //auto localBounds = center + text.getLocalBounds().getPosition();
+        //auto rounded = round(localBounds);
+        //text.setOrigin(rounded);
+        //text.setPosition(sf::Vector2f{ window.getSize() / 2u });
+        //text.setFillColor(sf::Color{ 0x655A7CFF });
 
         float x = GlobalPosition.X + Style.Padding - Origin.X;
         float y = GlobalPosition.Y + rectangleRenderer.GetLocalBounds().Height / 2 - TextRenderer.GetLocalBounds().Height;

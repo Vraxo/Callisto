@@ -1,15 +1,9 @@
 
 
 
-add cancel button
-add delete avatar button
-
-try fixing centering textboxes vertically
 
 create base half circle button class
-
 center avatar in editor
-
 resizing causes view to reset to up
 
 more precise scrollers (contactviewpage, contacteditor)
