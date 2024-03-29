@@ -23,6 +23,8 @@ class Window : RenderWindow
 
     public void Start()
     {
+        SFML.Graphics.Image image = new("Resources/Icon.jpg");
+        SetIcon(256, 256, image.Pixels);
         RootNode.Window = this;
         RootNode.Start();
     }

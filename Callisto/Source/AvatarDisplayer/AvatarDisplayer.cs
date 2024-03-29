@@ -1,7 +1,7 @@
 ﻿using Nodex;
 using SFML.Graphics;
 
-namespace Callisto.AvatarDisplayerNode;
+namespace Callisto;
 
 class AvatarDisplayer : Node
 {
@@ -17,29 +17,18 @@ class AvatarDisplayer : Node
     {
         AddChild(new CircleSprite
         {
-            Texture = GetTexture()
+            Radius = 100,
+            Origin = new(100, 100),
+            Texture = GetTexture(),
+            OnUpdate = (sprite) =>
+            {
+                sprite.Position = new(Window.Size.X / 2, Window.Size.Y * 0.2F);
+            }
         });
 
         if (IsClickable)
         {
-            AddChild(new TopHalfCircleButton
-            {
-                Text = "New",
-                Style = new()
-                {
-                    TextColor = new(255, 255, 255, 255),
-                    FillColor = new(0, 0, 0, 0),
-                    HoverFillColor = new(0, 96, 0, 128),
-                    PressedFillColor = new(0, 48, 0, 196),
-                    UnpressedFillColor = new(0, 0, 0, 0)
-                },
-                OnUpdate = (button) =>
-                {
-                    button.Visible = button.Style.FillColor != button.Style.UnpressedFillColor;
-                    button.Position = new(Window.Size.X / 2, Window.Size.Y * 0.2F);
-                },
-                OnClick = OpenPhotoSelectionDialog
-            });
+            CreateNewButton();
 
             if (ContactIndex != -1)
             {
@@ -68,6 +57,28 @@ class AvatarDisplayer : Node
         }
 
         return texture;
+    }
+
+    private void CreateNewButton()
+    {
+        AddChild(new HalfCircleButton
+        {
+            Text = "New",
+            Style = new()
+            {
+                TextColor = new(255, 255, 255, 255),
+                FillColor = new(0, 0, 0, 0),
+                HoverFillColor = new(0, 96, 0, 128),
+                PressedFillColor = new(0, 48, 0, 196),
+                UnpressedFillColor = new(0, 0, 0, 0)
+            },
+            OnUpdate = (button) =>
+            {
+                button.Visible = button.Style.FillColor != button.Style.UnpressedFillColor;
+                button.Position = new(Window.Size.X / 2, Window.Size.Y * 0.2F);
+            },
+            OnClick = OpenPhotoSelectionDialog
+        });
     }
 
     private void CreateDeleteButton()

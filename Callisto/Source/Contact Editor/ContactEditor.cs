@@ -1,7 +1,6 @@
-﻿using Callisto.AvatarDisplayerNode;
+﻿using Nodex;
 using Callisto.ContactEditorNode.ButtonsNode;
 using Callisto.ContactsListNode;
-using Nodex;
 
 namespace Callisto.ContactEditorNode;
 
@@ -50,7 +49,7 @@ class ContactEditor : Node
         string firstName = fields.FirstNameTextBox.Text;
         string lastName = fields.LastNameTextBox.Text;
         List<string> phoneNumbers = fields.GetChild<PhoneNumberFields>().GetPhoneNumbers();
-        bool hasAvatar = GetNode<AvatarDisplayerNode.CircleSprite>("AvatarDisplayer/CircleSprite").Texture != TextureLoader.Instance.Textures["Avatar"];
+        bool hasAvatar = GetNode<CircleSprite>("AvatarDisplayer/CircleSprite").Texture != TextureLoader.Instance.Textures["Avatar"];
 
         Contact newContact = new()
         {

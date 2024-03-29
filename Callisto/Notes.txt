@@ -2,7 +2,6 @@
 
 
 
-create base half circle button class
 center avatar in editor
 resizing causes view to reset to up
 
@@ -13,3 +12,4 @@ get child with paths?
 optimize shapes with properties?
 
 
+OnUpdate for all nodes?

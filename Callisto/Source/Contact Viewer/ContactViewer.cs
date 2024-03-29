@@ -1,5 +1,4 @@
 ﻿using Nodex;
-using Callisto.AvatarDisplayerNode;
 using Callisto.ContactsListNode;
 using Callisto.ContactEditorNode;
 
@@ -27,7 +26,7 @@ class ContactViewer : Node
             {
                 ChangeScene(new ContactsList());
             }
-        }) ;
+        });
 
         AddChild(new Button
         {

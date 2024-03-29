@@ -10,20 +10,24 @@ class CircleSprite : Node
     public float Radius;
     public Vector2f Origin;
     public Texture Texture;
+    public Action<CircleSprite> OnUpdate = (sprite) => { };
 
     private CircleShape circleRenderer = new();
 
     // Public
 
-    public override void Start()
-    {
-        base.Start();
-    }
-
     public override void Update()
     {
         base.Update();
 
+        Draw();
+        OnUpdate(this);
+    }
+
+    // Private
+
+    private void Draw()
+    {
         circleRenderer.Position = GlobalPosition;
         circleRenderer.Radius = Radius;
         circleRenderer.Origin = Origin;

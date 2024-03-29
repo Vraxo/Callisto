@@ -4,7 +4,7 @@ using SFML.Graphics;
 
 namespace Nodex;
 
-class TopHalfCircleButton : Node
+class HalfCircleButton : Node
 {
     // Fields
 
@@ -18,12 +18,13 @@ class TopHalfCircleButton : Node
     public ButtonStyle Style = new();
 
     public Action OnClick = () => { };
-    public Action<TopHalfCircleButton> OnUpdate = (button) => { };
+    public Action<HalfCircleButton> OnUpdate = (button) => { };
 
     public bool Visible = true;
 
-    private bool pressed = false;
-    private Text textRenderer = new();
+    protected float renderTextureY = 0;
+    protected bool pressed = false;
+    protected Text textRenderer = new();
 
     #endregion
 
@@ -42,7 +43,7 @@ class TopHalfCircleButton : Node
 
         if (!Visible) return;
 
-        DrawShape();
+        DrawShape(renderTextureY);
         DrawText();
     }
 
@@ -67,13 +68,14 @@ class TopHalfCircleButton : Node
 
     // Private
 
-    private void DrawShape()
+    protected void DrawShape(float y)
     {
-        RenderTexture renderTexture = new(200, 100);
+        RenderTexture renderTexture = new((uint)(Radius * 2), (uint)Radius);
 
         renderTexture.Draw(new CircleShape
         {
-            Radius = 100,
+            Position = new(0, y),
+            Radius = Radius,
             FillColor = Style.FillColor,
         });
 
@@ -102,14 +104,14 @@ class TopHalfCircleButton : Node
         Window.Draw(textRenderer);
     }
 
-    private bool IsMouseOver(Vector2f mousePosition)
+    protected virtual bool IsMouseOver(Vector2f mousePosition)
     {
         if (mousePosition.Y > GlobalPosition.Y) return false;
 
         return IsInRange(mousePosition);
     }
 
-    private bool IsInRange(Vector2f position)
+    protected bool IsInRange(Vector2f position)
     {
         bool isInRange = GetDistance(GlobalPosition, position) < Radius;
         return isInRange;
@@ -127,14 +129,14 @@ class TopHalfCircleButton : Node
 
     // Connection to events
 
-    private void ConnectToEvents()
+    protected void ConnectToEvents()
     {
         Window.MouseMoved += OnMouseMoved;
         Window.MouseButtonPressed += OnMouseClicked;
         Window.MouseButtonReleased += OnMouseReleased;
     }
 
-    private void DisconnectFromEvents()
+    protected void DisconnectFromEvents()
     {
         Window.MouseMoved -= OnMouseMoved;
         Window.MouseButtonPressed -= OnMouseClicked;
