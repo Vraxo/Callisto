@@ -41,10 +41,12 @@ class VerticalViewScroller : Node
             if (e.Delta > 0 && CanGoUp)
             {
                 Window.GetView().Move(new(0, -Factor));
+                Window.ViewY -= Factor;
             }
             else if (e.Delta < 0 && CanGoDown)
             {
                 Window.GetView().Move(new(0, Factor));
+                Window.ViewY += Factor;
             }
 
             Window.SetView(Window.GetView());

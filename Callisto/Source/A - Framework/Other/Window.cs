@@ -1,6 +1,7 @@
 ﻿using SFML.Window;
+using SFML.System;
 using SFML.Graphics;
-using View = SFML.Graphics.View;
+using System.Windows.Forms;
 
 namespace Nodex;
 
@@ -11,10 +12,13 @@ class Window : RenderWindow
     public Node RootNode;
     public Color ClearColor = new(32, 32, 32);
 
+    public float ViewY = 0;
+
     // Constructor
 
     public Window(WindowInfo info) : base(info.VideoMode, info.Title, info.Styles, info.ContextSettings)
     {
+        prefviousSize = new((int)info.VideoMode.Width, (int)info.VideoMode.Height);
         Resized += OnResized;
         Closed += OnClosed;
     }
@@ -23,8 +27,6 @@ class Window : RenderWindow
 
     public void Start()
     {
-        SFML.Graphics.Image image = new("Resources/Icon.jpg");
-        SetIcon(256, 256, image.Pixels);
         RootNode.Window = this;
         RootNode.Start();
     }
@@ -39,30 +41,8 @@ class Window : RenderWindow
 
     public void ResetView()
     {
+        ViewY = 0;
         FloatRect visibleArea = new(0, 0, Size.X, Size.Y);
-        SetView(new(visibleArea));
-    }
-
-    // Private
-
-    private void AdjustView()
-    {
-        View oldView = GetView();
-
-        float y = MathF.Abs((Size.Y / 2) - oldView.Center.Y);
-
-        float remainder = y % 50;
-
-        if (remainder < 50)
-        {
-            y -= remainder;
-        }
-        else
-        {
-            y += 50 - remainder;
-        }
-
-        FloatRect visibleArea = new(0, y, Size.X, Size.Y);
         SetView(new(visibleArea));
     }
 
@@ -86,6 +66,7 @@ class Window : RenderWindow
 
         Size = new((uint)x, (uint)y);
 
-        AdjustView();
+        FloatRect visibleArea = new(0, ViewY, Size.X, Size.Y);
+        SetView(new(visibleArea));
     }
 }

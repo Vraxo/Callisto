@@ -1,15 +1,15 @@
 
 
 
+refactor initialization
 
 center avatar in editor
 resizing causes view to reset to up
+
+center textbox and button
 
 more precise scrollers (contactviewpage, contacteditor)
 better textboxes (delete, move, cursor?)
 return added child (for where?)
 get child with paths?
 optimize shapes with properties?
-
-
-OnUpdate for all nodes?
