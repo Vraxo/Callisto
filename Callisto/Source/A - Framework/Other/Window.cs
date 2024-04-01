@@ -18,7 +18,6 @@ class Window : RenderWindow
 
     public Window(WindowInfo info) : base(info.VideoMode, info.Title, info.Styles, info.ContextSettings)
     {
-        prefviousSize = new((int)info.VideoMode.Width, (int)info.VideoMode.Height);
         Resized += OnResized;
         Closed += OnClosed;
     }

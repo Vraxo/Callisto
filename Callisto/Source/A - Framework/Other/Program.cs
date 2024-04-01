@@ -1,4 +1,4 @@
-﻿using Callisto.ContactsListNode;
+﻿using SFML.System;
 using SFML.Window;
 
 namespace Nodex;
@@ -13,9 +13,11 @@ class Program
     // Public
 
     [STAThread]
-    public static void Main()
+    public static void Start(Node rootNode)
     {
-        CreateMainWindow();
+        CreateMainWindow(rootNode);
+
+        Clock deltaTimeClock = new();
 
         while (true)
         {
@@ -23,6 +25,8 @@ class Program
             {
                 Windows[i].Update();
             }
+
+            DeltaTimer.DeltaTime = deltaTimeClock.Restart();
         }
     }
 
@@ -39,7 +43,7 @@ class Program
 
     // Private
 
-    private static void CreateMainWindow()
+    private static void CreateMainWindow(Node rootNode)
     {
         WindowInfo windowInfo = new()
         {
@@ -51,7 +55,7 @@ class Program
 
         MainWindow = new(windowInfo);
         Windows.Add(MainWindow);
-        MainWindow.RootNode = new ContactsList();
+        MainWindow.RootNode = rootNode;
         MainWindow.Start();
     }
 }

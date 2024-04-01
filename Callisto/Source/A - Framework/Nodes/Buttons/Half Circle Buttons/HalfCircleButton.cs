@@ -56,7 +56,7 @@ class HalfCircleButton : Node
     {
         base.Activate();
 
-        Start();
+        ConnectToEvents();
     }
 
     public override void Deactivate()
