@@ -56,6 +56,7 @@ class PhoneNumberFields : Node
         for (int i = 0; i < Fields.Count; i++)
         {
             Fields[i].Position = new(fieldX, 250 + (i + 2) * textBoxes[0].Size.Y * 2.5F);
+            //Fields[i].Position = new(fieldX, Window.Size.Y * (0.4F + ((i + 2) * 0.1F)));
         }
     }
 
@@ -75,20 +76,6 @@ class PhoneNumberFields : Node
         textBoxes.Add(numberField.GetChild<TextBox>());
     }
 
-    private ContactInfoField CreateField(string labelText)
-    {
-        ContactInfoField field = new()
-        {
-            LabelText = labelText
-        };
-
-        AddChild(field, labelText.Replace(" ", ""));
-        field.GetChild<TextBox>().MaxCharacters = MaxCharacters;
-        Fields.Add(field);
-
-        return field;
-    }
-
     private void CreateNumberField(string labelText, int index = -1)
     {
         ContactInfoField numberField = CreateField(labelText);
@@ -103,6 +90,31 @@ class PhoneNumberFields : Node
             textBoxes.Last().Text = contact.PhoneNumbers[index];
         }
     }
+
+    // Creating and destroying fields
+
+    private ContactInfoField CreateField(string labelText)
+    {
+        ContactInfoField field = new()
+        {
+            LabelText = labelText
+        };
+
+        AddChild(field, labelText.Replace(" ", ""));
+        field.GetChild<TextBox>().MaxCharacters = MaxCharacters;
+        Fields.Add(field);
+
+        return field;
+    }
+
+    private void RemoveFieldAndTextBoxAt(int index)
+    {
+        Children.Remove(Fields[index]);
+        Fields.Remove(Fields[index]);
+        textBoxes.RemoveAt(index);
+    }
+
+    // Extra fields
 
     private void CreateExtraNumberFields()
     {
@@ -124,12 +136,5 @@ class PhoneNumberFields : Node
                 }
             }
         }
-    }
-
-    private void RemoveFieldAndTextBoxAt(int index)
-    {
-        Children.Remove(Fields[index]);
-        Fields.Remove(Fields[index]);
-        textBoxes.RemoveAt(index);
     }
 }

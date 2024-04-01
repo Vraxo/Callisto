@@ -22,7 +22,7 @@ class AvatarDisplayer : Node
             Texture = GetTexture(),
             OnUpdate = (sprite) =>
             {
-                sprite.Position = new(Window.Size.X / 2, Window.Size.Y * 0.2F);
+                sprite.Position = new(Window.Size.X / 2, 128);
             }
         });
 

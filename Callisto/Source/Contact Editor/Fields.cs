@@ -75,6 +75,7 @@ class Fields : Node
         for (int i = 0; i < fields.Count; i ++)
         {
             fields[i].Position = new(fieldX, 250 + i * FirstNameTextBox.Size.Y * 2.5F);
+            //fields[i].Position = new(fieldX, Window.Size.Y * (0.4F + (i * 0.1F)));
         }
     }
 
