@@ -1,12 +1,15 @@
 
 
 
+refactor contact editor scroller
+default go up for scrollers
+
 center avatar in editor
 resizing causes view to reset to up
 
 center textbox and button
 
-more precise scrollers (contactviewpage, contacteditor)
+more precise scrollers (contactviewpage)
 better textboxes (delete, move, cursor?)
 return added child (for where?)
 get child with paths?

@@ -31,14 +31,12 @@ class Fields : Node
             ContactIndex = ContactIndex,
         });
 
-        LoadContactInfoIntoFields();
+        LoadContactInfoIntoNameFields();
     }
 
     public override void Update()
     {
         base.Update();
-
-        Console.WriteLine(AllFields.Count);
 
         UpdateFields();
     }
@@ -81,7 +79,7 @@ class Fields : Node
         }
     }
 
-    private void LoadContactInfoIntoFields()
+    private void LoadContactInfoIntoNameFields()
     {
         var index = GetParent<ContactEditor>().ContactIndex;
 

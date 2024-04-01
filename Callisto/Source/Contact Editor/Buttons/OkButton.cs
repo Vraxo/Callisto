@@ -1,6 +1,6 @@
-﻿using Callisto.ContactInfoViewerNode;
-using Nodex;
+﻿using Nodex;
 using SFML.Window;
+using Callisto.ContactInfoViewerNode;
 using Window = Nodex.Window;
 
 namespace Callisto.ContactEditorNode.ButtonsNode;
