@@ -6,7 +6,7 @@ namespace Callisto.ContactEditorNode;
 
 class ContactEditor : Node
 {
-    // Fields
+    // AllFields
 
     public int ContactIndex = -1;
 

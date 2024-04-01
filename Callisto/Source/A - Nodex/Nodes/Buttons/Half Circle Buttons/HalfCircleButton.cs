@@ -6,7 +6,7 @@ namespace Nodex;
 
 class HalfCircleButton : Node
 {
-    // Fields
+    // AllFields
 
     #region [ - - - FIELDS - - - ]
 

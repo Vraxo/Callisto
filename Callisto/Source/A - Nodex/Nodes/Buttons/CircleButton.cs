@@ -6,7 +6,7 @@ namespace Nodex;
 
 class CircleButton : Node
 {
-    // Fields
+    // AllFields
 
     public float Radius;
     public Vector2f Origin;

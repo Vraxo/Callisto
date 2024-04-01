@@ -4,7 +4,7 @@ namespace Nodex;
 
 class VerticalViewScroller : Node
 {
-    // Fields
+    // AllFields
 
     public int Factor = 50;
     public bool CanGoUp = false;

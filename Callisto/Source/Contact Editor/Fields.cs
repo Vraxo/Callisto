@@ -12,7 +12,7 @@ class Fields : Node
     public TextBox FirstNameTextBox;
     public TextBox LastNameTextBox;
 
-    private List<ContactInfoField> fields = [];
+    public List<ContactInfoField> AllFields = [];
     private ContactInfoField firstNameField;
     private ContactInfoField lastNameField;
 
@@ -38,6 +38,8 @@ class Fields : Node
     {
         base.Update();
 
+        Console.WriteLine(AllFields.Count);
+
         UpdateFields();
     }
 
@@ -51,7 +53,7 @@ class Fields : Node
         };
 
         AddChild(firstNameField);
-        fields.Add(firstNameField);
+        AllFields.Add(firstNameField);
         FirstNameTextBox = firstNameField.GetChild<TextBox>();
         FirstNameTextBox.MaxCharacters = MaxCharacters;
 
@@ -61,7 +63,7 @@ class Fields : Node
         };
 
         AddChild(lastNameField);
-        fields.Add(lastNameField);
+        AllFields.Add(lastNameField);
         LastNameTextBox = lastNameField.GetChild<TextBox>();
         LastNameTextBox.MaxCharacters = MaxCharacters;
     }
@@ -72,10 +74,10 @@ class Fields : Node
     {
         float fieldX = (Window.Size.X / 2) - (FirstNameTextBox.Size.X / 2);
 
-        for (int i = 0; i < fields.Count; i ++)
+        for (int i = 0; i < AllFields.Count; i ++)
         {
-            fields[i].Position = new(fieldX, 250 + i * FirstNameTextBox.Size.Y * 2.5F);
-            //fields[i].Position = new(fieldX, Window.Size.Y * (0.4F + (i * 0.1F)));
+            AllFields[i].Position = new(fieldX, 250 + i * FirstNameTextBox.Size.Y * 2.5F);
+            //AllFields[i].Position = new(fieldX, Window.Size.Y * (0.4F + (i * 0.1F)));
         }
     }
 

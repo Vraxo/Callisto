@@ -5,7 +5,7 @@ namespace Callisto.ContactDisplayerNode;
 
 class ContactDisplayer : Node
 {
-    // Fields
+    // AllFields
 
     public int ContactIndex = 0;
 

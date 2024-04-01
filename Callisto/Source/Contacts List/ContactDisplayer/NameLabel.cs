@@ -2,7 +2,7 @@
 
 class NameLabel : Label
 {
-    // Fields
+    // AllFields
 
     public int ContactIndex = 0;
 

@@ -5,7 +5,7 @@ namespace Nodex;
 
 class Label : Node
 {
-    // Fields
+    // AllFields
 
     public string Text = "";
     public uint FontSize = 16;

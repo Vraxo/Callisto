@@ -5,7 +5,7 @@ namespace Nodex;
 
 class Program
 {
-    // Fields
+    // AllFields
 
     public static Window MainWindow { get; set; }
     public static List<Window> Windows = [];

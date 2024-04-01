@@ -5,7 +5,7 @@ namespace Callisto.ContactDisplayerNode;
 
 class CircleSprite : Nodex.CircleSprite
 {
-    // Fields
+    // AllFields
 
     public int ContactIndex = 0;
 

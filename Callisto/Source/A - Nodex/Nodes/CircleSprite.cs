@@ -5,7 +5,7 @@ namespace Nodex;
 
 class CircleSprite : Node
 {
-    // Fields
+    // AllFields
 
     public float Radius;
     public Vector2f Origin;

@@ -5,7 +5,7 @@ namespace Callisto.ContactEditorNode.ButtonsNode;
 
 class Buttons : Node
 {
-    // Fields
+    // AllFields
 
     public int ContactIndex = -1;
 

@@ -4,7 +4,7 @@ namespace Nodex;
 
 class Node
 {
-    // Fields
+    // AllFields
 
     public string Name = "";
     public List<Node> Children = [];

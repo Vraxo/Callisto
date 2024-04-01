@@ -4,7 +4,7 @@ namespace Callisto.ContactInfoViewerNode;
 
 class NameLabel : Label
 {
-    // Fields
+    // AllFields
 
     public int ContactIndex = -1;
 

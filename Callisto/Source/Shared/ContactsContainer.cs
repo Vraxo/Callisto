@@ -7,7 +7,7 @@ namespace Callisto;
 
 class ContactsContainer
 {
-    // Fields
+    // AllFields
 
     public List<Contact> Contacts = [];
 

@@ -7,7 +7,7 @@ namespace Callisto.ContactEditorNode.ButtonsNode;
 
 class OkButton : Button
 {
-    // Fields
+    // AllFields
 
     public int ContactIndex = -1;
 
@@ -28,7 +28,7 @@ class OkButton : Button
         base.Update();
 
         float x = Window.Size.X / 2F;
-        float y = GetNode<PhoneNumberFields>("Fields/PhoneNumberFields").Fields.Count * 50 + Window.Size.Y * 0.8F;
+        float y = GetNode<PhoneNumberFields>("Fields/PhoneNumberFields").Fields.Last().Position.Y + 100;
 
         Position = new(x, y);
     }

@@ -7,7 +7,7 @@ namespace Nodex;
 
 class Window : RenderWindow
 {
-    // Fields
+    // AllFields
 
     public Node RootNode;
     public Color ClearColor = new(32, 32, 32);

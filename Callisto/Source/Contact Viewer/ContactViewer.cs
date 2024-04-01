@@ -6,7 +6,7 @@ namespace Callisto.ContactInfoViewerNode;
 
 class ContactViewer : Node
 {
-    // Fields
+    // AllFields
 
     public int ContactIndex = -1;
 

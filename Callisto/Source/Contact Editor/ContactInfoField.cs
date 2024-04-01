@@ -4,7 +4,7 @@ namespace Callisto.ContactEditorNode;
 
 class ContactInfoField : Node
 {
-    // Fields
+    // AllFields
 
     public string LabelText;
 

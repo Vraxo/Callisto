@@ -5,7 +5,7 @@ namespace Nodex;
 
 class Caret : Node
 {
-    // Fields
+    // AllFields
 
     public int MaxTime = 2000;
 

@@ -2,7 +2,7 @@
 
 class VerticalViewScroller : Nodex.VerticalViewScroller
 {
-    // Fields
+    // AllFields
 
     private ContactEditor parent;
 

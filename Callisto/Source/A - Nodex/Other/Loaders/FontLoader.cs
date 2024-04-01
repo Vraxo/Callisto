@@ -2,7 +2,7 @@
 
 class FontLoader
 {
-    // Fields
+    // AllFields
 
     public Dictionary<string, Font> Fonts = [];
 

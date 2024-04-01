@@ -4,7 +4,7 @@ namespace Callisto;
 
 class NotificationDialog : Node
 {
-    // Fields
+    // AllFields
 
     public string Message = "";
 

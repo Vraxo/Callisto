@@ -5,7 +5,7 @@ namespace Callisto;
 
 class AvatarDisplayer : Node
 {
-    // Fields
+    // AllFields
 
     public int ContactIndex = -1;
     public bool IsClickable = false;

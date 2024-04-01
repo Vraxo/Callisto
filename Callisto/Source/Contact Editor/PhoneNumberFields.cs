@@ -32,7 +32,6 @@ class PhoneNumberFields : Node
     {
         base.Update();
 
-        UpdateFields();
         CreateExtraNumberFields();
         DeleteExtraNumberFields();
     }
@@ -48,17 +47,6 @@ class PhoneNumberFields : Node
     }
 
     // Private
-
-    private void UpdateFields()
-    {
-        float fieldX = (Window.Size.X / 2) - (textBoxes[0].Size.X / 2);
-
-        for (int i = 0; i < Fields.Count; i++)
-        {
-            Fields[i].Position = new(fieldX, 250 + (i + 2) * textBoxes[0].Size.Y * 2.5F);
-            //Fields[i].Position = new(fieldX, Window.Size.Y * (0.4F + ((i + 2) * 0.1F)));
-        }
-    }
 
     private void CreateExistingPhoneNumberFields()
     {
@@ -91,7 +79,7 @@ class PhoneNumberFields : Node
         }
     }
 
-    // Creating and destroying fields
+    // Creating and destroying AllFields
 
     private ContactInfoField CreateField(string labelText)
     {
@@ -103,18 +91,20 @@ class PhoneNumberFields : Node
         AddChild(field, labelText.Replace(" ", ""));
         field.GetChild<TextBox>().MaxCharacters = MaxCharacters;
         Fields.Add(field);
+        GetParent<Fields>().AllFields.Add(field);
 
         return field;
     }
 
     private void RemoveFieldAndTextBoxAt(int index)
     {
+        GetParent<Fields>().AllFields.Remove(Fields[index]);
         Children.Remove(Fields[index]);
         Fields.Remove(Fields[index]);
         textBoxes.RemoveAt(index);
     }
 
-    // Extra fields
+    // Extra AllFields
 
     private void CreateExtraNumberFields()
     {
