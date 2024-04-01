@@ -4,9 +4,10 @@ namespace Callisto.ContactInfoViewerNode;
 
 class CopyNumberButtons : Node
 {
-    // AllFields
+    // Fields
 
     public int ContactIndex = -1;
+    public List<CopyNumberButton> Buttons = [];
 
     // Public
 
@@ -18,7 +19,7 @@ class CopyNumberButtons : Node
 
         for (int i = 0; i < contact.PhoneNumbers.Count; i++)
         {
-            Button numberButton = new CopyNumberButton()
+            CopyNumberButton numberButton = new()
             {
                 ContactIndex = ContactIndex,
                 NumberIndex = i,
@@ -26,6 +27,7 @@ class CopyNumberButtons : Node
             };
 
             AddChild(numberButton);
+            Buttons.Add(numberButton);
 
             numberButton.Origin = numberButton.Size / 2;
             numberButton.TextOrigin = numberButton.Origin;

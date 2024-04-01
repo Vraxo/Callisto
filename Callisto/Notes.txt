@@ -4,6 +4,8 @@
 refactor contact editor scroller
 default go up for scrollers
 
+refactor contacts list scroller
+
 center avatar in editor
 resizing causes view to reset to up
 

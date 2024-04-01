@@ -1,12 +1,13 @@
 ﻿using Nodex;
 using Callisto.ContactsListNode;
 using Callisto.ContactEditorNode;
+using Callisto.ContactEditorNode.ButtonsNode;
 
 namespace Callisto.ContactInfoViewerNode;
 
 class ContactViewer : Node
 {
-    // AllFields
+    // Fields
 
     public int ContactIndex = -1;
 
@@ -54,7 +55,7 @@ class ContactViewer : Node
             ContactIndex = ContactIndex
         });
 
-        AddChild(new Nodex.VerticalViewScroller
+        AddChild(new VerticalViewScroller
         {
             OnUpdate = (scroller) =>
             {
@@ -62,9 +63,13 @@ class ContactViewer : Node
                 scroller.CanGoUp = viewHeight > 0;
 
                 Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
-                
-                float contactsListHeight = contact.PhoneNumbers.Count * 50;
-                scroller.CanGoDown = viewHeight < contactsListHeight;
+
+                //float contactsListHeight = contact.PhoneNumbers.Count * 50;
+                //scroller.CanGoDown = viewHeight < contactsListHeight;
+
+                float maxContactEditorHeight = GetNode<CopyNumberButtons>("CopyNumberButtons").Buttons.Last().Position.Y + 50;
+                float maxYPosition = maxContactEditorHeight - Window.GetView().Size.Y;
+                scroller.CanGoDown = viewHeight < maxYPosition;
             }
         });
     }

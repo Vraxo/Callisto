@@ -5,7 +5,7 @@ namespace Callisto.ContactsListNode;
 
 class ContactsList : Node
 {
-    // AllFields
+    // Fields
 
     private AddNewContactButton addNewContactButton;
 
