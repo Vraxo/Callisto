@@ -34,7 +34,18 @@ class ContactEditor : Node
             IsClickable = true
         });
 
-        AddChild(new Scroller());
+        AddChild(new Scroller
+        {
+            OnUpdate = (scroller) =>
+            {
+                float viewHeight = Window.GetView().Center.Y - Window.GetView().Size.Y / 2;
+                scroller.CanGoUp = viewHeight > 0;
+
+                float maxContactEditorHeight = GetNode<OkButton>("Buttons/OkButton").Position.Y + 50;
+                float maxYPosition = maxContactEditorHeight - Window.GetView().Size.Y;
+                scroller.CanGoDown = viewHeight < maxYPosition;
+            }
+        });
     }
 
     public void DeleteContact()
