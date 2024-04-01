@@ -1,8 +1,6 @@
 
 
 
-refactor initialization
-
 center avatar in editor
 resizing causes view to reset to up
 

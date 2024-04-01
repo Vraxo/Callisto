@@ -55,7 +55,7 @@ class PhoneNumberFields : Node
 
         for (int i = 0; i < Fields.Count; i++)
         {
-            Fields[i].Position = new(fieldX, Window.Size.Y * (0.4F + ((i + 2) * 0.1F)));
+            Fields[i].Position = new(fieldX, 250 + (i + 2) * textBoxes[0].Size.Y * 2.5F);
         }
     }
 

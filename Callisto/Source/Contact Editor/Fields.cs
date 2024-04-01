@@ -26,7 +26,7 @@ class Fields : Node
 
         CreateNameFields();
         
-        AddChild(new PhoneNumberFields()
+        AddChild(new PhoneNumberFields
         {
             ContactIndex = ContactIndex,
         });
@@ -72,9 +72,9 @@ class Fields : Node
     {
         float fieldX = (Window.Size.X / 2) - (FirstNameTextBox.Size.X / 2);
 
-        for (int i = 0; i < fields.Count; i++)
+        for (int i = 0; i < fields.Count; i ++)
         {
-            fields[i].Position = new(fieldX, Window.Size.Y * (0.4F + (i * 0.1F)));
+            fields[i].Position = new(fieldX, 250 + i * FirstNameTextBox.Size.Y * 2.5F);
         }
     }
 
