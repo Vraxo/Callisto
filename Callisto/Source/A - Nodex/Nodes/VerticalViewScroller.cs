@@ -22,6 +22,9 @@ class VerticalViewScroller : Node
     {
         base.Update();
 
+        float viewHeight = Window.GetView().Center.Y - Window.GetView().Size.Y / 2;
+        CanGoUp = viewHeight > 0;
+
         OnUpdate(this);
     }
 

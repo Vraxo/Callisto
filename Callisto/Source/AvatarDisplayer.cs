@@ -15,26 +15,17 @@ class AvatarDisplayer : Node
 
     public override void Start()
     {
-        AddChild(new CircleSprite
-        {
-            Radius = 100,
-            Origin = new(100, 100),
-            Texture = GetTexture(),
-            OnUpdate = (sprite) =>
-            {
-                sprite.Position = new(Window.Size.X / 2, 128);
-            }
-        });
+        AddSprite();
 
         if (IsClickable)
         {
-            CreateNewButton();
+            AddNewButton();
 
             if (ContactIndex != -1)
             {
                 if (ContactsContainer.Instance.Contacts[ContactIndex].HasAvatar)
                 {
-                    CreateDeleteButton();
+                    AddDeleteButton();
                 }
             }
         }
@@ -59,7 +50,21 @@ class AvatarDisplayer : Node
         return texture;
     }
 
-    private void CreateNewButton()
+    private void AddSprite()
+    {
+        AddChild(new CircleSprite
+        {
+            Radius = 100,
+            Origin = new(100, 100),
+            Texture = GetTexture(),
+            OnUpdate = (sprite) =>
+            {
+                sprite.Position = new(Window.Size.X / 2, 128);
+            }
+        });
+    }
+
+    private void AddNewButton()
     {
         AddChild(new HalfCircleButton
         {
@@ -81,7 +86,7 @@ class AvatarDisplayer : Node
         });
     }
 
-    private void CreateDeleteButton()
+    private void AddDeleteButton()
     {
         AddChild(new BottomHalfCircleButton
         {
@@ -120,8 +125,9 @@ class AvatarDisplayer : Node
             if (extension == ".jpg" || extension == ".png")
             {
                 ImagePath = imagePath;
+                GetChild<CircleSprite>("CircleSprite").Texture = null;
                 GetChild<CircleSprite>("CircleSprite").Texture = new(imagePath);
-                CreateDeleteButton();
+                AddDeleteButton();
             }
         }
     }

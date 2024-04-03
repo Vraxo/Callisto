@@ -1,5 +1,6 @@
-﻿using Callisto.ContactDisplayerNode;
-using Nodex;
+﻿using Nodex;
+using Callisto.ContactDisplayerNode;
+using Callisto.ContactEditorNode;
 
 namespace Callisto.ContactsListNode;
 
@@ -7,7 +8,7 @@ class ContactsList : Node
 {
     // Fields
 
-    private AddNewContactButton addNewContactButton;
+    private Button addNewContactButton;
 
     // Public
 
@@ -15,19 +16,14 @@ class ContactsList : Node
     {
         new Initializer().Initialize();
 
-        ContactsContainer.Instance.Load();
-        AvatarLoader.Instance.Load();
-
-        addNewContactButton = new AddNewContactButton();
-        AddChild(addNewContactButton);
-
-        CreateContactDisplayers();
-        AddChild(new Scroller());
+        AddAddNewContactButton();
+        AddContactDisplayers();
+        AddScroller();
     }
 
-    // Create nodes
+    // Private
 
-    private void CreateContactDisplayers()
+    private void AddContactDisplayers()
     {
         List<Contact> contacts = ContactsContainer.Instance.Contacts;
 
@@ -38,7 +34,7 @@ class ContactsList : Node
                 ContactIndex = i
             };
 
-            AddChild(contactDisplayer, $"ContactDisplayer{i}");
+            AddChild(contactDisplayer);
 
             var button = contactDisplayer.GetChild<Button>();
 
@@ -47,5 +43,35 @@ class ContactsList : Node
 
             contactDisplayer.Position = new(x, y);
         }
+    }
+
+    private void AddAddNewContactButton()
+    {
+        addNewContactButton = new()
+        {
+            Text = "Add New Contact",
+            Size = new(Window.Size.X, 40),
+            OnUpdate = (button) =>
+            {
+                button.Size.X = Window.Size.X;
+            },
+            OnClick = () => ChangeScene(new ContactEditor())
+        };
+
+        AddChild(addNewContactButton);
+    }
+
+    private void AddScroller()
+    {
+        AddChild(new VerticalViewScroller
+        {
+            OnUpdate = (scroller) =>
+            {
+                float viewHeight = Window.GetView().Center.Y - Window.GetView().Size.Y / 2;
+                float maxContactsListHeight = ContactsContainer.Instance.Contacts.Count * 50;
+                float maxYPosition = maxContactsListHeight - Window.GetView().Size.Y;
+                scroller.CanGoDown = viewHeight < maxYPosition;
+            }
+        });
     }
 }

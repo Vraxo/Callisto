@@ -5,12 +5,23 @@ namespace Callisto;
 
 class Initializer
 {
+    // Public
+
     public void Initialize()
     {
+        LoadContacts();
         CreateResourcesDirectory();
         CreateDefaultFont();
         CreateDefaultAvatar();
         CreateIcon();
+    }
+
+    // Private
+
+    private void LoadContacts()
+    {
+        ContactsContainer.Instance.Load();
+        AvatarLoader.Instance.Load();
     }
 
     private void CreateResourcesDirectory()

@@ -1,5 +1,7 @@
 ﻿using Nodex;
+using SFML.Window;
 using Callisto.ContactsListNode;
+using Callisto.DeletionDialogNode;
 
 namespace Callisto.ContactEditorNode.ButtonsNode;
 
@@ -13,29 +15,38 @@ class Buttons : Node
 
     public override void Start()
     {
-        CreateOkButton();
-        CreateDeleteButton();
-        CreateCancelButton();
+        AddOkButton();
+        AddDeleteButton();
+        AddCancelButton();
     }
 
     // Create nodes
 
-    private void CreateOkButton()
+    private void AddOkButton()
     {
-        AddChild(new OkButton
-        {
-            ContactIndex = ContactIndex
-        });
+        AddChild(new OkButton());
     }
 
-    private void CreateDeleteButton()
+    private void AddDeleteButton()
     {
         if (ContactIndex == -1) return;
 
-        AddChild(new DeleteButton());
+        AddChild(new Button
+        {
+            Text = "Delete",
+            Style = new()
+            {
+                TextColor = Color.Red
+            },
+            OnClick = GetConfirmationForContactDeletion,
+            OnUpdate = (button) =>
+            {
+                button.Position.X = Window.Size.X - button.Size.X;
+            }
+        });
     }
 
-    private void CreateCancelButton()
+    private void AddCancelButton()
     {
         AddChild(new Button
         {
@@ -60,5 +71,26 @@ class Buttons : Node
                 ChangeScene(new ContactsList());
             }
         });
+    }
+
+    // Callbacks
+
+    private void GetConfirmationForContactDeletion()
+    {
+        WindowInfo windowInfo = new()
+        {
+            VideoMode = new(360, 120),
+            Title = "Confirm contact deletion",
+            Styles = Styles.Close,
+            ContextSettings = new(0, 0, 16)
+        };
+
+        Window window = new(windowInfo)
+        {
+            RootNode = new DeletionDialog()
+        };
+
+        window.Start();
+        Program.AddWindow(window);
     }
 }

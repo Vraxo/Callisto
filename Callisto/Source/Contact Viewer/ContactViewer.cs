@@ -55,17 +55,20 @@ class ContactViewer : Node
             ContactIndex = ContactIndex
         });
 
+        AddScroller();
+    }
+
+    // Private
+
+    private void AddScroller()
+    {
         AddChild(new VerticalViewScroller
         {
             OnUpdate = (scroller) =>
             {
                 float viewHeight = Window.GetView().Center.Y - Window.GetView().Size.Y / 2;
-                scroller.CanGoUp = viewHeight > 0;
 
                 Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
-
-                //float contactsListHeight = contact.PhoneNumbers.Count * 50;
-                //scroller.CanGoDown = viewHeight < contactsListHeight;
 
                 float maxContactEditorHeight = GetNode<CopyNumberButtons>("CopyNumberButtons").Buttons.Last().Position.Y + 50;
                 float maxYPosition = maxContactEditorHeight - Window.GetView().Size.Y;

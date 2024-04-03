@@ -79,7 +79,7 @@ class PhoneNumberFields : Node
         }
     }
 
-    // Creating and destroying AllFields
+    // Creating and destroying fields
 
     private ContactInfoField CreateField(string labelText)
     {
@@ -104,7 +104,7 @@ class PhoneNumberFields : Node
         textBoxes.RemoveAt(index);
     }
 
-    // Extra AllFields
+    // Extra fields
 
     private void CreateExtraNumberFields()
     {

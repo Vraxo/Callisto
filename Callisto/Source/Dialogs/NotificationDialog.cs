@@ -4,7 +4,7 @@ namespace Callisto;
 
 class NotificationDialog : Node
 {
-    // AllFields
+    // Fields
 
     public string Message = "";
 
@@ -14,14 +14,32 @@ class NotificationDialog : Node
 
         Program.MainWindow.RootNode.Deactivate();
 
-        AddChild(new Label()
+        AddLabel();
+        AddOkButton();
+    }
+
+    public override void Destroy()
+    {
+        base.Destroy();
+        Program.MainWindow.RootNode.Activate();
+        Program.RemoveWindow(Window);
+    }
+
+    // Private
+
+    private void AddLabel()
+    {
+        AddChild(new Label
         {
             Text = Message,
             Position = new(25, 15),
             FontSize = 14
         });
+    }
 
-        AddChild(new Button()
+    private void AddOkButton()
+    {
+        AddChild(new Button
         {
             Text = "OK",
             Position = new(25, 75),
@@ -33,12 +51,5 @@ class NotificationDialog : Node
             },
             OnClick = Destroy,
         });
-    }
-
-    public override void Destroy()
-    {
-        base.Destroy();
-        Program.MainWindow.RootNode.Activate();
-        Program.RemoveWindow(Window);
     }
 }

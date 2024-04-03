@@ -75,20 +75,18 @@ class Fields : Node
         for (int i = 0; i < AllFields.Count; i ++)
         {
             AllFields[i].Position = new(fieldX, 250 + i * FirstNameTextBox.Size.Y * 2.5F);
-            //AllFields[i].Position = new(fieldX, Window.Size.Y * (0.4F + (i * 0.1F)));
         }
     }
 
     private void LoadContactInfoIntoNameFields()
     {
-        var index = GetParent<ContactEditor>().ContactIndex;
+        int index = GetParent<ContactEditor>().ContactIndex;
 
-        if (index != -1)
-        {
-            Contact contact = ContactsContainer.Instance.Contacts[index];
+        if (index == -1) return;
 
-            FirstNameTextBox.Text = contact.FirstName;
-            LastNameTextBox.Text = contact.LastName;
-        }
+        Contact contact = ContactsContainer.Instance.Contacts[index];
+
+        FirstNameTextBox.Text = contact.FirstName;
+        LastNameTextBox.Text = contact.LastName;
     }
 }

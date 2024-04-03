@@ -5,6 +5,7 @@ namespace Callisto;
 
 class EntryPoint
 {
+    [STAThread]
     public static void Main(string[] args)
     {
         Program.Start(new ContactsList());

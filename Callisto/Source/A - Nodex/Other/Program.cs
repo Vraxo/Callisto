@@ -12,10 +12,9 @@ class Program
 
     // Public
 
-    [STAThread]
     public static void Start(Node rootNode)
     {
-        CreateMainWindow(rootNode);
+        AddMainWindow(rootNode);
 
         Clock deltaTimeClock = new();
 
@@ -43,7 +42,7 @@ class Program
 
     // Private
 
-    private static void CreateMainWindow(Node rootNode)
+    private static void AddMainWindow(Node rootNode)
     {
         WindowInfo windowInfo = new()
         {

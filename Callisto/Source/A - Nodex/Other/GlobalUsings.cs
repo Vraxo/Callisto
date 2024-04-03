@@ -1,5 +1,6 @@
 ﻿global using Label   = Nodex.Label;
 global using Button  = Nodex.Button;
+global using Window  = Nodex.Window;
 global using TextBox = Nodex.TextBox;
 
 global using Font         = SFML.Graphics.Font;

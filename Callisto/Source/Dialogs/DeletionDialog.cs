@@ -1,5 +1,5 @@
-﻿using Callisto.ContactEditorNode;
-using Nodex;
+﻿using Nodex;
+using Callisto.ContactEditorNode;
 
 namespace Callisto.DeletionDialogNode;
 
@@ -11,9 +11,9 @@ class DeletionDialog : Node
     {
         Program.MainWindow.RootNode.Deactivate();
 
-        CreateLabel();
-        CreateConfirmButton();
-        CreateCancelButton();
+        AddLabel();
+        AddConfirmButton();
+        AddCancelButton();
     }
 
     public override void Destroy()
@@ -24,11 +24,11 @@ class DeletionDialog : Node
         Program.RemoveWindow(Window);
     }
 
-    // Create nodes
+    // Private
 
-    private void CreateLabel()
+    private void AddLabel()
     {
-        AddChild(new Label()
+        AddChild(new Label
         {
             Position = new(25, 15),
             Text = "Are you sure you want to delete\nthis contact?",
@@ -36,9 +36,9 @@ class DeletionDialog : Node
         });
     }
 
-    private void CreateConfirmButton()
+    private void AddConfirmButton()
     {
-        AddChild(new Button()
+        AddChild(new Button
         {
             Text = "Confirm",
             Position = new(25, 75),
@@ -56,9 +56,9 @@ class DeletionDialog : Node
         });
     }
 
-    private void CreateCancelButton()
+    private void AddCancelButton()
     {
-        AddChild(new Button()
+        AddChild(new Button
         {
             Text = "Cancel",
             Size = new(100, 20),
