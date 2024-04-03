@@ -6,7 +6,7 @@ namespace Nodex;
 
 class TextBox : Node
 {
-    // AllFields
+    // Fields
 
     #region [ - - - FIELDS - - - ]
 

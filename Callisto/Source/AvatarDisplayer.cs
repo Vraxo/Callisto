@@ -125,7 +125,6 @@ class AvatarDisplayer : Node
             if (extension == ".jpg" || extension == ".png")
             {
                 ImagePath = imagePath;
-                GetChild<CircleSprite>("CircleSprite").Texture = null;
                 GetChild<CircleSprite>("CircleSprite").Texture = new(imagePath);
                 AddDeleteButton();
             }

@@ -9,11 +9,11 @@ class Initializer
 
     public void Initialize()
     {
+        AddResourcesDirectory();
+        AddDefaultFont();
+        AddDefaultAvatar();
+        AddIcon();
         LoadContacts();
-        CreateResourcesDirectory();
-        CreateDefaultFont();
-        CreateDefaultAvatar();
-        CreateIcon();
     }
 
     // Private
@@ -24,7 +24,7 @@ class Initializer
         AvatarLoader.Instance.Load();
     }
 
-    private void CreateResourcesDirectory()
+    private void AddResourcesDirectory()
     {
         if (!Directory.Exists("Resources"))
         {
@@ -32,7 +32,7 @@ class Initializer
         }
     }
 
-    private void CreateDefaultFont()
+    private void AddDefaultFont()
     {
         string defaultFontPath = "Resources/RobotoMono.ttf";
 
@@ -42,7 +42,7 @@ class Initializer
         }
     }
 
-    private void CreateDefaultAvatar()
+    private void AddDefaultAvatar()
     {
         string defaultAvatarPath = "Resources/DefaultAvatar.jpg";
 
@@ -52,7 +52,7 @@ class Initializer
         }
     }
 
-    private void CreateIcon()
+    private void AddIcon()
     {
         string iconPath = "Resources/Icon.jpg";
 

@@ -1,18 +1,16 @@
-﻿using SFML.Graphics;
-using SFML.System;
+﻿using SFML.System;
+using SFML.Graphics;
 
 namespace Nodex;
 
 class CircleSprite : Node
 {
-    // AllFields
+    // Fields
 
     public float Radius;
     public Vector2f Origin;
     public Texture Texture;
     public Action<CircleSprite> OnUpdate = (sprite) => { };
-
-    private CircleShape circleRenderer = new();
 
     // Public
 
@@ -28,11 +26,12 @@ class CircleSprite : Node
 
     private void Draw()
     {
-        circleRenderer.Position = GlobalPosition;
-        circleRenderer.Radius = Radius;
-        circleRenderer.Origin = Origin;
-        circleRenderer.Texture = Texture;
-
-        Window.Draw(circleRenderer);
+        Window.Draw(new CircleShape
+        {
+            Position = GlobalPosition,
+            Radius = Radius,
+            Origin = Origin,
+            Texture = Texture
+        });
     }
 }

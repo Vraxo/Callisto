@@ -2,7 +2,8 @@
 
 
 
-center avatar in editor
+center avatar in editor ?
+fix whiteness around avatar buttons
 center textbox and button
 
 more precise scrollers (contactviewpage)

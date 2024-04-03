@@ -38,7 +38,7 @@ class OkButton : Button
     {
         Contact newContact = GetNode<ContactEditor>("").GetContact();
 
-        if (GetParent<Buttons>().ContactIndex == -1)
+        if (ContactIndex == -1)
         {
             CreateNewContact(newContact);
         }
@@ -118,8 +118,10 @@ class OkButton : Button
             ContextSettings = new(0, 0, 16)
         };
 
-        Window window = new(windowInfo);
-        window.RootNode = notificationDialog;
+        Window window = new(windowInfo)
+        {
+            RootNode = notificationDialog
+        };
         window.Start();
         Program.AddWindow(window);
     }

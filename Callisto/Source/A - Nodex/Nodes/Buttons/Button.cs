@@ -6,7 +6,7 @@ namespace Nodex;
 
 class Button : Node
 {
-    // AllFields
+    // Fields
 
     #region [ - - - FIELDS - - - ]
 

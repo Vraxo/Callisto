@@ -24,7 +24,10 @@ class Buttons : Node
 
     private void AddOkButton()
     {
-        AddChild(new OkButton());
+        AddChild(new OkButton()
+        {
+            ContactIndex = ContactIndex
+        });
     }
 
     private void AddDeleteButton()
