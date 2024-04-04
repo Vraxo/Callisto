@@ -1,4 +1,5 @@
 ﻿using Nodex;
+using System.Text.RegularExpressions;
 
 namespace Callisto.ContactInfoViewerNode;
 
@@ -23,7 +24,7 @@ class CopyNumberButtons : Node
             {
                 ContactIndex = ContactIndex,
                 NumberIndex = i,
-                Text = contact.PhoneNumbers[i],
+                Text = FormatPhoneNumber(contact.PhoneNumbers[i]),
             };
 
             AddChild(numberButton);
@@ -43,5 +44,24 @@ class CopyNumberButtons : Node
             Children[i].Position.X = (Window.Size.X / 2);
             Children[i].Position.Y = (Window.Size.Y * 0.55F) + (50 * i);
         }
+    }
+
+    // Private
+
+    private string FormatPhoneNumber(string phoneNumber)
+    {
+        if (phoneNumber.Length <= 11) return phoneNumber;
+
+        phoneNumber = phoneNumber.Substring(1);
+
+        int countryCodeLength = phoneNumber.Length - 10;
+
+        string formattedNumber = string.Format("+{0} {1} {2} {3}",
+                                    phoneNumber.Substring(0, countryCodeLength),
+                                    phoneNumber.Substring(countryCodeLength, 3),
+                                    phoneNumber.Substring(countryCodeLength + 3, 3),
+                                    phoneNumber.Substring(countryCodeLength + 6));
+
+        return formattedNumber;
     }
 }

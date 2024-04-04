@@ -7,7 +7,7 @@ class PhoneNumberFields : Node
     // Field
 
     public int ContactIndex = -1;
-    public int MaxCharacters = 15;
+    public int MaxCharacters = 13;
     public List<ContactInfoField> Fields = [];
 
     private List<TextBox> textBoxes = [];

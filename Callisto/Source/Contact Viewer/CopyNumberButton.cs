@@ -5,7 +5,7 @@ namespace Callisto.ContactInfoViewerNode;
 
 class CopyNumberButton : Button
 {
-    // AllFields
+    // Fields
 
     public int ContactIndex = -1;
     public int NumberIndex = 0;
