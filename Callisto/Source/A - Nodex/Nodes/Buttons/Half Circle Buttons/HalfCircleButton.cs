@@ -97,7 +97,8 @@ class HalfCircleButton : Node
         textRenderer.CharacterSize = Style.FontSize;
 
         float x = GlobalPosition.X - Origin.X + Radius - textRenderer.GetLocalBounds().Width / 2;
-        float y = GlobalPosition.Y + Radius / 2 - textRenderer.GetLocalBounds().Height - Origin.Y;
+        //float y = GlobalPosition.Y + Radius / 2 - textRenderer.GetLocalBounds().Height - Origin.Y;
+        float y = GlobalPosition.Y + Radius / 2 - textRenderer.GetLocalBounds().Height / 1.5F - Origin.Y;
 
         textRenderer.Position = new(x, y);
 

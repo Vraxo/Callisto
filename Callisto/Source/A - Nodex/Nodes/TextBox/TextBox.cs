@@ -87,7 +87,8 @@ class TextBox : Node
         TextRenderer.Font = Style.Font;
 
         float x = GlobalPosition.X + Style.Padding - Origin.X;
-        float y = GlobalPosition.Y + rectangleRenderer.GetLocalBounds().Height / 2 - TextRenderer.GetLocalBounds().Height;
+        //float y = GlobalPosition.Y + rectangleRenderer.GetLocalBounds().Height / 2 - TextRenderer.GetLocalBounds().Height;
+        float y = GlobalPosition.Y + Size.Y / 2 - TextRenderer.GetLocalBounds().Height / 1.5F;
 
         TextRenderer.Position = new(x, y);
 

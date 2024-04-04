@@ -4,7 +4,7 @@ namespace Nodex;
 
 class TextureLoader
 {
-    // AllFields
+    // Fields
 
     public Dictionary<string, Texture> Textures = [];
 

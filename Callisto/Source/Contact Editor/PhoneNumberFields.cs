@@ -32,8 +32,8 @@ class PhoneNumberFields : Node
     {
         base.Update();
 
-        AddExtraNumberFields();
-        DeleteExtraNumberFields();
+        //AddExtraNumberFields();
+        //DeleteExtraNumberFields();
     }
 
     public List<string> GetPhoneNumbers()

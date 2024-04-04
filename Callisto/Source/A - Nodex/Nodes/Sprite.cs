@@ -5,7 +5,7 @@ namespace Nodex;
 
 class Sprite : Node
 {
-    // AllFields
+    // Fields
 
     public Vector2f Size;
     public Vector2f Origin;

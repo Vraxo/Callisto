@@ -1,5 +1,4 @@
 ﻿using SFML.Graphics;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Nodex;
 
@@ -94,10 +93,8 @@ class Caret : Node
     {
         float characterWidth = (parent.Style.FontSize * 10) / 16;
         float _x = GlobalPosition.X + characterWidth/4 + characterWidth * X;
-        //float _y = GlobalPosition.Y;
-
-        //int x = (int)(GlobalPosition.X + Style.Padding - Origin.X);
-        int _y = (int)(parent.GlobalPosition.Y + parent.Size.Y / 2 - parent.TextRenderer.GetLocalBounds().Height / 2);
+        //float _y = (int)(parent.GlobalPosition.Y + parent.Size.Y / 2 - parent.TextRenderer.GetLocalBounds().Height / 2);
+        float _y = parent.GlobalPosition.Y + parent.Size.Y / 2 - renderer.GetLocalBounds().Height / 1.5F - parent.Origin.Y;
 
         renderer.Position = new(_x, _y);
         renderer.DisplayedString = "|";
