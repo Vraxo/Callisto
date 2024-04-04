@@ -7,7 +7,7 @@ class PhoneNumberFields : Node
     // Field
 
     public int ContactIndex = -1;
-    public int MaxCharacters = 25;
+    public int MaxCharacters = 15;
     public List<ContactInfoField> Fields = [];
 
     private List<TextBox> textBoxes = [];
@@ -20,11 +20,11 @@ class PhoneNumberFields : Node
 
         if (ContactIndex != -1)
         {
-            CreateExistingPhoneNumberFields();
+            AddExistingPhoneNumberFields();
         }
         else
         {
-            CreateNewPhoneNumberField();
+            AddPhoneNumberField("Phone Number 1");
         }
     }
 
@@ -32,7 +32,7 @@ class PhoneNumberFields : Node
     {
         base.Update();
 
-        CreateExtraNumberFields();
+        AddExtraNumberFields();
         DeleteExtraNumberFields();
     }
 
@@ -40,7 +40,7 @@ class PhoneNumberFields : Node
     {
         List<string> phoneNumbers = textBoxes
             .Select(textBox => textBox.Text.Trim())
-            .Where(text => !string.IsNullOrWhiteSpace(text))
+            .Where(text => !string.IsNullOrWhiteSpace(text.Substring(1)))
             .ToList();
 
         return phoneNumbers;
@@ -48,27 +48,25 @@ class PhoneNumberFields : Node
 
     // Private
 
-    private void CreateExistingPhoneNumberFields()
+    private void AddExistingPhoneNumberFields()
     {
         int phoneNumbersCount = ContactsContainer.Instance.Contacts[ContactIndex].PhoneNumbers.Count;
 
         for (int i = 0; i < phoneNumbersCount + 1; i++)
         {
-            CreateNumberField($"Phone Number {i + 1}", i);
+            AddPhoneNumberField($"Phone Number {i + 1}", i);
         }
     }
 
-    private void CreateNewPhoneNumberField()
+    private void AddPhoneNumberField(string labelText, int index = -1)
     {
-        ContactInfoField numberField = CreateField($"Phone Number 1");
-        textBoxes.Add(numberField.GetChild<TextBox>());
-    }
-
-    private void CreateNumberField(string labelText, int index = -1)
-    {
-        ContactInfoField numberField = CreateField(labelText);
+        ContactInfoField numberField = AddField(labelText);
         textBoxes.Add(numberField.GetChild<TextBox>());
         textBoxes.Last().AllowedCharacters = CharacterSet.Numbers;
+        textBoxes.Last().Text = "+";
+        textBoxes.Last().MinCharacters = 1;
+
+        if (ContactIndex == -1) return;
 
         Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
         int phoneNumbersCount = contact.PhoneNumbers.Count;
@@ -81,7 +79,7 @@ class PhoneNumberFields : Node
 
     // Creating and destroying fields
 
-    private ContactInfoField CreateField(string labelText)
+    private ContactInfoField AddField(string labelText)
     {
         ContactInfoField field = new()
         {
@@ -106,11 +104,11 @@ class PhoneNumberFields : Node
 
     // Extra fields
 
-    private void CreateExtraNumberFields()
+    private void AddExtraNumberFields()
     {
-        if (!string.IsNullOrWhiteSpace(textBoxes.Last().Text))
+        if (textBoxes.Last().Text.Length > 1)
         {
-            CreateNumberField($"Phone Number {Fields.Count + 1}");
+            AddPhoneNumberField($"Phone Number {Fields.Count + 1}");
         }
     }
 
@@ -118,9 +116,9 @@ class PhoneNumberFields : Node
     {
         for (int i = textBoxes.Count - 1; i > 0; i--)
         {
-            if (textBoxes[i].Text.Length == 0)
+            if (textBoxes[i].Text.Length == 1)
             {
-                if (textBoxes[i - 1].Text.Length == 0)
+                if (textBoxes[i - 1].Text.Length == 1)
                 {
                     RemoveFieldAndTextBoxAt(i);
                 }

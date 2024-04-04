@@ -24,8 +24,8 @@ class Fields : Node
     {
         base.Start();
 
-        CreateNameFields();
-        
+        AddNameFields();
+
         AddChild(new PhoneNumberFields
         {
             ContactIndex = ContactIndex,
@@ -43,7 +43,7 @@ class Fields : Node
 
     // Create nodes
 
-    private void CreateNameFields()
+    private void AddNameFields()
     {
         firstNameField = new ContactInfoField()
         {

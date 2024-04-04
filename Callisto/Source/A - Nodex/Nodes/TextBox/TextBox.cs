@@ -14,6 +14,7 @@ class TextBox : Node
     public Vector2f Origin = new(0, 0);
     public string Text = "";
     public int MaxCharacters = int.MaxValue;
+    public int MinCharacters = 0;
     public List<char> AllowedCharacters = [];
     public TextBoxStyle Style = new();
     public Text TextRenderer = new();
@@ -85,14 +86,6 @@ class TextBox : Node
         TextRenderer.Color = Style.TextColor;
         TextRenderer.Font = Style.Font;
 
-        //auto text = sf::Text{ "Centered Text", font };
-        //auto center = text.getGlobalBounds().getSize() / 2.f;
-        //auto localBounds = center + text.getLocalBounds().getPosition();
-        //auto rounded = round(localBounds);
-        //text.setOrigin(rounded);
-        //text.setPosition(sf::Vector2f{ window.getSize() / 2u });
-        //text.setFillColor(sf::Color{ 0x655A7CFF });
-
         float x = GlobalPosition.X + Style.Padding - Origin.X;
         float y = GlobalPosition.Y + rectangleRenderer.GetLocalBounds().Height / 2 - TextRenderer.GetLocalBounds().Height;
 
@@ -118,13 +111,12 @@ class TextBox : Node
         }
 
         Text = Text.Insert(caret.X, character.ToString());
-
         caret.X ++;
     }
 
     private void DeleteLastCharacter()
     {
-        if (caret.X > 0)
+        if (caret.X > 0 && Text.Length > MinCharacters)
         {
             Text = Text.Remove(caret.X - 1, 1);
             caret.X --;
