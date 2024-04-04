@@ -9,8 +9,27 @@ class CircleSprite : Node
 
     public float Radius;
     public Vector2f Origin;
-    public Texture Texture;
     public Action<CircleSprite> OnUpdate = (sprite) => { };
+
+    private CircleShape circleRenderer = new();
+
+    // Properties
+
+    private Texture texture;
+
+    public Texture Texture
+    {
+        get
+        {
+            return texture;
+        }
+
+        set
+        {
+            texture = value;
+            circleRenderer = new();
+        }
+    }
 
     // Public
 
@@ -26,12 +45,11 @@ class CircleSprite : Node
 
     private void Draw()
     {
-        Window.Draw(new CircleShape
-        {
-            Position = GlobalPosition,
-            Radius = Radius,
-            Origin = Origin,
-            Texture = Texture
-        });
+        circleRenderer.Position = GlobalPosition;
+        circleRenderer.Radius = Radius;
+        circleRenderer.Origin = Origin;
+        circleRenderer.Texture = texture;
+
+        Window.Draw(circleRenderer);
     }
 }
