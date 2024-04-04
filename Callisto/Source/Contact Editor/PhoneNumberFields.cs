@@ -40,7 +40,7 @@ class PhoneNumberFields : Node
     {
         List<string> phoneNumbers = textBoxes
             .Select(textBox => textBox.Text.Trim())
-            .Where(text => !string.IsNullOrWhiteSpace(text.Substring(1)))
+            .Where(text => !string.IsNullOrWhiteSpace(text[1..]))
             .ToList();
 
         return phoneNumbers;

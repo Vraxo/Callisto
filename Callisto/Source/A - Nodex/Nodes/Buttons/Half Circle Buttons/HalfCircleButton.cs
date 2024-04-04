@@ -6,7 +6,7 @@ namespace Nodex;
 
 class HalfCircleButton : Node
 {
-    // AllFields
+    // Fields
 
     #region [ - - - FIELDS - - - ]
 
@@ -72,7 +72,7 @@ class HalfCircleButton : Node
     {
         RenderTexture renderTexture = new((uint)(Radius * 2), (uint)Radius);
 
-        renderTexture.Draw(new CircleShape
+        renderTexture.Draw(new CircleShape(100, 100)
         {
             Position = new(0, y),
             Radius = Radius,

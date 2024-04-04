@@ -11,7 +11,7 @@ class CircleSprite : Node
     public Vector2f Origin;
     public Action<CircleSprite> OnUpdate = (sprite) => { };
 
-    private CircleShape circleRenderer = new();
+    private CircleShape circleRenderer = new(100, 100);
 
     // Properties
 
@@ -27,7 +27,7 @@ class CircleSprite : Node
         set
         {
             texture = value;
-            circleRenderer = new();
+            circleRenderer = new(100, 100);
         }
     }
 

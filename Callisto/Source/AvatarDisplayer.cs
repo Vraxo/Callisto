@@ -5,7 +5,7 @@ namespace Callisto;
 
 class AvatarDisplayer : Node
 {
-    // AllFields
+    // Fields
 
     public int ContactIndex = -1;
     public bool IsClickable = false;
@@ -69,6 +69,7 @@ class AvatarDisplayer : Node
         AddChild(new HalfCircleButton
         {
             Text = "New",
+            Radius = 101,
             Style = new()
             {
                 TextColor = new(255, 255, 255, 255),
@@ -80,7 +81,7 @@ class AvatarDisplayer : Node
             OnUpdate = (button) =>
             {
                 button.Visible = button.Style.FillColor != button.Style.UnpressedFillColor;
-                button.Position = new(Window.Size.X / 2, Window.Size.Y * 0.2F);
+                button.Position = new(Window.Size.X / 2 - 1, 127);
             },
             OnClick = OpenPhotoSelectionDialog
         });
@@ -91,6 +92,7 @@ class AvatarDisplayer : Node
         AddChild(new BottomHalfCircleButton
         {
             Text = "Delete",
+            Radius = 101,
             Origin = new(100, 0),
             Style = new()
             {
@@ -103,7 +105,7 @@ class AvatarDisplayer : Node
             OnUpdate = (button) =>
             {
                 button.Visible = button.Style.FillColor != button.Style.UnpressedFillColor;
-                button.Position = new(Window.Size.X / 2, Window.Size.Y * 0.2F);
+                button.Position = new(Window.Size.X / 2 - 1, 128);
             },
             OnClick = DeleteAvatar
         });
