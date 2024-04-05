@@ -1,13 +1,11 @@
 ﻿using Nodex;
-using SFML.Graphics;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
+using System.Text.Json;
 
 namespace Callisto;
 
 class ContactsContainer
 {
-    // AllFields
+    // Fields
 
     public List<Contact> Contacts = [];
 
@@ -51,30 +49,33 @@ class ContactsContainer
     {
         Contacts = Contacts.OrderBy(o => o.FirstName).ToList();
 
-        var filePath = "Resources/Contacts.yaml";
+        string filePath = "Resources/Contacts.json";
 
-        var serializer = new SerializerBuilder()
-            .WithNamingConvention(PascalCaseNamingConvention.Instance)
-            .Build();
+        JsonSerializerOptions options = new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true
+        };
 
-        var yaml = serializer.Serialize(Contacts);
+        string json = JsonSerializer.Serialize(Contacts, options);
 
-        File.WriteAllText(filePath, yaml);
+        File.WriteAllText(filePath, json);
     }
 
     public void Load()
     {
-        var filePath = "Resources/Contacts.yaml";
+        string filePath = "Resources/Contacts.json";
 
         if (File.Exists(filePath))
         {
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(PascalCaseNamingConvention.Instance)
-                .Build();
+            JsonSerializerOptions options = new()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
 
-            using var reader = new StreamReader(filePath);
-            var yamlContacts = deserializer.Deserialize<List<Contact>>(reader);
-            Contacts = yamlContacts ?? [];
+            using FileStream stream = File.OpenRead(filePath);
+            List<Contact> jsonContacts = JsonSerializer.Deserialize<List<Contact>>(stream, options);
+            Contacts = jsonContacts ?? new List<Contact>();
         }
     }
 

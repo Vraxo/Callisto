@@ -70,7 +70,19 @@ class ContactViewer : Node
 
                 Contact contact = ContactsContainer.Instance.Contacts[ContactIndex];
 
-                float maxContactEditorHeight = GetNode<CopyNumberButtons>("CopyNumberButtons").Buttons.Last().Position.Y + 50;
+                var copyNumberButtons = GetNode<CopyNumberButtons>("CopyNumberButtons");
+
+                float maxContactEditorHeight;
+
+                if (copyNumberButtons.Buttons.Count > 0)
+                {
+                    maxContactEditorHeight = copyNumberButtons.Buttons.Last().Position.Y + 50;
+                }
+                else
+                {
+                    maxContactEditorHeight = 0;
+                }
+
                 float maxYPosition = maxContactEditorHeight - Window.GetView().Size.Y;
                 scroller.CanGoDown = viewHeight < maxYPosition;
             }
