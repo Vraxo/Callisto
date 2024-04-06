@@ -1,5 +1,6 @@
 ﻿using Nodex;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace Callisto;
 
@@ -26,6 +27,11 @@ class ContactsContainer
 
     // Public
 
+    public static string PadNumbers(string input)
+    {
+        return Regex.Replace(input, "[0-9]+", match => match.Value.PadLeft(10, '0'));
+    }
+
     public void Add(Contact contact)
     {
         Contacts.Add(contact);
@@ -47,7 +53,7 @@ class ContactsContainer
 
     public void Save()
     {
-        Contacts = Contacts.OrderBy(o => o.FirstName).ToList();
+        Contacts = Contacts.OrderBy(o => PadNumbers(o.FirstName)).ToList();
 
         string filePath = "Resources/Contacts.json";
 

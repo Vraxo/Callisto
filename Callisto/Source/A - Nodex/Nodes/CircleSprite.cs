@@ -19,10 +19,7 @@ class CircleSprite : Node
 
     public Texture Texture
     {
-        get
-        {
-            return texture;
-        }
+        get => texture;
 
         set
         {
