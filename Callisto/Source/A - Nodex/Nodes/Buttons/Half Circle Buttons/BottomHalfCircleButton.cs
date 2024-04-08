@@ -2,7 +2,7 @@
 using SFML.Window;
 using SFML.Graphics;
 
-namespace Nodex;
+namespace Callisto;
 
 class BottomHalfCircleButton : HalfCircleButton
 {

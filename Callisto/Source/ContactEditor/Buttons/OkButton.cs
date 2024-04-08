@@ -1,5 +1,4 @@
-﻿using Nodex;
-using SFML.Window;
+﻿using SFML.Window;
 using Callisto.ContactInfoViewerNode;
 
 namespace Callisto.ContactEditorNode.ButtonsNode;
@@ -115,7 +114,8 @@ class OkButton : Button
             VideoMode = new(360, 120),
             Title = "Invalid first name",
             Styles = Styles.Close,
-            ContextSettings = new(0, 0, 16)
+            ContextSettings = new(0, 0, 16),
+            ClearColor = new(32, 32, 32)
         };
 
         Window window = new(windowInfo)

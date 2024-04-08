@@ -1,23 +1,28 @@
-﻿using SFML.Window;
-using SFML.System;
+﻿using SFML.System;
+using SFML.Window;
 using SFML.Graphics;
-using System.Windows.Forms;
 
-namespace Nodex;
+namespace Callisto;
 
 class Window : RenderWindow
 {
-    // AllFields
+    // Fields
 
     public Node RootNode;
-    public Color ClearColor = new(32, 32, 32);
-
+    public Color ClearColor;
     public float ViewY = 0;
+
+    private Vector2u originalSize;
+    private bool maintainOriginalSize = true;
 
     // Constructor
 
-    public Window(WindowInfo info) : base(info.VideoMode, info.Title, info.Styles, info.ContextSettings)
+    public Window(WindowInfo info) : 
+    base(info.VideoMode, info.Title, info.Styles, info.ContextSettings)
     {
+        ClearColor = info.ClearColor;
+        originalSize = new(info.VideoMode.Width, info.VideoMode.Height);
+
         Resized += OnResized;
         Closed += OnClosed;
     }
@@ -60,10 +65,13 @@ class Window : RenderWindow
 
     private void OnResized(object? sender, SizeEventArgs e)
     {
-        float x = Size.X < 360 ? 360 : Size.X;
-        float y = Size.Y < 640 ? 640 : Size.Y;
-
-        Size = new((uint)x, (uint)y);
+        if (maintainOriginalSize)
+        {
+            float x = Size.X < originalSize.X ? originalSize.X : Size.X;
+            float y = Size.Y < originalSize.Y ? originalSize.Y : Size.Y;
+            
+            Size = new((uint)x, (uint)y);
+        }
 
         FloatRect visibleArea = new(0, ViewY, Size.X, Size.Y);
         SetView(new(visibleArea));

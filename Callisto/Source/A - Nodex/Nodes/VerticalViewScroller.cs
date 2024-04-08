@@ -1,6 +1,6 @@
 ﻿using SFML.Window;
 
-namespace Nodex;
+namespace Callisto;
 
 class VerticalViewScroller : Node
 {

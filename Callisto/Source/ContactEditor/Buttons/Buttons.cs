@@ -1,4 +1,4 @@
-﻿using Nodex;
+﻿using Callisto;
 using SFML.Window;
 using Callisto.ContactsListNode;
 using Callisto.DeletionDialogNode;
@@ -85,7 +85,8 @@ class Buttons : Node
             VideoMode = new(360, 120),
             Title = "Confirm contact deletion",
             Styles = Styles.Close,
-            ContextSettings = new(0, 0, 16)
+            ContextSettings = new(0, 0, 16),
+            ClearColor = new(32, 32, 32)
         };
 
         Window window = new(windowInfo)

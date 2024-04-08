@@ -1,9 +1,9 @@
-﻿using Nodex;
+﻿using Callisto;
 using SFML.Graphics;
 
 namespace Callisto.ContactDisplayerNode;
 
-class CircleSprite : Nodex.CircleSprite
+class CircleSprite : Callisto.CircleSprite
 {
     // AllFields
 

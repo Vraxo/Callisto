@@ -1,7 +1,7 @@
 ﻿using SFML.System;
 using SFML.Graphics;
 
-namespace Nodex;
+namespace Callisto;
 
 class Sprite : Node
 {

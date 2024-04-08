@@ -1,6 +1,6 @@
 ﻿using SFML.System;
 
-namespace Nodex;
+namespace Callisto;
 
 class Node
 {

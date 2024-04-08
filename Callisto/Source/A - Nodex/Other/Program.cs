@@ -1,7 +1,7 @@
 ﻿using SFML.System;
 using SFML.Window;
 
-namespace Nodex;
+namespace Callisto;
 
 class Program
 {
@@ -12,9 +12,9 @@ class Program
 
     // Public
 
-    public static void Start(Node rootNode)
+    public static void Start(WindowInfo windowInfo, Node rootNode)
     {
-        AddMainWindow(rootNode);
+        AddMainWindow(windowInfo, rootNode);
 
         Clock deltaTimeClock = new();
 
@@ -42,16 +42,8 @@ class Program
 
     // Private
 
-    private static void AddMainWindow(Node rootNode)
+    private static void AddMainWindow(WindowInfo windowInfo, Node rootNode)
     {
-        WindowInfo windowInfo = new()
-        {
-            VideoMode = new(360, 640),
-            Title = "Callisto",
-            Styles = Styles.Default,
-            ContextSettings = new(0, 0, 16)
-        };
-
         MainWindow = new(windowInfo);
         Windows.Add(MainWindow);
         MainWindow.RootNode = rootNode;

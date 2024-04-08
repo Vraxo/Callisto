@@ -2,7 +2,7 @@
 using SFML.System;
 using SFML.Window;
 
-namespace Nodex;
+namespace Callisto;
 
 class CircleButton : Node
 {

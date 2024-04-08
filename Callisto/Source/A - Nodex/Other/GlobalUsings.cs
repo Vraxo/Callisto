@@ -1,7 +1,7 @@
-﻿global using Label   = Nodex.Label;
-global using Button  = Nodex.Button;
-global using Window  = Nodex.Window;
-global using TextBox = Nodex.TextBox;
+﻿global using Label   = Callisto.Label;
+global using Button  = Callisto.Button;
+global using Window  = Callisto.Window;
+global using TextBox = Callisto.TextBox;
 
 global using Font         = SFML.Graphics.Font;
 global using Color        = SFML.Graphics.Color;

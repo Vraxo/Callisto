@@ -1,4 +1,4 @@
-﻿namespace Nodex;
+﻿namespace Callisto;
 
 class TextBoxStyle
 {

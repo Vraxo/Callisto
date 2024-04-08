@@ -1,6 +1,6 @@
 ﻿using SFML.Graphics;
 
-namespace Nodex;
+namespace Callisto;
 
 class Caret : Node
 {
