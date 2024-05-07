@@ -1,5 +1,4 @@
-﻿using Callisto;
-using Callisto.Properties;
+﻿using Callisto.Properties;
 
 namespace Callisto;
 
@@ -61,6 +60,6 @@ class Initializer
             Resources.Icon.Save(iconPath);
         }
 
-        Program.MainWindow.SetIcon(256, 256, new Image(iconPath).Pixels);
+        Program.MainWindow.SetIcon(512, 512, new Image(iconPath).Pixels);
     }
 }
