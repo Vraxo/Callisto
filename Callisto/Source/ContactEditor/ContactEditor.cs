@@ -39,6 +39,7 @@ class ContactEditor : Node
 
     public void DeleteContact()
     {
+        DeleteContactAvatar();
         ContactsContainer.Instance.Delete(ContactIndex);
         ChangeScene(new ContactsList());
     }
@@ -64,6 +65,18 @@ class ContactEditor : Node
     }
 
     // Private
+
+    private void DeleteContactAvatar()
+    {
+        int contactId = ContactsContainer.Instance.Contacts[ContactIndex].Id;
+        string avatarsFolder = Path.Combine("Resources/Avatars/");
+        string[] avatarFiles = Directory.GetFiles(avatarsFolder, $"{contactId}.*");
+
+        foreach (var file in avatarFiles)
+        {
+            File.Delete(file);
+        }
+    }
 
     private void AddScroller()
     {
